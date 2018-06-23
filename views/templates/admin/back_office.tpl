@@ -2,10 +2,12 @@
     table.intrum-css {
         border-collapse: collapse;
     }
+
     table.intrum-css td {
         padding: 2px;
         border: 1px solid #DDDDDD;
     }
+
     tr.intrum-css-tr label {
         padding: 0 0 0 2px;
         width: auto;
@@ -15,6 +17,7 @@
         padding: 5px 2px 5px 2px;
         font-weight: bold;
     }
+
     .alert {
         padding: 8px 35px 8px 14px;
         margin-bottom: 20px;
@@ -26,11 +29,13 @@
         border-radius: 4px;
         width: 300px;
     }
+
     .alert-success {
         color: #468847;
         background-color: #dff0d8;
         border-color: #d6e9c6;
     }
+
     .cdp_plugin {
         margin: 0 0 5px 0;
         padding: 0;
@@ -38,60 +43,71 @@
 
     #tabs1 {
         font: bold 11px/1.5em Verdana;
-        float:left;
-        width:100%;
-        background:#FFFFFF;
-        font-size:93%;
-        line-height:normal;
+        float: left;
+        width: 100%;
+        background: #FFFFFF;
+        font-size: 93%;
+        line-height: normal;
     }
+
     #tabs1 ul {
-        margin:0;
-        padding:10px 10px 0 0px;
-        list-style:none;
+        margin: 0;
+        padding: 10px 10px 0 0px;
+        list-style: none;
     }
+
     #tabs1 li {
-        display:inline;
-        margin:0;
-        padding:0;
+        display: inline;
+        margin: 0;
+        padding: 0;
     }
+
     #tabs1 a {
-        float:left;
-        background:url("{$this_path}images/tableft1.gif") no-repeat left top;
-        margin:0;
-        padding:0 0 0 4px;
-        text-decoration:none;
+        float: left;
+        background: url("{$this_path}images/tableft1.gif") no-repeat left top;
+        margin: 0;
+        padding: 0 0 0 4px;
+        text-decoration: none;
     }
+
     #tabs1 a span {
-        float:left;
-        display:block;
-        background:url("{$this_path}images/tabright1.gif") no-repeat right top;
-        padding:5px 15px 4px 6px;
-        color:#627EB7;
+        float: left;
+        display: block;
+        background: url("{$this_path}images/tabright1.gif") no-repeat right top;
+        padding: 5px 15px 4px 6px;
+        color: #627EB7;
     }
+
     /* Commented Backslash Hack hides rule from IE5-Mac \*/
     #tabs1 a span {
-        float:none;
+        float: none;
     }
+
     /* End IE5-Mac hack */
     #tabs a:hover span {
-        color:#627EB7;
+        color: #627EB7;
     }
+
     #tabs1 a:hover {
-        background-position:0% -42px;
+        background-position: 0% -42px;
     }
+
     #tabs1 a:hover span {
-        background-position:100% -42px;
+        background-position: 100% -42px;
     }
+
     #tab-settings, #tab-logs {
         padding: 5px;
         border: 1px solid #DDDDDD;
         clear: both;
         display: block;
     }
+
     {if ($intrum_show_log == 'true')}
     #tab-settings {
         display: none;
     }
+
     {/if}
     {if ($intrum_show_log == 'false')}
     #tab-logs {
@@ -103,6 +119,7 @@
         width: 100%;
         border-collapse: collapse;
     }
+
     table.table-logs td {
         padding: 3px;
         border: 1px solid #DDDDDD;
@@ -110,105 +127,121 @@
     }
 </style>
 {if ($upgrade_require == 1)}
-<form method="post" action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}">
-		<div id="buttons">
-			Upgrade module required. press Upgrade hook button.<br>
-			<input type="hidden" value="upgradehook" name="upgradehook">
-            <button name="intrum_confirm" value="0" type="submit">Upgrade hook</button>
-        </div>
-</form>
-        {/if}
-<h1 style="padding: 0; margin: 0">Intrum Justitia credit design platform module</h1>
-<div id="tabs1">
-    <ul>
-        <li><a href="#" id="href-settings" title="Settings"><span>Settings</span></a></li>
-        <li><a href="#" id="href-logs" title="Logs"><span>Logs</span></a></li>
-    </ul>
-</div>
-<div id="tab-settings">
-    <form method="post" action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}" id="intrum_main_configuration">
-        {if ($intrum_submit_main == 'OK')}
-            <div class="alert alert-success">
-                Main configuration saved
-            </div>
-        {/if}
-        <table class="intrum-css">
-            <tr class="intrum-css-tr">
-                <td>
-                    <label for="intrum_mode">Mode</label>
-                </td>
-                <td>
-                    <select name="intrum_mode" id="intrum_mode">
-                        <option value="test"{if ($intrum_mode == 'test')} selected{/if}>Test mode</option>
-                        <option value="live"{if ($intrum_mode == 'live')} selected{/if}>Production mode</option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="intrum-css-tr">
-                <td>
-                    <label for="intrum_client_id">Client ID</label>
-                </td>
-                <td>
-                    <input type="text" name="intrum_client_id" id="intrum_client_id" value="{$intrum_client_id|escape}"/>
-                </td>
-            </tr>
-            <tr class="intrum-css-tr">
-                <td>
-                    <label for="intrum_user_id">User ID</label>
-                </td>
-                <td>
-                    <input type="text" name="intrum_user_id" id="intrum_user_id" value="{$intrum_user_id|escape}"/>
-                </td>
-            </tr>
-            <tr class="intrum-css-tr">
-                <td>
-                    <label for="intrum_password">Password</label>
-                </td>
-                <td>
-                    <input type="password" name="intrum_password" id="intrum_password" value="{$intrum_password|escape}"/>
-                </td>
-            </tr>
-            <tr class="intrum-css-tr">
-                <td>
-                    <label for="intrum_tech_email">Technical Contact (E-mail)</label>
-                </td>
-                <td>
-                    <input type="text" name="intrum_tech_email" id="intrum_tech_email" value="{$intrum_tech_email|escape}"/>
-                </td>
-            </tr>
-            <tr class="intrum-css-tr">
-                <td>
-                    <label for="intrum_min_amount">Mininmal amount for credit check</label>
-                </td>
-                <td>
-                    <input type="text" name="intrum_min_amount" id="intrum_min_amount" value="{$intrum_min_amount|escape}"/>
-                </td>
-            </tr>
-            <tr class="intrum-css-tr">
-                <td>
-                    <label for="intrum_enabletmx">Enable ThreatMetrix</label>
-                </td>
-                <td>
-                    <select name="intrum_enabletmx" id="intrum_enabletmx">
-                        <option value="false"{if ($intrum_enabletmx == 'false')} selected{/if}>Disabled</option>
-                        <option value="true"{if ($intrum_enabletmx == 'true')} selected{/if}>Enabled</option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="intrum-css-tr">
-                <td>
-                    <label for="intrum_tmxorgid">ThreatMetrix orgid</label>
-                </td>
-                <td>
-                    <input type="text" name="intrum_tmxorgid" id="intrum_tmxorgid" value="{$intrum_tmxorgid|escape}"/>
-                </td>
-            </tr>
-        </table>
-        <br/>
+    <form method="post" action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}">
+        <div class="alert alert-warning" style="width: 100%">
+            <p>Upgrade module required. press Upgrade hook button.</p>
 
-        <div id="buttons">
-            <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
-            <button name="intrum_confirm" value="0" type="submit">Save main configuration</button>
+            <p><input type="hidden" value="upgradehook" name="upgradehook"></p>
+
+            <p>
+                <button name="intrum_confirm" value="0" type="submit" class="btn btn-warning">Upgrade hook</button>
+            </p>
+        </div>
+    </form>
+{/if}
+<h1 style="padding: 0; margin: 0">Byjuno payment gateway configuration</h1>
+
+<ul class="tab nav nav-tabs">
+    <li><a href="#" id="href-settings" title="Settings"><span>Settings</span></a></li>
+    <li><a href="#" id="href-logs" title="Logs"><span>Logs</span></a></li>
+</ul>
+
+<div id="tab-settings">
+    <form method="post" class="defaultForm form-horizontal"
+          action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}"
+          id="intrum_main_configuration">
+
+        <div class="panel" id="fieldset_0">
+            <div class="panel-heading">
+                <i class="icon-cogs"></i> General settings
+            </div>
+            {if ($intrum_submit_main == 'OK')}
+                <div class="alert alert-success" style="width: 100%">
+                    Main configuration saved
+                </div>
+            {/if}
+            <div class="form-wrapper">
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Mode
+                    </label>
+
+                    <div class="col-lg-9">
+                        <select name="intrum_mode" id="intrum_mode">
+                            <option value="test"{if ($intrum_mode == 'test')} selected{/if}>Test mode</option>
+                            <option value="live"{if ($intrum_mode == 'live')} selected{/if}>Production mode</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Client ID
+                    </label>
+
+                    <div class="col-lg-9">
+                        <input type="text" name="intrum_client_id" id="intrum_client_id"
+                               value="{$intrum_client_id|escape}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Password
+                    </label>
+
+                    <div class="col-lg-9">
+                        <input type="password" name="intrum_password" id="intrum_password"
+                               value="{$intrum_password|escape}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Technical Contact (E-mail)
+                    </label>
+
+                    <div class="col-lg-9">
+                        <input type="text" name="intrum_tech_email" id="intrum_tech_email"
+                               value="{$intrum_tech_email|escape}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Mininmal amount for credit check
+                    </label>
+
+                    <div class="col-lg-9">
+                        <input type="text" name="intrum_min_amount" id="intrum_min_amount"
+                               value="{$intrum_min_amount|escape}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Enable ThreatMetrix
+                    </label>
+
+                    <div class="col-lg-9">
+                        <select name="intrum_enabletmx" id="intrum_enabletmx">
+                            <option value="false"{if ($intrum_enabletmx == 'false')} selected{/if}>Disabled</option>
+                            <option value="true"{if ($intrum_enabletmx == 'true')} selected{/if}>Enabled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        ThreatMetrix orgid
+                    </label>
+                    <div class="col-lg-9">
+                        <input type="text" name="intrum_tmxorgid" id="intrum_tmxorgid"
+                               value="{$intrum_tmxorgid|escape}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
+                <button type="submit" value="1" id="module_form_submit_btn" name="btnSubmit"
+                        class="btn btn-default pull-right">
+                    <i class="process-icon-save"></i> Save
+                </button>
+            </div>
         </div>
     </form>
     <br/>
@@ -243,7 +276,9 @@
                 <td>{$payment_methods[4]["false"]}</td>
             </tr>
             <tr>
-                <td>Enquiry exceeds the credit limit (the credit limit is specified in the cooperation agreement) (status 5)</td>
+                <td>Enquiry exceeds the credit limit (the credit limit is specified in the cooperation agreement)
+                    (status 5)
+                </td>
                 <td>{$payment_methods[5]["false"]}</td>
             </tr>
             <tr>
@@ -251,7 +286,10 @@
                 <td>{$payment_methods[6]["false"]}</td>
             </tr>
             <tr>
-                <td>Enquiry exceeds the net credit limit (enquiry amount plus open items exceeds credit limit) (status 7)</td>
+                <td>Enquiry exceeds the net credit limit (enquiry amount plus open items exceeds credit limit)
+                    (status
+                    7)
+                </td>
                 <td>{$payment_methods[7]["false"]}</td>
             </tr>
             <tr>
@@ -394,7 +432,8 @@
             <input value="{$search_in_log|escape}" name="searchInLog"> <input type="submit" value="search">
             <input type="hidden" value="ok" name="submitLogSearch">
         </form>
-    </div><br />
+    </div>
+    <br/>
     {if !$search_in_log}Last 20 results
     {else}
         Search result for string "{$search_in_log|escape}"
@@ -409,32 +448,32 @@
             <td>Request ID</td>
             <td>Type</td>
         </tr>
-    {foreach from=$intrum_logs item=log}
-        <tr>
-            <td>{$log.firstname|escape}</td>
-            <td>{$log.lastname|escape}</td>
-            <td>{$log.ip|escape}</td>
-            <td>{if ($log.status === '0')}Error{else}{$log.status|escape}{/if}</td>
-            <td>{$log.creation_date|escape}</td>
-            <td>{$log.request_id|escape}</td>
-            <td>{$log.type|escape}</td>
-        </tr>
-    {/foreach}
-    {if !$intrum_logs}
-        <tr>
-            <td colspan="5" style="padding: 10px">
-                No results found
-            </td>
-        </tr>
-    {/if}
+        {foreach from=$intrum_logs item=log}
+            <tr>
+                <td>{$log.firstname|escape}</td>
+                <td>{$log.lastname|escape}</td>
+                <td>{$log.ip|escape}</td>
+                <td>{if ($log.status === '0')}Error{else}{$log.status|escape}{/if}</td>
+                <td>{$log.creation_date|escape}</td>
+                <td>{$log.request_id|escape}</td>
+                <td>{$log.type|escape}</td>
+            </tr>
+        {/foreach}
+        {if !$intrum_logs}
+            <tr>
+                <td colspan="5" style="padding: 10px">
+                    No results found
+                </td>
+            </tr>
+        {/if}
     </table>
 </div>
 <script>
-    $("#href-settings").click(function(e) {
+    $("#href-settings").click(function (e) {
         $("#tab-logs").hide();
         $("#tab-settings").show();
     });
-    $("#href-logs").click(function(e) {
+    $("#href-logs").click(function (e) {
         $("#tab-settings").hide();
         $("#tab-logs").show();
     });

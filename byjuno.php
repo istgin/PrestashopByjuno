@@ -12,6 +12,7 @@ class Byjuno extends Module
         $this->version = '1.0.0';
         $this->author = 'Byjuno.ch (http://www.byjuno.ch/)';
         $this->need_instance = 0;
+        $this->bootstrap = true;
         parent::__construct();
         $this->displayName = $this->l('Byjuno');
         $this->description = $this->l('Byjuno payment gateway');
@@ -190,6 +191,7 @@ class Byjuno extends Module
         }
 		$version = $this->getHookVersion();
         $values = array(
+            'bootstrap' => true,
             'this_path' => $this->_path,
             'intrum_submit_main' => Configuration::get("INTRUM_SUBMIT_MAIN"),
             'intrum_submit_payments' => Configuration::get("INTRUM_SUBMIT_PAYMENTS"),
