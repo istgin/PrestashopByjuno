@@ -59,6 +59,12 @@ class Byjuno extends PaymentModule
         return $this->display(__FILE__, 'payment.tpl');
     }
 
+
+    public function hookHeader($params)
+    {
+        $this->context->controller->addCSS($this->_path.'byjuno.css', 'all');
+    }
+
     public function hookDisplayPaymentEU($params)
     {
         if (!$this->active)
@@ -81,7 +87,8 @@ class Byjuno extends PaymentModule
             || !$this->registerHook('displayPaymentEU')
             || !$this->registerHook('paymentReturn')
             || !$this->registerHook('displayAfterBodyOpeningTag')
-            || !$this->registerHook('displayBeforeShoppingCartBlock') ){
+            || !$this->registerHook('displayBeforeShoppingCartBlock')
+            || !$this->registerHook('header')){
             return false;
         }
         /*

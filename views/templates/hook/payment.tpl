@@ -25,7 +25,7 @@
 <div class="row">
 	<div class="col-xs-12">
 		<p class="payment_module">
-			<a class="bankwire" href="{$link->getModuleLink('byjuno', 'payment')|escape:'html':'UTF-8'}" title="{l s='Pay by byjuno invoice' mod='byjuno'}">
+			<a class="byjunoinvoice" href="{$link->getModuleLink('byjuno', 'payment')|escape:'html':'UTF-8'}" title="{l s='Pay by byjuno invoice' mod='byjuno'}">
 				{l s='Byjuno invoice' mod='byjuno'}
 			</a>
 		</p>
@@ -34,7 +34,7 @@
 <div class="row">
 	<div class="col-xs-12">
 		<p class="payment_module">
-			<a class="bankwire" href="{$link->getModuleLink('byjuno', 'payment')|escape:'html':'UTF-8'}" title="{l s='Pay by byjuno installment' mod='byjuno'}">
+			<a class="byjunoinstallment" href="{$link->getModuleLink('byjuno', 'payment')|escape:'html':'UTF-8'}" title="{l s='Pay by byjuno installment' mod='byjuno'}">
 				{l s='Byjuno installment' mod='byjuno'}
 			</a>
 		</p>
