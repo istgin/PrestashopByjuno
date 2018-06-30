@@ -3,7 +3,7 @@ if (!defined('_PS_VERSION_'))
     exit;
 
 
-class Byjuno extends Module
+class Byjuno extends PaymentModule
 {
     public function __construct()
     {
@@ -11,22 +11,77 @@ class Byjuno extends Module
         $this->tab = 'payments_gateways';
         $this->version = '1.0.0';
         $this->author = 'Byjuno.ch (http://www.byjuno.ch/)';
-        $this->need_instance = 0;
+        $this->controllers = array('payment', 'validation');
+        $this->is_eu_compatible = 1;
         $this->bootstrap = true;
         parent::__construct();
         $this->displayName = $this->l('Byjuno');
         $this->description = $this->l('Byjuno payment gateway');
+        $this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.99.99');
     }
 
-    public static function abc()
+    public function hookPaymentReturn($params)
     {
+        if (!$this->active)
+            return;
 
+        $state = $params['objOrder']->getCurrentState();
+        if (in_array($state, array(Configuration::get('PS_OS_BANKWIRE'), Configuration::get('PS_OS_OUTOFSTOCK'), Configuration::get('PS_OS_OUTOFSTOCK_UNPAID'))))
+        {
+            $this->smarty->assign(array(
+                'total_to_pay' => Tools::displayPrice($params['total_to_pay'], $params['currencyObj'], false),
+                'bankwireDetails' => Tools::nl2br($this->details),
+                'bankwireAddress' => Tools::nl2br($this->address),
+                'bankwireOwner' => $this->owner,
+                'status' => 'ok',
+                'id_order' => $params['objOrder']->id
+            ));
+            if (isset($params['objOrder']->reference) && !empty($params['objOrder']->reference))
+                $this->smarty->assign('reference', $params['objOrder']->reference);
+        }
+        else
+        {
+            $this->smarty->assign('status', 'failed');
+        }
+        return $this->display(__FILE__, 'payment_return.tpl');
+    }
+
+    public function hookPayment($params)
+    {
+        if (!$this->active)
+            return;
+
+        $this->smarty->assign(array(
+            'this_path' => $this->_path,
+            'this_path_bw' => $this->_path,
+            'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name.'/'
+        ));
+        return $this->display(__FILE__, 'payment.tpl');
+    }
+
+    public function hookDisplayPaymentEU($params)
+    {
+        if (!$this->active)
+            return;
+
+        $payment_options = array(
+            'cta_text' => $this->l('XXXX'),
+            'logo' => Media::getMediaPath(_PS_MODULE_DIR_.$this->name.'/bankwire.jpg'),
+            'action' => $this->context->link->getModuleLink($this->name, 'validation', array(), true)
+        );
+
+        return $payment_options;
     }
 
     public function install()
     {
         //displayAfterBodyOpeningTag
-        if (!parent::install() ){
+        if (!parent::install()
+            || !$this->registerHook('payment')
+            || !$this->registerHook('displayPaymentEU')
+            || !$this->registerHook('paymentReturn')
+            || !$this->registerHook('displayAfterBodyOpeningTag')
+            || !$this->registerHook('displayBeforeShoppingCartBlock') ){
             return false;
         }
         /*
@@ -81,10 +136,10 @@ class Byjuno extends Module
         return true;
     }
 
-    public function hookDisplayAfterBodyOpeningTag($params) {
+    public function hookDisplayBeforeShoppingCartBlock($params) {
         if (Configuration::get("INTRUM_ENABLETMX") == 'true' && Configuration::get("INTRUM_TMXORGID") != '') {
-			global $cookie;
-			$cookie->intrumId = Tools::getToken(false);
+            global $cookie;
+            $cookie->intrumId = Tools::getToken(false);
             echo '
                 <script type="text/javascript" src="https://h.online-metrix.net/fp/tags.js?org_id='.Configuration::get("INTRUM_TMXORGID").'&session_id='.$cookie->intrumId.'&pageid=checkout"></script>
             <noscript>
