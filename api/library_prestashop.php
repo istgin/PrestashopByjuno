@@ -74,6 +74,26 @@ function mapPaymentMethodToSpecs($method){
     return $method;
 }
 
+function mapRepayment($type) {
+    if ($type == 'installment_3') {
+        return "10";
+    } else if ($type == 'installment_10') {
+        return "5";
+    } else if ($type == 'installment_12') {
+        return "8";
+    } else if ($type == 'installment_24') {
+        return "9";
+    } else if ($type == 'installment_4x12') {
+        return "1";
+    } else if ($type == 'installment_4x10') {
+        return "2";
+    } else if ($type == 'sinlge_invoice') {
+        return "3";
+    } else {
+        return "4";
+    }
+}
+
 function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, CurrencyCore $currency) {
 
 	global $cookie;
@@ -168,7 +188,7 @@ function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, Currenc
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-    $extraInfo["Value"] = 'Intrum Prestashop module 1.5';
+    $extraInfo["Value"] = 'Byjuno Prestashop module 1.0.0';
     $request->setExtraInfo($extraInfo);	
 
     return $request;
@@ -176,7 +196,9 @@ function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, Currenc
 }
 
 
-function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency $currency) {
+function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency $currency, $repayment, $riskOwner) {
+
+    global $cookie;
     $customer = new Customer($order->id_customer);
     $invoice_address = new Address($order->id_address_invoice);
     $shipping_address = new Address($order->id_address_delivery);
@@ -273,11 +295,17 @@ function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'PAYMENTMETHOD';
-    $extraInfo["Value"] = mapPaymentMethodToSpecs($order->payment);
+    $extraInfo["Value"] = mapRepayment($repayment);
     $request->setExtraInfo($extraInfo);
 
+    if ($riskOwner != "") {
+        $extraInfo["Name"] = 'RISKOWNER';
+        $extraInfo["Value"] = $riskOwner;
+        $request->setExtraInfo($extraInfo);
+    }
+
     $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-    $extraInfo["Value"] = 'Intrum Prestashop module 1.5';
+    $extraInfo["Value"] = 'Byjuno Prestashop module 1.5';
     $request->setExtraInfo($extraInfo);	
 
     return $request;

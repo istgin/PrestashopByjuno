@@ -94,7 +94,52 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 			"request" => $xml
 		));
 
-		$this->module->validateOrder($cart->id, Configuration::get('PS_OS_PAYMENT'), $total, "Byjuno invoice", NULL, $mailVars, (int)$currency->id, false, $customer->secure_key);
+		$this->module->validateOrder($cart->id, Configuration::get('BYJUNO_ORDER_STATE_DEFAULT'), $total, "Byjuno invoice", NULL, $mailVars, (int)$currency->id, false, $customer->secure_key);
+		$order = new OrderCore((int)$this->module->currentOrder);
+		$request = CreatePrestaShopRequestAfterPaid($this->context->cart, $order, $this->context->currency, "sinlge_invoice", "IJ");
+		$xml = $request->createRequest();
+		$response = $intrumCommunicator->sendRequest($xml);
+		libxml_use_internal_errors(true);
+		$xmlResponse = simplexml_load_string($response);
+		$intrumLogger = IntrumLogger::getInstance();
+		if ($xmlResponse) {
+			$intrumLogger->log(Array(
+				"firstname" => $request->getFirstName(),
+				"lastname" => $request->getLastName(),
+				"town" => $request->getTown(),
+				"postcode" => $request->getPostCode(),
+				"street" => trim($request->getFirstLine().' '.$request->getHouseNumber()),
+				"country" => $request->getCountryCode(),
+				"ip" => $_SERVER["REMOTE_ADDR"],
+				"status" => (isset($xmlResponse->Customer->RequestStatus)) ? 'OK' : '0',
+				"request_id" => $request->getRequestId(),
+				"type" => "Order confirmation message",
+				"error" => (!(isset($xmlResponse->Customer->RequestStatus))) ? $response : "",
+				"response" => $response,
+				"request" => $xml
+			));
+		} else {
+			$intrumLogger->log(Array(
+				"firstname" => $request->getFirstName(),
+				"lastname" => $request->getLastName(),
+				"town" => $request->getTown(),
+				"postcode" => $request->getPostCode(),
+				"street" => trim($request->getFirstLine().' '.$request->getHouseNumber()),
+				"country" => $request->getCountryCode(),
+				"ip" => $_SERVER["REMOTE_ADDR"],
+				"status" => '0',
+				"request_id" => $request->getRequestId(),
+				"type" => "Order confirmation message",
+				"error" => "",
+				"response" => $response,
+				"request" => $xml
+			));
+		}
+		$history = new OrderHistory();
+		$history->id_order = $this->module->currentOrder;
+		$history->changeIdOrderState(Configuration::get('PS_OS_PAYMENT'), $this->module->currentOrder);
+		$history->addWithemail(true);
+		$order->setCurrentState(Configuration::get('PS_OS_PAYMENT'));
 		Tools::redirect('index.php?controller=order-confirmation&id_cart='.$cart->id.'&id_module='.$this->module->id.'&id_order='.$this->module->currentOrder.'&key='.$customer->secure_key);
 	}
 }

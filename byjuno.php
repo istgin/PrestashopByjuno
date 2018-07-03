@@ -80,6 +80,35 @@ class Byjuno extends PaymentModule
         return $payment_options;
     }
 
+    public function addOrderState($name)
+    {
+        $states = OrderState::getOrderStates((int) Configuration::get('PS_LANG_DEFAULT'));
+
+        $currentStates = array();
+
+        foreach ($states as $state) {
+            $state = (object) $state;
+            $currentStates[$state->id_order_state] = $state->name;
+        }
+        if (($state_id = array_search($this->l($name), $currentStates)) === false) {
+            $defaultOrderState = new OrderState();
+            $defaultOrderState->name = array(Configuration::get('PS_LANG_DEFAULT') => $this->l($name));
+            $defaultOrderState->module_name = $this->name;
+            $defaultOrderState->send_mail = 0;
+            $defaultOrderState->template = '';
+            $defaultOrderState->invoice = 0;
+            $defaultOrderState->color = '#FFF000';
+            $defaultOrderState->unremovable = false;
+            $defaultOrderState->logable = 0;
+            $defaultOrderState->add();
+        } else {
+            $defaultOrderState = new stdClass;
+            $defaultOrderState->id = $state_id;
+        }
+        return $defaultOrderState->id;
+    }
+
+
     public function install()
     {
         //displayAfterBodyOpeningTag
@@ -112,6 +141,9 @@ class Byjuno extends PaymentModule
                   `creation_date` TIMESTAMP NULL DEFAULT now() ,
                   PRIMARY KEY  (`intrum_id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+
+        $defaultStateId = $this->addOrderState("Awaiting for Byjuno");
+        Configuration::updateValue('BYJUNO_ORDER_STATE_DEFAULT', $defaultStateId);
         /*
         if ($this->moveOverriteFiles()) {
             Configuration::updateValue('INTRUM_SUBMIT_MAIN', '');
