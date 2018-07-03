@@ -59,6 +59,41 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 		$total = (float)$cart->getOrderTotal(true, Cart::BOTH);
 		$mailVars = null;//array();
 
+		$status = 0;
+		if (!defined('_PS_MODULE_INTRUMCOM_API')) {
+			require(_PS_MODULE_DIR_.'intrumcom/api/intrum.php');
+			require(_PS_MODULE_DIR_.'intrumcom/api/library_prestashop.php');
+		}
+
+		$request = CreatePrestaShopRequest($this->context->cart, $this->context->customer, $this->context->currency);
+		$xml = $request->createRequest();
+		$intrumCommunicator = new IntrumCommunicator();
+		$intrumCommunicator->setServer(Configuration::get("INTRUM_MODE"));
+		$response = $intrumCommunicator->sendRequest($xml);
+
+		if ($response) {
+			$intrumResponse = new IntrumResponse();
+			$intrumResponse->setRawResponse($response);
+			$intrumResponse->processResponse();
+			$status = $intrumResponse->getCustomerRequestStatus();
+		}
+		$intrumLogger = IntrumLogger::getInstance();
+		$intrumLogger->log(Array(
+			"firstname" => $request->getFirstName(),
+			"lastname" => $request->getLastName(),
+			"town" => $request->getTown(),
+			"postcode" => $request->getPostCode(),
+			"street" => trim($request->getFirstLine().' '.$request->getHouseNumber()),
+			"country" => $request->getCountryCode(),
+			"ip" => $_SERVER["REMOTE_ADDR"],
+			"status" => $status,
+			"request_id" => $request->getRequestId(),
+			"type" => "Request status",
+			"error" => ($status == 0) ? $response : "",
+			"response" => $response,
+			"request" => $xml
+		));
+
 		$this->module->validateOrder($cart->id, Configuration::get('PS_OS_PAYMENT'), $total, "Byjuno invoice", NULL, $mailVars, (int)$currency->id, false, $customer->secure_key);
 		Tools::redirect('index.php?controller=order-confirmation&id_cart='.$cart->id.'&id_module='.$this->module->id.'&id_order='.$this->module->currentOrder.'&key='.$customer->secure_key);
 	}

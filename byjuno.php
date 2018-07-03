@@ -2,6 +2,10 @@
 if (!defined('_PS_VERSION_'))
     exit;
 
+if (!defined('_PS_MODULE_INTRUMCOM_API')) {
+    require(_PS_MODULE_DIR_.'byjuno/api/intrum.php');
+    require(_PS_MODULE_DIR_.'byjuno/api/library_prestashop.php');
+}
 
 class Byjuno extends PaymentModule
 {
@@ -88,6 +92,26 @@ class Byjuno extends PaymentModule
             || !$this->registerHook('header')){
             return false;
         }
+
+        Db::getInstance()->Execute('
+            CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'intrum_logs` (
+                  `intrum_id` int(10) unsigned NOT NULL auto_increment,
+                  `firstname` varchar(250) default NULL,
+                  `lastname` varchar(250) default NULL,
+                  `town` varchar(250) default NULL,
+                  `postcode` varchar(250) default NULL,
+                  `street` varchar(250) default NULL,
+                  `country` varchar(250) default NULL,
+                  `ip` varchar(250) default NULL,
+                  `status` varchar(250) default NULL,
+                  `request_id` varchar(250) default NULL,
+                  `type` varchar(250) default NULL,
+                  `error` text default NULL,
+                  `response` text default NULL,
+                  `request` text default NULL,
+                  `creation_date` TIMESTAMP NULL DEFAULT now() ,
+                  PRIMARY KEY  (`intrum_id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
         /*
         if ($this->moveOverriteFiles()) {
             Configuration::updateValue('INTRUM_SUBMIT_MAIN', '');
@@ -264,7 +288,7 @@ class Byjuno extends PaymentModule
             'intrum_enabletmx' => Configuration::get("INTRUM_ENABLETMX"),
             'intrum_tmxorgid' => Configuration::get("INTRUM_TMXORGID"),
             'payment_methods' => $methods,
-            'intrum_logs' => '',//$this->getLogs(),
+            'intrum_logs' => $this->getLogs(),
             'search_in_log' => Tools::getValue('searchInLog'),
             'upgrade_require' => ($version != $this->version) ? 1 : 0
         );
@@ -296,7 +320,7 @@ class Byjuno extends PaymentModule
 
         return $this->display(__FILE__, $name);
     }
-/*
+
     public static function getLogs() {
 
         if (Tools::isSubmit('submitLogSearch') && Tools::getValue('searchInLog') != '')
@@ -320,7 +344,7 @@ class Byjuno extends PaymentModule
         }
 
     }
-
+/*
     public function hookOrderConfirmation($params)
     {
         $request = CreatePrestaShopRequestAfterPaid($params["order"]);
