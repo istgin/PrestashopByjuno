@@ -23,13 +23,26 @@
 *  International Registered Trademark & Property of PrestaShop SA
 *}
 
-{if $status == 'ok'}
-<p>{l s='Your order on %s is complete.' sprintf=$shop_name mod='byjuno'}
-		<br /><br />{l s='Amount' mod='byjuno'} <span class="price"><strong>{$total_to_pay}</strong></span>
-		<br /><br />{l s='Order reference %s' sprintf=$reference mod='byjuno'}</p>
+{capture name=path}{l s='Byjuno Invoice' mod='byjuno'}{/capture}
+
+<h1 class="page-heading">{l s='Select payment' mod='byjuno'}</h1>
+
+{assign var='current_step' value='payment'}
+{include file="$tpl_dir./order-steps.tpl"}
+
+{if isset($nbProducts) && $nbProducts <= 0}
+	<p class="alert alert-warning">{l s='Your shopping cart is empty.' mod='byjuno'}</p>
 {else}
-	<p class="warning">
-		{l s='We noticed a problem with your order. If you think this is an error, feel free to contact our' mod='byjuno'}
-		<a href="{$link->getPageLink('contact', true)|escape:'html'}">{l s='expert customer support team' mod='byjuno'}</a>.
-	</p>
+
+	<form action="{$link->getModuleLink('byjuno', 'validation', [], true)|escape:'html':'UTF-8'}" method="post">
+		<p class="warning">
+			{l s='Order processing error. Please try again' mod='byjuno'}
+		</p>
+		<p class="cart_navigation clearfix" id="cart_navigation">
+			<a href="{$link->getPageLink('order', true, NULL, "step=3")|escape:'html':'UTF-8'}" class="button-exclusive btn btn-default">
+				<i class="icon-chevron-left"></i>{l s='Other payment methods' mod='cheque'}
+			</a>
+		</p>
+	</form>
 {/if}
+

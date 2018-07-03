@@ -1,4 +1,5 @@
-{*
+<?php
+/*
 * 2007-2016 PrestaShop
 *
 * NOTICE OF LICENSE
@@ -21,15 +22,23 @@
 *  @copyright  2007-2016 PrestaShop SA
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
-*}
+*/
 
-{if $status == 'ok'}
-<p>{l s='Your order on %s is complete.' sprintf=$shop_name mod='byjuno'}
-		<br /><br />{l s='Amount' mod='byjuno'} <span class="price"><strong>{$total_to_pay}</strong></span>
-		<br /><br />{l s='Order reference %s' sprintf=$reference mod='byjuno'}</p>
-{else}
-	<p class="warning">
-		{l s='We noticed a problem with your order. If you think this is an error, feel free to contact our' mod='byjuno'}
-		<a href="{$link->getPageLink('contact', true)|escape:'html'}">{l s='expert customer support team' mod='byjuno'}</a>.
-	</p>
-{/if}
+/**
+ * @since 1.5.0
+ */
+class ByjunoErrorpaymentModuleFrontController extends ModuleFrontController
+{
+	public $ssl = true;
+	public $display_column_left = false;
+	public $display_column_right = false;
+	/**
+	 * @see FrontController::initContent()
+	 */
+	public function initContent()
+	{
+		$this->display_column_left = false;
+		parent::initContent();
+		$this->setTemplate('payment_error.tpl');
+	}
+}

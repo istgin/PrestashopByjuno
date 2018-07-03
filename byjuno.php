@@ -11,7 +11,7 @@ class Byjuno extends PaymentModule
         $this->tab = 'payments_gateways';
         $this->version = '1.0.0';
         $this->author = 'Byjuno.ch (http://www.byjuno.ch/)';
-        $this->controllers = array('payment', 'validation');
+        $this->controllers = array('payment', 'validation', 'errorpayment');
         $this->is_eu_compatible = 1;
         $this->bootstrap = true;
         parent::__construct();
@@ -26,13 +26,10 @@ class Byjuno extends PaymentModule
             return;
 
         $state = $params['objOrder']->getCurrentState();
-        if (in_array($state, array(Configuration::get('PS_OS_BANKWIRE'), Configuration::get('PS_OS_OUTOFSTOCK'), Configuration::get('PS_OS_OUTOFSTOCK_UNPAID'))))
+        if (in_array($state, array(Configuration::get('PS_OS_PAYMENT'))))
         {
             $this->smarty->assign(array(
                 'total_to_pay' => Tools::displayPrice($params['total_to_pay'], $params['currencyObj'], false),
-                'bankwireDetails' => Tools::nl2br($this->details),
-                'bankwireAddress' => Tools::nl2br($this->address),
-                'bankwireOwner' => $this->owner,
                 'status' => 'ok',
                 'id_order' => $params['objOrder']->id
             ));

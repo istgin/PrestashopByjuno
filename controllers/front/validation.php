@@ -34,6 +34,7 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 	 */
 	public function postProcess()
 	{
+		$errorlnk = $this->context->link->getModuleLink('byjuno', 'errorpayment');
 		$cart = $this->context->cart;
 		if ($cart->id_customer == 0 || $cart->id_address_delivery == 0 || $cart->id_address_invoice == 0 || !$this->module->active)
 			Tools::redirect('index.php?controller=order&step=1');
@@ -50,8 +51,9 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 			die($this->module->l('This payment method is not available.', 'validation'));
 
 		$customer = new Customer($cart->id_customer);
-		if (!Validate::isLoadedObject($customer))
-			Tools::redirect('index.php?controller=order&step=1');
+		if (!Validate::isLoadedObject($customer)) {
+			Tools::redirect($errorlnk);
+		}
 
 		$currency = $this->context->currency;
 		$total = (float)$cart->getOrderTotal(true, Cart::BOTH);
