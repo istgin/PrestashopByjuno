@@ -147,6 +147,11 @@
 </ul>
 
 <div id="tab-settings">
+    {if ($intrum_submit_main == 'OK')}
+        <div class="alert alert-success" style="width: 100%">
+            Configuration saved
+        </div>
+    {/if}
     <form method="post" class="defaultForm form-horizontal"
           action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}"
           id="intrum_main_configuration">
@@ -155,11 +160,6 @@
             <div class="panel-heading">
                 <i class="icon-cogs"></i> General settings
             </div>
-            {if ($intrum_submit_main == 'OK')}
-                <div class="alert alert-success" style="width: 100%">
-                    Main configuration saved
-                </div>
-            {/if}
             <div class="form-wrapper">
                 <div class="form-group">
                     <label class="control-label col-lg-3 required">
@@ -229,9 +229,128 @@
                     <label class="control-label col-lg-3 required">
                         ThreatMetrix orgid
                     </label>
+
                     <div class="col-lg-9">
                         <input type="text" name="intrum_tmxorgid" id="intrum_tmxorgid"
                                value="{$intrum_tmxorgid|escape}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
+                <button type="submit" value="1" id="module_form_submit_btn" name="btnSubmit"
+                        class="btn btn-default pull-right">
+                    <i class="process-icon-save"></i> Save
+                </button>
+            </div>
+        </div>
+
+        <div class="panel" id="fieldset_0">
+            <div class="panel-heading">
+                <i class="icon-cogs"></i> Byjuno Invoice payment settings
+            </div>
+            <div class="form-wrapper">
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Byjuno Invoice (with partial payment option)
+                    </label>
+
+                    <div class="col-lg-9">
+                        <select name="byjuno_invoice" id="byjuno_invoice">
+                            <option value="enable"{if ($byjuno_invoice == 'enable')} selected{/if}>Enable</option>
+                            <option value="disable"{if ($byjuno_invoice == 'disable')} selected{/if}>Disable</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Single invoice
+                    </label>
+
+                    <div class="col-lg-9">
+                        <select name="single_invoice" id="single_invoice">
+                            <option value="enable"{if ($single_invoice == 'enable')} selected{/if}>Enable</option>
+                            <option value="disable"{if ($single_invoice == 'disable')} selected{/if}>Disable</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
+                <button type="submit" value="1" id="module_form_submit_btn" name="btnSubmit"
+                        class="btn btn-default pull-right">
+                    <i class="process-icon-save"></i> Save
+                </button>
+            </div>
+        </div>
+
+        <div class="panel" id="fieldset_0">
+            <div class="panel-heading">
+                <i class="icon-cogs"></i> Byjuno Installment payment settings
+            </div>
+            <div class="form-wrapper">
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        3 installments
+                    </label>
+
+                    <div class="col-lg-9">
+                        <select name="installment_3" id="installment_3">
+                            <option value="enable"{if ($installment_3 == 'enable')} selected{/if}>Enable</option>
+                            <option value="disable"{if ($installment_3 == 'disable')} selected{/if}>Disable</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        10 installments
+                    </label>
+
+                    <div class="col-lg-9">
+                        <select name="installment_10" id="installment_10">
+                            <option value="enable"{if ($installment_10 == 'enable')} selected{/if}>Enable</option>
+                            <option value="disable"{if ($installment_10 == 'disable')} selected{/if}>Disable
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        12 installments
+                    </label>
+
+                    <div class="col-lg-9">
+                        <select name="installment_12" id="installment_12">
+                            <option value="enable"{if ($installment_12 == 'enable')} selected{/if}>Enable</option>
+                            <option value="disable"{if ($installment_12 == 'disable')} selected{/if}>Disable
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        24 installments
+                    </label>
+
+                    <div class="col-lg-9">
+                        <select name="installment_24" id="installment_24">
+                            <option value="enable"{if ($installment_24 == 'enable')} selected{/if}>Enable</option>
+                            <option value="disable"{if ($installment_24 == 'disable')} selected{/if}>Disable
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        4 installments in 12 months
+                    </label>
+
+                    <div class="col-lg-9">
+                        <select name="installment_4x12" id="installment_4x12">
+                            <option value="enable"{if ($installment_4x12 == 'enable')} selected{/if}>Enable</option>
+                            <option value="disable"{if ($installment_4x12 == 'disable')} selected{/if}>Disable
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>

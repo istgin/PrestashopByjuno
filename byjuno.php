@@ -30,7 +30,7 @@ class Byjuno extends PaymentModule
             return;
 
         $state = $params['objOrder']->getCurrentState();
-        if (in_array($state, array(Configuration::get('PS_OS_PAYMENT'))))
+        if (in_array($state, array(Configuration::get('BYJUNO_ORDER_STATE_COMPLETE'))))
         {
             $this->smarty->assign(array(
                 'total_to_pay' => Tools::displayPrice($params['total_to_pay'], $params['currencyObj'], false),
@@ -52,7 +52,22 @@ class Byjuno extends PaymentModule
         if (!$this->active)
             return;
 
+        $byjuno_invoice = false;
+        $byjuno_installment= false;
+        if (Configuration::get("single_invoice") == 'enable' || Configuration::get("byjuno_invoice") == 'enable')
+        {
+            $byjuno_invoice = true;
+        }
+        if (Configuration::get("installment_3") == 'enable'
+            || Configuration::get("installment_10") == 'enable'
+            || Configuration::get("installment_12") == 'enable'
+            || Configuration::get("installment_24") == 'enable'
+            || Configuration::get("installment_4x12") == 'enable'){
+            $byjuno_installment = true;
+        }
         $this->smarty->assign(array(
+            'byjuno_invoice' => $byjuno_invoice,
+            'byjuno_installment' => $byjuno_installment,
             'this_path' => $this->_path,
             'this_path_bw' => $this->_path,
             'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name.'/'
@@ -80,7 +95,7 @@ class Byjuno extends PaymentModule
         return $payment_options;
     }
 
-    public function addOrderState($name)
+    public function addOrderState($name, $color = '#FFF000', $send_mail = false, $paid = false)
     {
         $states = OrderState::getOrderStates((int) Configuration::get('PS_LANG_DEFAULT'));
 
@@ -91,15 +106,16 @@ class Byjuno extends PaymentModule
             $currentStates[$state->id_order_state] = $state->name;
         }
         if (($state_id = array_search($this->l($name), $currentStates)) === false) {
-            $defaultOrderState = new OrderState();
+            $defaultOrderState = new OrderStateCore();
             $defaultOrderState->name = array(Configuration::get('PS_LANG_DEFAULT') => $this->l($name));
             $defaultOrderState->module_name = $this->name;
-            $defaultOrderState->send_mail = 0;
+            $defaultOrderState->send_mail = $send_mail;
             $defaultOrderState->template = '';
-            $defaultOrderState->invoice = 0;
-            $defaultOrderState->color = '#FFF000';
+            $defaultOrderState->invoice = false;
+            $defaultOrderState->color = $color;
             $defaultOrderState->unremovable = false;
-            $defaultOrderState->logable = 0;
+            $defaultOrderState->logable = false;
+            $defaultOrderState->paid = $paid;
             $defaultOrderState->add();
         } else {
             $defaultOrderState = new stdClass;
@@ -111,7 +127,6 @@ class Byjuno extends PaymentModule
 
     public function install()
     {
-        //displayAfterBodyOpeningTag
         if (!parent::install()
             || !$this->registerHook('payment')
             || !$this->registerHook('displayPaymentEU')
@@ -143,56 +158,20 @@ class Byjuno extends PaymentModule
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
         $defaultStateId = $this->addOrderState("Awaiting for Byjuno");
+        $receivedPayemtnId = $this->addOrderState("Byjuno payment success", "#32CD32", true, true);
         Configuration::updateValue('BYJUNO_ORDER_STATE_DEFAULT', $defaultStateId);
-        /*
-        if ($this->moveOverriteFiles()) {
-            Configuration::updateValue('INTRUM_SUBMIT_MAIN', '');
-            Configuration::updateValue('INTRUM_SUBMIT_PAYMENTS', '');
+        Configuration::updateValue('BYJUNO_ORDER_STATE_COMPLETE', $receivedPayemtnId);
 
-            Configuration::updateValue('INTRUM_MODE', 'test');
-            Configuration::updateValue('INTRUM_CLIENT_ID', '');
-            Configuration::updateValue('INTRUM_USER_ID', '');
-            Configuration::updateValue('INTRUM_PASSWORD','');
-            Configuration::updateValue('INTRUM_TECH_EMAIL','');
-            Configuration::updateValue('INTRUM_MIN_AMOUNT', '10');
-            Configuration::updateValue('INTRUM_ENABLETMX', 'false');
-            Configuration::updateValue('INTRUM_TMXORGID', '');
-
-            Configuration::updateValue('INTRUM_DISABLED_METHODS', serialize(array()));
-
-            Db::getInstance()->Execute('
-            CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'intrum_logs` (
-                  `intrum_id` int(10) unsigned NOT NULL auto_increment,
-                  `firstname` varchar(250) default NULL,
-                  `lastname` varchar(250) default NULL,
-                  `town` varchar(250) default NULL,
-                  `postcode` varchar(250) default NULL,
-                  `street` varchar(250) default NULL,
-                  `country` varchar(250) default NULL,
-                  `ip` varchar(250) default NULL,
-                  `status` varchar(250) default NULL,
-                  `request_id` varchar(250) default NULL,
-                  `type` varchar(250) default NULL,
-                  `error` text default NULL,
-                  `response` text default NULL,
-                  `request` text default NULL,
-                  `creation_date` TIMESTAMP NULL DEFAULT now() ,
-                  PRIMARY KEY  (`intrum_id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
-
-            $allowedMethods = Array();
-            $payment_methods = $this->getPayment();
-
-			$allowed = Array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,27,28,29,30,50,51,52,53,54,55,56,57);
-			foreach($allowed as $status_val) {
-                foreach($payment_methods as $payment) {
-                    $allowedMethods[$status_val][] = $payment['id_module'];
-                }
-            }
-            return true;
+        if (!Configuration::get("byjuno_invoice"))
+        {
+            Configuration::updateValue('byjuno_invoice', 'disable');
+            Configuration::updateValue('single_invoice', 'disable');
+            Configuration::updateValue('installment_3', 'disable');
+            Configuration::updateValue('installment_10', 'disable');
+            Configuration::updateValue('installment_12', 'disable');
+            Configuration::updateValue('installment_24', 'disable');
+            Configuration::updateValue('installment_4x12', 'disable');
         }
-        return false;
-        */
         return true;
     }
 
@@ -270,6 +249,13 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('INTRUM_MIN_AMOUNT', trim(Tools::getValue('intrum_min_amount')));
             Configuration::updateValue('INTRUM_ENABLETMX', trim(Tools::getValue('intrum_enabletmx')));
             Configuration::updateValue('INTRUM_TMXORGID', trim(Tools::getValue('intrum_tmxorgid')));
+            Configuration::updateValue('byjuno_invoice', trim(Tools::getValue('byjuno_invoice')));
+            Configuration::updateValue('single_invoice', trim(Tools::getValue('single_invoice')));
+            Configuration::updateValue('installment_3', trim(Tools::getValue('installment_3')));
+            Configuration::updateValue('installment_10', trim(Tools::getValue('installment_10')));
+            Configuration::updateValue('installment_12', trim(Tools::getValue('installment_12')));
+            Configuration::updateValue('installment_24', trim(Tools::getValue('installment_24')));
+            Configuration::updateValue('installment_4x12', trim(Tools::getValue('installment_4x12')));
         }
         if (Tools::isSubmit('submitLogSearch'))
         {
@@ -304,6 +290,7 @@ class Byjuno extends PaymentModule
             $methods[$status_val]["false"] = $output;
 
         }
+
 		$version = $this->getHookVersion();
         $values = array(
             'bootstrap' => true,
@@ -319,6 +306,13 @@ class Byjuno extends PaymentModule
             'intrum_show_log' => Configuration::get("INTRUM_SHOW_LOG"),
             'intrum_enabletmx' => Configuration::get("INTRUM_ENABLETMX"),
             'intrum_tmxorgid' => Configuration::get("INTRUM_TMXORGID"),
+            'byjuno_invoice' => Configuration::get("byjuno_invoice"),
+            'single_invoice' => Configuration::get("single_invoice"),
+            'installment_3' => Configuration::get("installment_3"),
+            'installment_10' => Configuration::get("installment_10"),
+            'installment_12' => Configuration::get("installment_12"),
+            'installment_24' => Configuration::get("installment_24"),
+            'installment_4x12' => Configuration::get("installment_4x12"),
             'payment_methods' => $methods,
             'intrum_logs' => $this->getLogs(),
             'search_in_log' => Tools::getValue('searchInLog'),

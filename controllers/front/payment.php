@@ -40,6 +40,55 @@ class ByjunoPaymentModuleFrontController extends ModuleFrontController
 		$this->display_column_left = false;
 		parent::initContent();
 		$cart = $this->context->cart;
+		$payment = 'invoice';
+		$paymentName = 'Byjuno Invoice';
+		$pp = Tools::getValue('paymentmethod');
+		if ($pp ==  'invoice' || $pp == 'installment') {
+			$payment = $pp;
+		}
+		$selected_payments = Array();
+		if ($payment == 'invoice')
+		{
+			$paymentName = 'Byjuno Invoice';
+			if (Configuration::get("byjuno_invoice") == 'enable')
+			{
+				$selected_payments[] = Array('name' => 'Byjuno Invoice (with partial payment option)', 'id' => '');
+			}
+			if (Configuration::get("single_invoice") == 'enable')
+			{
+				$selected_payments[] = Array('name' => 'Byjuno Single Invoice', 'id' => '');
+			}
+		}
+		if ($payment == 'installment')
+		{
+			$paymentName = 'Byjuno Installment';
+			if (Configuration::get("installment_3") == 'enable')
+			{
+				$selected_payments[] = Array('name' => '3 installments', 'id' => '');
+			}
+			if (Configuration::get("installment_10") == 'enable')
+			{
+				$selected_payments[] = Array('name' => '10 installments', 'id' => '');
+			}
+			if (Configuration::get("installment_12") == 'enable')
+			{
+				$selected_payments[] = Array('name' => '12 installments', 'id' => '');
+			}
+			if (Configuration::get("installment_24") == 'enable')
+			{
+				$selected_payments[] = Array('name' => '24 installments', 'id' => '');
+			}
+			if (Configuration::get("installment_4x12") == 'enable')
+			{
+				$selected_payments[] = Array('name' => '4 installments in 12 months', 'id' => '');
+			}
+		}
+		$values = array(
+			'payment' => $payment,
+			'paymentname' => $paymentName,
+			'selected_payments' => $selected_payments
+		);
+		$this->context->smarty->assign($values);
 		$this->setTemplate('payment_execution.tpl');
 	}
 }

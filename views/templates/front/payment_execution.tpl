@@ -1,28 +1,3 @@
-{*
-* 2007-2016 PrestaShop
-*
-* NOTICE OF LICENSE
-*
-* This source file is subject to the Academic Free License (AFL 3.0)
-* that is bundled with this package in the file LICENSE.txt.
-* It is also available through the world-wide-web at this URL:
-* http://opensource.org/licenses/afl-3.0.php
-* If you did not receive a copy of the license and are unable to
-* obtain it through the world-wide-web, please send an email
-* to license@prestashop.com so we can send you a copy immediately.
-*
-* DISCLAIMER
-*
-* Do not edit or add to this file if you wish to upgrade PrestaShop to newer
-* versions in the future. If you wish to customize PrestaShop for your
-* needs please refer to http://www.prestashop.com for more information.
-*
-*  @author PrestaShop SA <contact@prestashop.com>
-*  @copyright  2007-2016 PrestaShop SA
-*  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
-*  International Registered Trademark & Property of PrestaShop SA
-*}
-
 {capture name=path}{l s='Byjuno Invoice' mod='byjuno'}{/capture}
 
 <h1 class="page-heading">{l s='Select payment' mod='byjuno'}</h1>
@@ -36,13 +11,15 @@
 
 	<form action="{$link->getModuleLink('byjuno', 'validation', [], true)|escape:'html':'UTF-8'}" method="post">
 		<div class="box cheque-box">
-			<h3 class="page-subheading">{l s='Byjuno Invoice' mod='byjuno'}</h3>
-			<p class="cheque-indent">
-				<strong class="dark">
-					{l s='You have chosen to pay by byjuno invoice.' mod='byjuno'}
-				</strong>
-			</p>
-
+			<h3 class="page-subheading">{l s=$paymentname mod='byjuno'}</h3>
+            <div class="required form-group">
+                <label for="selected_plan">{l s='Select payment plan' mod='byjuno'}<sup>*</sup></label>
+                <select name="selected_plan" id="selected_plan" class="form-control">
+                    {foreach from=$selected_payments item=s_payment}
+                        <option value="{$s_payment.id}">{l s=$s_payment.name mod='byjuno'}</option>
+                    {/foreach}
+                </select>
+            </div>
 		</div>
 		<p class="cart_navigation clearfix" id="cart_navigation">
 			<a href="{$link->getPageLink('order', true, NULL, "step=3")|escape:'html':'UTF-8'}" class="button-exclusive btn btn-default">

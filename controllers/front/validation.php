@@ -88,7 +88,7 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 			"ip" => $_SERVER["REMOTE_ADDR"],
 			"status" => $status,
 			"request_id" => $request->getRequestId(),
-			"type" => "Request status",
+			"type" => "S1 Request",
 			"error" => ($status == 0) ? $response : "",
 			"response" => $response,
 			"request" => $xml
@@ -96,7 +96,7 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 
 		$this->module->validateOrder($cart->id, Configuration::get('BYJUNO_ORDER_STATE_DEFAULT'), $total, "Byjuno invoice", NULL, $mailVars, (int)$currency->id, false, $customer->secure_key);
 		$order = new OrderCore((int)$this->module->currentOrder);
-		$request = CreatePrestaShopRequestAfterPaid($this->context->cart, $order, $this->context->currency, "sinlge_invoice", "IJ");
+		$request = CreatePrestaShopRequestAfterPaid($this->context->cart, $order, $this->context->currency, Tools::getValue('selected_plan'), "IJ");
 		$xml = $request->createRequest();
 		$response = $intrumCommunicator->sendRequest($xml);
 		libxml_use_internal_errors(true);
@@ -113,7 +113,7 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 				"ip" => $_SERVER["REMOTE_ADDR"],
 				"status" => (isset($xmlResponse->Customer->RequestStatus)) ? 'OK' : '0',
 				"request_id" => $request->getRequestId(),
-				"type" => "Order confirmation message",
+				"type" => "S3 Request",
 				"error" => (!(isset($xmlResponse->Customer->RequestStatus))) ? $response : "",
 				"response" => $response,
 				"request" => $xml
@@ -129,17 +129,17 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 				"ip" => $_SERVER["REMOTE_ADDR"],
 				"status" => '0',
 				"request_id" => $request->getRequestId(),
-				"type" => "Order confirmation message",
+				"type" => "S3 Request",
 				"error" => "",
 				"response" => $response,
 				"request" => $xml
 			));
 		}
-		$history = new OrderHistory();
-		$history->id_order = $this->module->currentOrder;
-		$history->changeIdOrderState(Configuration::get('PS_OS_PAYMENT'), $this->module->currentOrder);
-		$history->addWithemail(true);
-		$order->setCurrentState(Configuration::get('PS_OS_PAYMENT'));
+		//$history = new OrderHistory();
+		//$history->id_order = $this->module->currentOrder;
+		//$history->changeIdOrderState(Configuration::get('PS_OS_PAYMENT'), $this->module->currentOrder);
+		//$history->addWithemail(true);
+		$order->setCurrentState(Configuration::get('BYJUNO_ORDER_STATE_COMPLETE'));
 		Tools::redirect('index.php?controller=order-confirmation&id_cart='.$cart->id.'&id_module='.$this->module->id.'&id_order='.$this->module->currentOrder.'&key='.$customer->secure_key);
 	}
 }
