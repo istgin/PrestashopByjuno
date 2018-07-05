@@ -232,16 +232,77 @@
                                value="{$intrum_tmxorgid|escape}"/>
                     </div>
                 </div>
+            </div>
+            <div class="panel-footer">
+                <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
+                <button type="submit" value="1" id="module_form_submit_btn" name="btnSubmit"
+                        class="btn btn-default pull-right">
+                    <i class="process-icon-save"></i> Save
+                </button>
+            </div>
+        </div>
+
+        <div class="panel" id="fieldset_0">
+            <div class="panel-heading">
+                <i class="icon-cogs"></i> Risk managment
+            </div>
+            <div class="form-group">
+                <label class="control-label col-lg-3 required">
+                    Credit check before show payments
+                </label>
+
+                <div class="col-lg-9">
+                    <select name="BYJUNO_CREDIT_CHECK" id="BYJUNO_CREDIT_CHECK">
+                        <option value="enable"{if ($BYJUNO_CREDIT_CHECK == 'enable')} selected{/if}>Enable</option>
+                        <option value="disable"{if ($BYJUNO_CREDIT_CHECK == 'disable')} selected{/if}>Disable</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-wrapper">
                 <div class="form-group">
                     <label class="control-label col-lg-3 required">
-                        Credit check before show payments
+                        Accepted CDP risks if credit check enabled (comma separated):
                     </label>
 
                     <div class="col-lg-9">
-                        <select name="BYJUNO_CREDIT_CHECK" id="BYJUNO_CREDIT_CHECK">
-                            <option value="enable"{if ($BYJUNO_CREDIT_CHECK == 'enable')} selected{/if}>Enable</option>
-                            <option value="disable"{if ($BYJUNO_CREDIT_CHECK == 'disable')} selected{/if}>Disable</option>
-                        </select>
+                        <input type="text" name="BYJUNO_CDP_ACCEPT" id="BYJUNO_CDP_ACCEPT"
+                               value="{$BYJUNO_CDP_ACCEPT|escape}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-wrapper">
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Accepted Byjuno Risk for S2 (comma separated):
+                    </label>
+
+                    <div class="col-lg-9">
+                        <input type="text" name="BYJUNO_S2_IJ_ACCEPT" id="BYJUNO_S2_IJ_ACCEPT"
+                               value="{$BYJUNO_S2_IJ_ACCEPT|escape}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-wrapper">
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Accepted Merchant Risk for S2 (comma separated):
+                    </label>
+
+                    <div class="col-lg-9">
+                        <input type="text" name="BYJUNO_S2_MERCHANT_ACCEPT" id="BYJUNO_S2_MERCHANT_ACCEPT"
+                               value="{$BYJUNO_S2_MERCHANT_ACCEPT|escape}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-wrapper">
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Accepted statuses for S3 response (comma separated):
+                    </label>
+
+                    <div class="col-lg-9">
+                        <input type="text" name="BYJUNO_S3_ACCEPT" id="BYJUNO_S3_ACCEPT"
+                               value="{$BYJUNO_S3_ACCEPT|escape}"/>
                     </div>
                 </div>
             </div>

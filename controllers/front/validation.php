@@ -53,6 +53,7 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 		$customer = new Customer($cart->id_customer);
 		if (!Validate::isLoadedObject($customer)) {
 			Tools::redirect($errorlnk);
+			exit();
 		}
 
 		$currency = $this->context->currency;
@@ -89,57 +90,62 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 			"status" => $status,
 			"request_id" => $request->getRequestId(),
 			"type" => "S1 Request",
-			"error" => ($status == 0) ? $response : "",
+			"error" => ($status == 0) ? "ERROR" : "",
 			"response" => $response,
 			"request" => $xml
 		));
 
+		$accept = "";
+		if (byjunoIsStatusOk($status, "BYJUNO_S2_MERCHANT_ACCEPT")) {
+			$accept = "CLIENT";
+		}
+		if (byjunoIsStatusOk($status, "BYJUNO_S2_IJ_ACCEPT")) {
+			$accept = "IJ";
+		}
+
+		if ($accept == "") {
+			Tools::redirect($errorlnk);
+			exit();
+		}
+
 		$this->module->validateOrder($cart->id, Configuration::get('BYJUNO_ORDER_STATE_DEFAULT'), $total, "Byjuno invoice", NULL, $mailVars, (int)$currency->id, false, $customer->secure_key);
 		$order = new OrderCore((int)$this->module->currentOrder);
-		$request = CreatePrestaShopRequestAfterPaid($this->context->cart, $order, $this->context->currency, Tools::getValue('selected_plan'), "IJ");
-		$xml = $request->createRequest();
-		$response = $intrumCommunicator->sendRequest($xml);
-		libxml_use_internal_errors(true);
-		$xmlResponse = simplexml_load_string($response);
-		$intrumLogger = IntrumLogger::getInstance();
-		if ($xmlResponse) {
-			$intrumLogger->log(Array(
-				"firstname" => $request->getFirstName(),
-				"lastname" => $request->getLastName(),
-				"town" => $request->getTown(),
-				"postcode" => $request->getPostCode(),
-				"street" => trim($request->getFirstLine().' '.$request->getHouseNumber()),
-				"country" => $request->getCountryCode(),
-				"ip" => $_SERVER["REMOTE_ADDR"],
-				"status" => (isset($xmlResponse->Customer->RequestStatus)) ? 'OK' : '0',
-				"request_id" => $request->getRequestId(),
-				"type" => "S3 Request",
-				"error" => (!(isset($xmlResponse->Customer->RequestStatus))) ? $response : "",
-				"response" => $response,
-				"request" => $xml
-			));
-		} else {
-			$intrumLogger->log(Array(
-				"firstname" => $request->getFirstName(),
-				"lastname" => $request->getLastName(),
-				"town" => $request->getTown(),
-				"postcode" => $request->getPostCode(),
-				"street" => trim($request->getFirstLine().' '.$request->getHouseNumber()),
-				"country" => $request->getCountryCode(),
-				"ip" => $_SERVER["REMOTE_ADDR"],
-				"status" => '0',
-				"request_id" => $request->getRequestId(),
-				"type" => "S3 Request",
-				"error" => "",
-				"response" => $response,
-				"request" => $xml
-			));
+		$requestS2 = CreatePrestaShopRequestAfterPaid($this->context->cart, $order, $this->context->currency, Tools::getValue('selected_plan'), $accept);
+		$xml = $requestS2->createRequest();
+		$responseS3 = $intrumCommunicator->sendRequest($xml);
+		$statusS3 = 0;
+		if ($responseS3) {
+			$intrumResponseS3 = new IntrumResponse();
+			$intrumResponseS3->setRawResponse($responseS3);
+			$intrumResponseS3->processResponse();
+			$statusS3 = $intrumResponseS3->getCustomerRequestStatus();
 		}
+		$intrumLogger->log(Array(
+			"firstname" => $requestS2->getFirstName(),
+			"lastname" => $requestS2->getLastName(),
+			"town" => $requestS2->getTown(),
+			"postcode" => $requestS2->getPostCode(),
+			"street" => trim($requestS2->getFirstLine().' '.$requestS2->getHouseNumber()),
+			"country" => $requestS2->getCountryCode(),
+			"ip" => $_SERVER["REMOTE_ADDR"],
+			"status" => $statusS3,
+			"request_id" => $requestS2->getRequestId(),
+			"type" => "S3 Request",
+			"error" => ($statusS3 == 0) ? "ERROR" : "",
+			"response" => $responseS3,
+			"request" => $xml
+		));
 		//$history = new OrderHistory();
 		//$history->id_order = $this->module->currentOrder;
 		//$history->changeIdOrderState(Configuration::get('PS_OS_PAYMENT'), $this->module->currentOrder);
 		//$history->addWithemail(true);
-		$order->setCurrentState(Configuration::get('BYJUNO_ORDER_STATE_COMPLETE'));
-		Tools::redirect('index.php?controller=order-confirmation&id_cart='.$cart->id.'&id_module='.$this->module->id.'&id_order='.$this->module->currentOrder.'&key='.$customer->secure_key);
+
+		if (byjunoIsStatusOk($statusS3, "BYJUNO_S3_ACCEPT")) {
+			$order->setCurrentState(Configuration::get('BYJUNO_ORDER_STATE_COMPLETE'));
+			Tools::redirect('index.php?controller=order-confirmation&id_cart='.$cart->id.'&id_module='.$this->module->id.'&id_order='.$this->module->currentOrder.'&key='.$customer->secure_key);
+		} else {
+			$order->setCurrentState(Configuration::get('PS_OS_CANCELED'));
+			Tools::redirect($errorlnk);
+		}
 	}
 }

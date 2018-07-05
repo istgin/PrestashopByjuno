@@ -91,11 +91,11 @@ class Byjuno extends PaymentModule
                 "status" => $status,
                 "request_id" => $request->getRequestId(),
                 "type" => "Credit check",
-                "error" => ($status == 0) ? $response : "",
+                "error" => ($status == 0) ? "ERROR" : "",
                 "response" => $response,
                 "request" => $xml
             ));
-            if ($status != 2) {
+            if (!byjunoIsStatusOk($status, "BYJUNO_CDP_ACCEPT")) {
                 return;
             }
         }
@@ -206,6 +206,10 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('installment_24', 'disable');
             Configuration::updateValue('installment_4x12', 'disable');
             Configuration::updateValue('BYJUNO_CREDIT_CHECK', 'disable');
+            Configuration::updateValue('BYJUNO_CDP_ACCEPT', '2');
+            Configuration::updateValue('BYJUNO_S2_IJ_ACCEPT', '2');
+            Configuration::updateValue('BYJUNO_S2_MERCHANT_ACCEPT', '');
+            Configuration::updateValue('BYJUNO_S3_ACCEPT', '2');
         }
         return true;
     }
@@ -277,6 +281,10 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('installment_4x12', trim(Tools::getValue('installment_4x12')));
             Configuration::updateValue('installment_4x12', trim(Tools::getValue('installment_4x12')));
             Configuration::updateValue('BYJUNO_CREDIT_CHECK', trim(Tools::getValue('BYJUNO_CREDIT_CHECK')));
+            Configuration::updateValue('BYJUNO_CDP_ACCEPT', trim(Tools::getValue('BYJUNO_CDP_ACCEPT')));
+            Configuration::updateValue('BYJUNO_S2_IJ_ACCEPT', trim(Tools::getValue('BYJUNO_S2_IJ_ACCEPT')));
+            Configuration::updateValue('BYJUNO_S2_MERCHANT_ACCEPT', trim(Tools::getValue('BYJUNO_S2_MERCHANT_ACCEPT')));
+            Configuration::updateValue('BYJUNO_S3_ACCEPT', trim(Tools::getValue('BYJUNO_S3_ACCEPT')));
         }
         if (Tools::isSubmit('submitLogSearch'))
         {
@@ -333,6 +341,10 @@ class Byjuno extends PaymentModule
             'installment_24' => Configuration::get("installment_24"),
             'installment_4x12' => Configuration::get("installment_4x12"),
             'BYJUNO_CREDIT_CHECK' => Configuration::get("BYJUNO_CREDIT_CHECK"),
+            'BYJUNO_CDP_ACCEPT' => Configuration::get("BYJUNO_CDP_ACCEPT"),
+            'BYJUNO_S2_IJ_ACCEPT' => Configuration::get("BYJUNO_S2_IJ_ACCEPT"),
+            'BYJUNO_S2_MERCHANT_ACCEPT' => Configuration::get("BYJUNO_S2_MERCHANT_ACCEPT"),
+            'BYJUNO_S3_ACCEPT' => Configuration::get("BYJUNO_S3_ACCEPT"),
             'payment_methods' => $methods,
             'intrum_logs' => $this->getLogs(),
             'search_in_log' => Tools::getValue('searchInLog'),
@@ -389,53 +401,7 @@ class Byjuno extends PaymentModule
         }
 
     }
-/*
-    public function hookOrderConfirmation($params)
-    {
-        $request = CreatePrestaShopRequestAfterPaid($params["order"]);
-        $xml = $request->createRequest();
-        $intrumCommunicator = new IntrumCommunicator();
-        $intrumCommunicator->setServer(Configuration::get("INTRUM_MODE"));
-        $response = $intrumCommunicator->sendRequest($xml);
-        libxml_use_internal_errors(true);
-        $xmlResponse = simplexml_load_string($response);
-        $intrumLogger = IntrumLogger::getInstance();
-        if ($xmlResponse) {
-            $intrumLogger->log(Array(
-                "firstname" => $request->getFirstName(),
-                "lastname" => $request->getLastName(),
-                "town" => $request->getTown(),
-                "postcode" => $request->getPostCode(),
-                "street" => trim($request->getFirstLine().' '.$request->getHouseNumber()),
-                "country" => $request->getCountryCode(),
-                "ip" => $_SERVER["REMOTE_ADDR"],
-                "status" => (isset($xmlResponse->Customer->RequestStatus)) ? 'OK' : '0',
-                "request_id" => $request->getRequestId(),
-                "type" => "Order confirmation message",
-                "error" => (!(isset($xmlResponse->Customer->RequestStatus))) ? $response : "",
-                "response" => $response,
-                "request" => $xml
-            ));
-        } else {
-            $intrumLogger->log(Array(
-                "firstname" => $request->getFirstName(),
-                "lastname" => $request->getLastName(),
-                "town" => $request->getTown(),
-                "postcode" => $request->getPostCode(),
-                "street" => trim($request->getFirstLine().' '.$request->getHouseNumber()),
-                "country" => $request->getCountryCode(),
-                "ip" => $_SERVER["REMOTE_ADDR"],
-                "status" => '0',
-                "request_id" => $request->getRequestId(),
-                "type" => "Order confirmation message",
-                "error" => "",
-                "response" => $response,
-                "request" => $xml
-            ));
-        }
-        return;
-    }
-*/
+
     public static function searchLogs() {
     }
 

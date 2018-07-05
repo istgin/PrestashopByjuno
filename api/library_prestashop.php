@@ -199,6 +199,18 @@ function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, Currenc
 
 }
 
+function byjunoIsStatusOk($status, $position)
+{
+    try {
+        $stateArray = explode(",", Configuration::get($position));
+        if (in_array($status, $stateArray)) {
+            return true;
+        }
+        return false;
+    } catch (Exception $e) {
+        return "INTERNAL ERROR";
+    }
+}
 
 function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency $currency, $repayment, $riskOwner) {
 
