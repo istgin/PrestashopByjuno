@@ -83,10 +83,14 @@ class ByjunoPaymentModuleFrontController extends ModuleFrontController
 				$selected_payments[] = Array('name' => '4 installments in 12 months', 'id' => '');
 			}
 		}
+		$invoice_address = new Address($cart->id_address_invoice);
 		$values = array(
 			'payment' => $payment,
 			'paymentname' => $paymentName,
-			'selected_payments' => $selected_payments
+			'selected_payments' => $selected_payments,
+			'byjuno_allowpostal' => (Configuration::get('BYJUNO_ALLOW_POSTAL') == 'true') ? 1 : 0,
+			'email' => $this->context->customer->email,
+			'address' => trim($invoice_address->address1.' '.$invoice_address->address2).', '.$invoice_address->city.' '.$invoice_address->postcode
 		);
 		$this->context->smarty->assign($values);
 		$this->setTemplate('payment_execution.tpl');

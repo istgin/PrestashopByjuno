@@ -56,6 +56,14 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 			exit();
 		}
 
+		$invoiceDelivery = 'email';
+		if (Configuration::get('BYJUNO_ALLOW_POSTAL') == 'true') {
+			$invoiceDelivery = Tools::getValue('invoice_send');
+			if ($invoiceDelivery != 'postal' && $invoiceDelivery != 'email') {
+				$invoiceDelivery = 'email';
+			}
+		}
+
 		$currency = $this->context->currency;
 		$total = (float)$cart->getOrderTotal(true, Cart::BOTH);
 		$mailVars = null;//array();
@@ -110,7 +118,8 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 
 		$this->module->validateOrder($cart->id, Configuration::get('BYJUNO_ORDER_STATE_DEFAULT'), $total, "Byjuno invoice", NULL, $mailVars, (int)$currency->id, false, $customer->secure_key);
 		$order = new OrderCore((int)$this->module->currentOrder);
-		$requestS2 = CreatePrestaShopRequestAfterPaid($this->context->cart, $order, $this->context->currency, Tools::getValue('selected_plan'), $accept);
+
+		$requestS2 = CreatePrestaShopRequestAfterPaid($this->context->cart, $order, $this->context->currency, Tools::getValue('selected_plan'), $accept, $invoiceDelivery);
 		$xml = $requestS2->createRequest();
 		$responseS3 = $intrumCommunicator->sendRequest($xml);
 		$statusS3 = 0;

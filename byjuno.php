@@ -210,6 +210,7 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('BYJUNO_S2_IJ_ACCEPT', '2');
             Configuration::updateValue('BYJUNO_S2_MERCHANT_ACCEPT', '');
             Configuration::updateValue('BYJUNO_S3_ACCEPT', '2');
+            Configuration::updateValue('BYJUNO_ALLOW_POSTAL', 'false');
         }
         return true;
     }
@@ -285,6 +286,7 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('BYJUNO_S2_IJ_ACCEPT', trim(Tools::getValue('BYJUNO_S2_IJ_ACCEPT')));
             Configuration::updateValue('BYJUNO_S2_MERCHANT_ACCEPT', trim(Tools::getValue('BYJUNO_S2_MERCHANT_ACCEPT')));
             Configuration::updateValue('BYJUNO_S3_ACCEPT', trim(Tools::getValue('BYJUNO_S3_ACCEPT')));
+            Configuration::updateValue('BYJUNO_ALLOW_POSTAL', trim(Tools::getValue('BYJUNO_ALLOW_POSTAL')));
         }
         if (Tools::isSubmit('submitLogSearch'))
         {
@@ -345,6 +347,7 @@ class Byjuno extends PaymentModule
             'BYJUNO_S2_IJ_ACCEPT' => Configuration::get("BYJUNO_S2_IJ_ACCEPT"),
             'BYJUNO_S2_MERCHANT_ACCEPT' => Configuration::get("BYJUNO_S2_MERCHANT_ACCEPT"),
             'BYJUNO_S3_ACCEPT' => Configuration::get("BYJUNO_S3_ACCEPT"),
+            'BYJUNO_ALLOW_POSTAL' => Configuration::get("BYJUNO_ALLOW_POSTAL"),
             'payment_methods' => $methods,
             'intrum_logs' => $this->getLogs(),
             'search_in_log' => Tools::getValue('searchInLog'),

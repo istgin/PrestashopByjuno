@@ -19,7 +19,14 @@
                         <option value="{$s_payment.id}">{l s=$s_payment.name mod='byjuno'}</option>
                     {/foreach}
                 </select>
-            </div>
+            </div><br />
+			{if ($byjuno_allowpostal == 1)}
+                <div class="required form-group">
+                    <label for="selected_plan">{l s='Select invoice delivery method' mod='byjuno'}<sup>*</sup></label><br />
+                    <input type="radio" name="invoice_send" class="form-control" checked="checked" value="email"> &nbsp;{l s="By email" mod='byjuno'}: {$email}<br />
+                    <input type="radio" name="invoice_send" class="form-control" value="postal"> &nbsp;{l s="By post" mod='byjuno'}: {$address}<br />
+                </div>
+			{/if}
 		</div>
 		<p class="cart_navigation clearfix" id="cart_navigation">
 			<a href="{$link->getPageLink('order', true, NULL, "step=3")|escape:'html':'UTF-8'}" class="button-exclusive btn btn-default">

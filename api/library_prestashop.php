@@ -212,7 +212,7 @@ function byjunoIsStatusOk($status, $position)
     }
 }
 
-function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency $currency, $repayment, $riskOwner) {
+function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency $currency, $repayment, $riskOwner, $invoiceDelivery) {
 
     global $cookie;
     $customer = new Customer($order->id_customer);
@@ -313,6 +313,12 @@ function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency
     $extraInfo["Name"] = 'PAYMENTMETHOD';
     $extraInfo["Value"] = mapRepayment($repayment);
     $request->setExtraInfo($extraInfo);
+
+    if ($invoiceDelivery == 'postal') {
+        $extraInfo["Name"] = 'PAPER_INVOICE';
+        $extraInfo["Value"] = 'YES';
+        $request->setExtraInfo($extraInfo);
+    }
 
     if ($riskOwner != "") {
         $extraInfo["Name"] = 'RISKOWNER';

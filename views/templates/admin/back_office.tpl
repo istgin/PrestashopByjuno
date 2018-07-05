@@ -232,6 +232,18 @@
                                value="{$intrum_tmxorgid|escape}"/>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Allow postal delivery
+                    </label>
+
+                    <div class="col-lg-9">
+                        <select name="BYJUNO_ALLOW_POSTAL" id="BYJUNO_ALLOW_POSTAL">
+                            <option value="false"{if ($BYJUNO_ALLOW_POSTAL == 'false')} selected{/if}>Disabled</option>
+                            <option value="true"{if ($BYJUNO_ALLOW_POSTAL == 'true')} selected{/if}>Enabled</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="panel-footer">
                 <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
