@@ -65,6 +65,40 @@ class Byjuno extends PaymentModule
             || Configuration::get("installment_4x12") == 'enable'){
             $byjuno_installment = true;
         }
+        if (Configuration::get("BYJUNO_CREDIT_CHECK") == 'enable') {
+            $status = 0;
+            $request = CreatePrestaShopRequest($this->context->cart, $this->context->customer, $this->context->currency, "CREDITCHECK");
+            $xml = $request->createRequest();
+            $intrumCommunicator = new IntrumCommunicator();
+            $intrumCommunicator->setServer(Configuration::get("INTRUM_MODE"));
+            $response = $intrumCommunicator->sendRequest($xml);
+
+            if ($response) {
+                $intrumResponse = new IntrumResponse();
+                $intrumResponse->setRawResponse($response);
+                $intrumResponse->processResponse();
+                $status = $intrumResponse->getCustomerRequestStatus();
+            }
+            $intrumLogger = IntrumLogger::getInstance();
+            $intrumLogger->log(Array(
+                "firstname" => $request->getFirstName(),
+                "lastname" => $request->getLastName(),
+                "town" => $request->getTown(),
+                "postcode" => $request->getPostCode(),
+                "street" => trim($request->getFirstLine() . ' ' . $request->getHouseNumber()),
+                "country" => $request->getCountryCode(),
+                "ip" => $_SERVER["REMOTE_ADDR"],
+                "status" => $status,
+                "request_id" => $request->getRequestId(),
+                "type" => "Credit check",
+                "error" => ($status == 0) ? $response : "",
+                "response" => $response,
+                "request" => $xml
+            ));
+            if ($status != 2) {
+                return;
+            }
+        }
         $this->smarty->assign(array(
             'byjuno_invoice' => $byjuno_invoice,
             'byjuno_installment' => $byjuno_installment,
@@ -171,6 +205,7 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('installment_12', 'disable');
             Configuration::updateValue('installment_24', 'disable');
             Configuration::updateValue('installment_4x12', 'disable');
+            Configuration::updateValue('BYJUNO_CREDIT_CHECK', 'disable');
         }
         return true;
     }
@@ -195,22 +230,6 @@ class Byjuno extends PaymentModule
             return false;
         }
         return true;
-    }
-
-    private function getHookVersion()
-    {
-        $version = '';
-        if (file_exists(_PS_ROOT_DIR_ .'/override/classes/Hook.php')) {
-            $fileCode = file_get_contents(_PS_ROOT_DIR_ .'/override/classes/Hook.php');
-            $pattern = "/<version>(.*?)<\/version>/si";
-            if (preg_match($pattern, $fileCode, $content)) {
-                $content[1] = preg_replace('/\s+|\r|\n/', ' ', $content[1]);
-                $content[1] = preg_replace('/&nbsp;/', ' ', $content[1]);
-                $content[1] = preg_replace('/\s+/', ' ', $content[1]);
-                $version = trim(strip_tags($content[1]));
-            }
-        }
-        return $version;
     }
 
     private function _postProcess()
@@ -243,7 +262,7 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('INTRUM_SUBMIT_MAIN', 'OK');
             Configuration::updateValue('INTRUM_MODE', trim(Tools::getValue('intrum_mode')));
             Configuration::updateValue('INTRUM_CLIENT_ID', trim(Tools::getValue('intrum_client_id')));
-            Configuration::updateValue('INTRUM_USER_ID', trim(Tools::getValue('intrum_user_id')));
+            Configuration::updateValue('INTRUM_USER_ID', trim(Tools::getValue('INTRUM_USER_ID')));
             Configuration::updateValue('INTRUM_PASSWORD', trim(Tools::getValue('intrum_password')));
             Configuration::updateValue('INTRUM_TECH_EMAIL', trim(Tools::getValue('intrum_tech_email')));
             Configuration::updateValue('INTRUM_MIN_AMOUNT', trim(Tools::getValue('intrum_min_amount')));
@@ -256,6 +275,8 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('installment_12', trim(Tools::getValue('installment_12')));
             Configuration::updateValue('installment_24', trim(Tools::getValue('installment_24')));
             Configuration::updateValue('installment_4x12', trim(Tools::getValue('installment_4x12')));
+            Configuration::updateValue('installment_4x12', trim(Tools::getValue('installment_4x12')));
+            Configuration::updateValue('BYJUNO_CREDIT_CHECK', trim(Tools::getValue('BYJUNO_CREDIT_CHECK')));
         }
         if (Tools::isSubmit('submitLogSearch'))
         {
@@ -288,10 +309,8 @@ class Byjuno extends PaymentModule
                 $output = $output.' <input type="checkbox" name="data['.$status_val.'][0]['.$payment['id_module'].']" value="1" '.($checked ? 'checked="checked"' : '').' /> ('.$payment['displayName'].')<br />';
             }
             $methods[$status_val]["false"] = $output;
-
         }
 
-		$version = $this->getHookVersion();
         $values = array(
             'bootstrap' => true,
             'this_path' => $this->_path,
@@ -299,7 +318,7 @@ class Byjuno extends PaymentModule
             'intrum_submit_payments' => Configuration::get("INTRUM_SUBMIT_PAYMENTS"),
             'intrum_mode' => Configuration::get("INTRUM_MODE"),
             'intrum_client_id' => Configuration::get("INTRUM_CLIENT_ID"),
-            'intrum_user_id' => Configuration::get("INTRUM_USER_ID"),
+            'INTRUM_USER_ID' => Configuration::get("INTRUM_USER_ID"),
             'intrum_password' => Configuration::get("INTRUM_PASSWORD"),
             'intrum_tech_email' => Configuration::get("INTRUM_TECH_EMAIL"),
             'intrum_min_amount' => Configuration::get("INTRUM_MIN_AMOUNT"),
@@ -313,10 +332,10 @@ class Byjuno extends PaymentModule
             'installment_12' => Configuration::get("installment_12"),
             'installment_24' => Configuration::get("installment_24"),
             'installment_4x12' => Configuration::get("installment_4x12"),
+            'BYJUNO_CREDIT_CHECK' => Configuration::get("BYJUNO_CREDIT_CHECK"),
             'payment_methods' => $methods,
             'intrum_logs' => $this->getLogs(),
             'search_in_log' => Tools::getValue('searchInLog'),
-            'upgrade_require' => ($version != $this->version) ? 1 : 0
         );
         $this->context->smarty->assign($values);
 

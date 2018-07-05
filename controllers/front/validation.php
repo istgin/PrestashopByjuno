@@ -65,7 +65,7 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 			require(_PS_MODULE_DIR_.'intrumcom/api/library_prestashop.php');
 		}
 
-		$request = CreatePrestaShopRequest($this->context->cart, $this->context->customer, $this->context->currency);
+		$request = CreatePrestaShopRequest($this->context->cart, $this->context->customer, $this->context->currency, "ORDERREQUEST");
 		$xml = $request->createRequest();
 		$intrumCommunicator = new IntrumCommunicator();
 		$intrumCommunicator->setServer(Configuration::get("INTRUM_MODE"));

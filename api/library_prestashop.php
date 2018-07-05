@@ -94,7 +94,7 @@ function mapRepayment($type) {
     }
 }
 
-function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, CurrencyCore $currency) {
+function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, CurrencyCore $currency, $msgtype) {
 
 	global $cookie;
     $invoice_address = new Address($cart->id_address_invoice);
@@ -185,6 +185,10 @@ function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, Currenc
 
     $extraInfo["Name"] = 'DELIVERY_TOWN';
     $extraInfo["Value"] = $shipping_address->city;
+    $request->setExtraInfo($extraInfo);
+
+    $extraInfo["Name"] = 'MESSAGETYPESPEC';
+    $extraInfo["Value"] = $msgtype;//'ORDERREQUEST';
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'CONNECTIVTY_MODULE';

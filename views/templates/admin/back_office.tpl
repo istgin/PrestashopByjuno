@@ -126,19 +126,6 @@
 
     }
 </style>
-{if ($upgrade_require == 1)}
-    <form method="post" action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}">
-        <div class="alert alert-warning" style="width: 100%">
-            <p>Upgrade module required. press Upgrade hook button.</p>
-
-            <p><input type="hidden" value="upgradehook" name="upgradehook"></p>
-
-            <p>
-                <button name="intrum_confirm" value="0" type="submit" class="btn btn-warning">Upgrade hook</button>
-            </p>
-        </div>
-    </form>
-{/if}
 <h1 style="padding: 0; margin: 0">Byjuno payment gateway configuration</h1>
 
 <ul class="tab nav nav-tabs">
@@ -181,6 +168,16 @@
                     <div class="col-lg-9">
                         <input type="text" name="intrum_client_id" id="intrum_client_id"
                                value="{$intrum_client_id|escape}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        User ID
+                    </label>
+
+                    <div class="col-lg-9">
+                        <input type="text" name="INTRUM_USER_ID" id="INTRUM_USER_ID"
+                               value="{$INTRUM_USER_ID|escape}"/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -233,6 +230,18 @@
                     <div class="col-lg-9">
                         <input type="text" name="intrum_tmxorgid" id="intrum_tmxorgid"
                                value="{$intrum_tmxorgid|escape}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Credit check before show payments
+                    </label>
+
+                    <div class="col-lg-9">
+                        <select name="BYJUNO_CREDIT_CHECK" id="BYJUNO_CREDIT_CHECK">
+                            <option value="enable"{if ($BYJUNO_CREDIT_CHECK == 'enable')} selected{/if}>Enable</option>
+                            <option value="disable"{if ($BYJUNO_CREDIT_CHECK == 'disable')} selected{/if}>Disable</option>
+                        </select>
                     </div>
                 </div>
             </div>
