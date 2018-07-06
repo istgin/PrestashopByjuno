@@ -101,7 +101,7 @@ function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, Currenc
     $shipping_address = new Address($cart->id_address_delivery);
     $country = new Country($invoice_address->id_country);
     $country_shipping = new Country($shipping_address->id_country);
-    $request = new IntrumRequest();
+    $request = new ByjunoRequest();
     $request->setClientId(Configuration::get("INTRUM_CLIENT_ID"));
     $request->setUserID(Configuration::get("INTRUM_USER_ID"));
     $request->setPassword(Configuration::get("INTRUM_PASSWORD"));
@@ -220,7 +220,7 @@ function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency
     $shipping_address = new Address($order->id_address_delivery);
     $country = new Country($invoice_address->id_country);
     $country_shipping = new Country($shipping_address->id_country);
-    $request = new IntrumRequest();
+    $request = new ByjunoRequest();
     $request->setClientId(Configuration::get("INTRUM_CLIENT_ID"));
     $request->setUserID(Configuration::get("INTRUM_USER_ID"));
     $request->setPassword(Configuration::get("INTRUM_PASSWORD"));
@@ -332,4 +332,65 @@ function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency
 
     return $request;
 
+}
+
+function CreateShopRequestS4($doucmentId, $amount, $orderAmount, $orderCurrency, $orderId, $customerId, $date)
+{
+    $request = new ByjunoS4Request();
+    $request->setClientId(Configuration::get("INTRUM_CLIENT_ID"));
+    $request->setUserID(Configuration::get("INTRUM_USER_ID"));
+    $request->setPassword(Configuration::get("INTRUM_PASSWORD"));
+    $request->setVersion("1.00");
+    try {
+        $request->setRequestEmail(Configuration::get("INTRUM_TECH_EMAIL"));
+    } catch (Exception $e) {
+
+    }
+    $request->setRequestId(uniqid((String)$orderId . "_"));
+    $request->setOrderId($orderId);
+    $request->setClientRef($customerId);
+    $request->setTransactionDate($date);
+    $request->setTransactionAmount(number_format($amount, 2, '.', ''));
+    $request->setTransactionCurrency($orderCurrency);
+    $request->setAdditional1("INVOICE");
+    $request->setAdditional2($doucmentId);
+    $request->setOpenBalance(number_format($orderAmount, 2, '.', ''));
+    return $request;
+}
+function CreateShopRequestS5Refund($doucmentId, $amount, $orderCurrency, $orderId, $customerId, $date)
+{
+    $request = new ByjunoS5Request();
+    $request->setClientId(Shopware()->Config()->getByNamespace("ByjunoPayments", "byjuno_clientid"));
+    $request->setUserID(Shopware()->Config()->getByNamespace("ByjunoPayments", "byjuno_userid"));
+    $request->setPassword(Shopware()->Config()->getByNamespace("ByjunoPayments", "byjuno_password"));
+    $request->setVersion("1.00");
+    $request->setRequestEmail(Shopware()->Config()->getByNamespace("ByjunoPayments", "byjuno_techemail"));
+    $request->setRequestId(uniqid((String)$orderId . "_"));
+    $request->setOrderId($orderId);
+    $request->setClientRef($customerId);
+    $request->setTransactionDate($date);
+    $request->setTransactionAmount(number_format($amount, 2, '.', ''));
+    $request->setTransactionCurrency($orderCurrency);
+    $request->setTransactionType("REFUND");
+    $request->setAdditional2($doucmentId);
+    return $request;
+}
+function CreateShopRequestS5Cancel($amount, $orderCurrency, $orderId, $customerId, $date)
+{
+    $request = new ByjunoS5Request();
+    $request->setClientId(Shopware()->Config()->getByNamespace("ByjunoPayments", "byjuno_clientid"));
+    $request->setUserID(Shopware()->Config()->getByNamespace("ByjunoPayments", "byjuno_userid"));
+    $request->setPassword(Shopware()->Config()->getByNamespace("ByjunoPayments", "byjuno_password"));
+    $request->setVersion("1.00");
+    $request->setRequestEmail(Shopware()->Config()->getByNamespace("ByjunoPayments", "byjuno_techemail"));
+    $request->setRequestId(uniqid((String)$orderId . "_"));
+    $request->setOrderId($orderId);
+    $request->setClientRef($customerId);
+    $request->setTransactionDate($date);
+    $request->setTransactionAmount(number_format($amount, 2, '.', ''));
+    $request->setTransactionCurrency($orderCurrency);
+    $request->setAdditional2('');
+    $request->setTransactionType("EXPIRED");
+    $request->setOpenBalance("0");
+    return $request;
 }

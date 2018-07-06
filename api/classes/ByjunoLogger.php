@@ -1,11 +1,11 @@
 <?php
 /**
- * Created by Intrum.
+ * Created by Byjuno.
  * User: i.sutugins
  * Date: 14.2.9
  * Time: 10:28
  */
-class IntrumLogger
+class ByjunoLogger
 {
     private static $instance = NULL;
     private $logs;
@@ -16,7 +16,7 @@ class IntrumLogger
 
     public static function getInstance() {
         if(self::$instance === NULL) {
-            self::$instance = new IntrumLogger();
+            self::$instance = new ByjunoLogger();
         }
         return self::$instance;
     }

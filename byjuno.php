@@ -69,18 +69,18 @@ class Byjuno extends PaymentModule
             $status = 0;
             $request = CreatePrestaShopRequest($this->context->cart, $this->context->customer, $this->context->currency, "CREDITCHECK");
             $xml = $request->createRequest();
-            $intrumCommunicator = new IntrumCommunicator();
-            $intrumCommunicator->setServer(Configuration::get("INTRUM_MODE"));
-            $response = $intrumCommunicator->sendRequest($xml);
+            $byjunoCommunicator = new ByjunoCommunicator();
+            $byjunoCommunicator->setServer(Configuration::get("INTRUM_MODE"));
+            $response = $byjunoCommunicator->sendRequest($xml);
 
             if ($response) {
-                $intrumResponse = new IntrumResponse();
-                $intrumResponse->setRawResponse($response);
-                $intrumResponse->processResponse();
-                $status = $intrumResponse->getCustomerRequestStatus();
+                $byjunoResponse = new ByjunoResponse();
+                $byjunoResponse->setRawResponse($response);
+                $byjunoResponse->processResponse();
+                $status = $byjunoResponse->getCustomerRequestStatus();
             }
-            $intrumLogger = IntrumLogger::getInstance();
-            $intrumLogger->log(Array(
+            $byjunoLogger = ByjunoLogger::getInstance();
+            $byjunoLogger->log(Array(
                 "firstname" => $request->getFirstName(),
                 "lastname" => $request->getLastName(),
                 "town" => $request->getTown(),
@@ -167,6 +167,7 @@ class Byjuno extends PaymentModule
             || !$this->registerHook('paymentReturn')
             || !$this->registerHook('displayAfterBodyOpeningTag')
             || !$this->registerHook('displayBeforeShoppingCartBlock')
+            || !$this->registerHook('actionOrderStatusPostUpdate')
             || !$this->registerHook('header')){
             return false;
         }
@@ -192,9 +193,13 @@ class Byjuno extends PaymentModule
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
         $defaultStateId = $this->addOrderState("Awaiting for Byjuno");
-        $receivedPayemtnId = $this->addOrderState("Byjuno payment success", "#32CD32", true, true);
+        $receivedPaymentId = $this->addOrderState("Byjuno payment success", "#32CD32", true, true);
+        $s4FailId = $this->addOrderState("Byjuno S4 fail", "#FF0000", true, true);
+        $s5FailId = $this->addOrderState("Byjuno S5 fail", "#FF0000", true, true);
         Configuration::updateValue('BYJUNO_ORDER_STATE_DEFAULT', $defaultStateId);
-        Configuration::updateValue('BYJUNO_ORDER_STATE_COMPLETE', $receivedPayemtnId);
+        Configuration::updateValue('BYJUNO_ORDER_STATE_COMPLETE', $receivedPaymentId);
+        Configuration::updateValue('BYJUNO_ORDER_S4_FAIL', $s4FailId);
+        Configuration::updateValue('BYJUNO_ORDER_S5_FAIL', $s5FailId);
 
         if (!Configuration::get("byjuno_invoice"))
         {
@@ -213,6 +218,71 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('BYJUNO_ALLOW_POSTAL', 'false');
         }
         return true;
+    }
+
+    public function hookActionOrderStatusPostUpdate($params)
+    {
+        /* @var $orderStatus OrderStateCore */
+        $orderStatus = $params["newOrderStatus"];
+        if ($orderStatus->id == Configuration::get('PS_OS_PAYMENT')) {
+            $orderCore = new OrderCore((int)$params["id_order"]);
+            $order_module = $orderCore->module; // will return the payment module eg. ps_checkpayment , ps_wirepayment
+            if ($order_module == "byjuno")
+            {
+                $invoices = $orderCore->getInvoicesCollection();
+                foreach ($invoices as $invoice)
+                {
+                    /* @var $invoice OrderInvoiceCore */
+                    $invoiceNum = $invoice->getInvoiceNumberFormatted($id_lang = Context::getContext()->language->id, (int)$orderCore->id_shop);
+                    $currency = CurrencyCore::getCurrency($orderCore->id_currency);
+                    $time = strtotime($invoice->date_add);
+                    $dt = date("Y-m-d", $time);
+                    $requestInvoice = CreateShopRequestS4($invoiceNum, $invoice->total_paid_tax_incl, $invoice->total_products_wt, $currency["iso_code"], $orderCore->reference, $orderCore->id_customer, $dt);
+                    $xmlRequestS4 = $requestInvoice->createRequest();
+                    $byjunoCommunicator = new ByjunoCommunicator();
+                    $byjunoCommunicator->setServer(Configuration::get("INTRUM_MODE"));
+                    $responseS4 = $byjunoCommunicator->sendS4Request($xmlRequestS4);
+                    $statusLog = "S4 Request";
+                    $statusS4 = "ERR";
+                    if (isset($responseS4)) {
+                        $byjunoResponseS4 = new ByjunoS4Response();
+                        $byjunoResponseS4->setRawResponse($responseS4);
+                        $byjunoResponseS4->processResponse();
+                        $statusS4 = $byjunoResponseS4->getProcessingInfoClassification();
+                    }
+                    $byjunoLogger = ByjunoLogger::getInstance();
+                    $byjunoLogger->log(Array(
+                        "firstname" => "-",
+                        "lastname" => "-",
+                        "town" => "-",
+                        "postcode" => "-",
+                        "street" => "-",
+                        "country" => "-",
+                        "ip" => $_SERVER["REMOTE_ADDR"],
+                        "status" => $statusS4,
+                        "request_id" => $requestInvoice->getRequestId(),
+                        "type" => $statusLog,
+                        "error" => $statusS4,
+                        "response" => $responseS4,
+                        "request" => $xmlRequestS4
+                    ));
+                    if ($statusS4 == "ERR")
+                    {
+                        $orderCore->setCurrentState(Configuration::get('BYJUNO_ORDER_S4_FAIL'));
+                        Tools::redirectAdmin(Context::getContext()->link->getAdminLink("AdminOrders")."&id_order=".$orderCore->id."&vieworder");
+                        exit();
+                    }
+                }
+
+              //  $request = CreateShopRequestS4($row["docID"], $row["amount"], $rowOrder["invoice_amount"], $rowOrder["currency"], $rowOrder["ordernumber"], $rowOrder["userID"], $row["date"]);
+                /*$statusLog = "S4 Request";
+                var_dump($orderStatus->id);
+                var_dump($params);
+                exit('bbb');
+                var_dump('aaa');
+                */
+            }
+        }
     }
 
     public function hookDisplayBeforeShoppingCartBlock($params) {

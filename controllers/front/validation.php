@@ -76,18 +76,18 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 
 		$request = CreatePrestaShopRequest($this->context->cart, $this->context->customer, $this->context->currency, "ORDERREQUEST");
 		$xml = $request->createRequest();
-		$intrumCommunicator = new IntrumCommunicator();
-		$intrumCommunicator->setServer(Configuration::get("INTRUM_MODE"));
-		$response = $intrumCommunicator->sendRequest($xml);
+		$byjunoCommunicator = new ByjunoCommunicator();
+		$byjunoCommunicator->setServer(Configuration::get("INTRUM_MODE"));
+		$response = $byjunoCommunicator->sendRequest($xml);
 
 		if ($response) {
-			$intrumResponse = new IntrumResponse();
-			$intrumResponse->setRawResponse($response);
-			$intrumResponse->processResponse();
-			$status = $intrumResponse->getCustomerRequestStatus();
+			$byjunoResponse = new ByjunoResponse();
+			$byjunoResponse->setRawResponse($response);
+			$byjunoResponse->processResponse();
+			$status = $byjunoResponse->getCustomerRequestStatus();
 		}
-		$intrumLogger = IntrumLogger::getInstance();
-		$intrumLogger->log(Array(
+		$byjunoLogger = ByjunoLogger::getInstance();
+		$byjunoLogger->log(Array(
 			"firstname" => $request->getFirstName(),
 			"lastname" => $request->getLastName(),
 			"town" => $request->getTown(),
@@ -121,15 +121,15 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 
 		$requestS2 = CreatePrestaShopRequestAfterPaid($this->context->cart, $order, $this->context->currency, Tools::getValue('selected_plan'), $accept, $invoiceDelivery);
 		$xml = $requestS2->createRequest();
-		$responseS3 = $intrumCommunicator->sendRequest($xml);
+		$responseS3 = $byjunoCommunicator->sendRequest($xml);
 		$statusS3 = 0;
 		if ($responseS3) {
-			$intrumResponseS3 = new IntrumResponse();
-			$intrumResponseS3->setRawResponse($responseS3);
-			$intrumResponseS3->processResponse();
-			$statusS3 = $intrumResponseS3->getCustomerRequestStatus();
+			$byjunoResponseS3 = new ByjunoResponse();
+			$byjunoResponseS3->setRawResponse($responseS3);
+			$byjunoResponseS3->processResponse();
+			$statusS3 = $byjunoResponseS3->getCustomerRequestStatus();
 		}
-		$intrumLogger->log(Array(
+		$byjunoLogger->log(Array(
 			"firstname" => $requestS2->getFirstName(),
 			"lastname" => $requestS2->getLastName(),
 			"town" => $requestS2->getTown(),

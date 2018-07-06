@@ -6,7 +6,10 @@
  * Time: 10:28
  */
 define("_PS_MODULE_INTRUMCOM_API", "defined");
-require(dirname(__FILE__).'/classes/IntrumLogger.php');
-require(dirname(__FILE__).'/classes/IntrumRequest.php');
-require(dirname(__FILE__).'/classes/IntrumResponse.php');
-require(dirname(__FILE__).'/classes/IntrumCommunicator.php');
+require(dirname(__FILE__).'/classes/ByjunoLogger.php');
+require(dirname(__FILE__).'/classes/ByjunoRequest.php');
+require(dirname(__FILE__).'/classes/ByjunoResponse.php');
+require(dirname(__FILE__).'/classes/ByjunoCommunicator.php');
+require(dirname(__FILE__).'/classes/ByjunoS5Request.php');
+require(dirname(__FILE__).'/classes/ByjunoS4Request.php');
+require(dirname(__FILE__).'/classes/ByjunoS4Response.php');

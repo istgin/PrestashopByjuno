@@ -6,7 +6,7 @@
  * Time: 16:57
  */
 
-class IntrumResponse
+class ByjunoResponse
 {
 
     private $rawResponse;
@@ -202,39 +202,6 @@ class IntrumResponse
     {
         return $this->Version;
     }
-
-    /**
-     * @param mixed $CustomerCreditRating
-     */
-    public function setCustomerCreditRating($CustomerCreditRating)
-    {
-        $this->CustomerCreditRating = $CustomerCreditRating;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCustomerCreditRating()
-    {
-        return $this->CustomerCreditRating;
-    }
-
-    /**
-     * @param mixed $customerCreditRatingLevel
-     */
-    public function setCustomerCreditRatingLevel($customerCreditRatingLevel)
-    {
-        $this->CustomerCreditRatingLevel = $customerCreditRatingLevel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCustomerCreditRatingLevel()
-    {
-        return $this->CustomerCreditRatingLevel;
-    }
-
     private $ResponseId;
     private $Version;
     private $ClientId;
@@ -248,29 +215,11 @@ class IntrumResponse
     private $CustomerProcessingInfoCode;
     private $CustomerProcessingInfoClassification;
     private $CustomerProcessingInfoDescription;
-    private $CustomerCreditRating;
-    private $CustomerCreditRatingLevel;
 
     public function processResponse()
     {
-        libxml_use_internal_errors(true);
         $xml = simplexml_load_string($this->rawResponse);
 
-        $this->CustomerCreditRating = '';
-        $this->CustomerCreditRatingLevel = '';
-        if (!$xml) {
-            $this->ResponseId = '0';
-            $this->Version = '0';
-            $this->ClientId = '0';
-
-            $this->ProcessingInfoCode = '0';
-            $this->ProcessingInfoClassification = 'ERR';
-            if ($this->ProcessingInfoClassification == 'ERR') {
-                $this->CustomerRequestStatus = 0;
-                return;
-            }
-
-        }
         $this->ResponseId = (int)$xml["ResponseId"];
         $this->Version = (double)$xml["Version"];
         $this->ClientId = (int)$xml["ClientId"];
@@ -282,12 +231,6 @@ class IntrumResponse
             return;
         }
         $this->ProcessingInfoDescription = trim((string)$xml->ProcessingInfo->Description);
-        if (!empty($xml->Customer->CreditRating)) {
-            $this->CustomerCreditRating = trim((string)$xml->Customer->CreditRating);
-        }
-        if (!empty($xml->Customer->CreditRatingLevel)) {
-            $this->CustomerCreditRatingLevel = trim((string)$xml->Customer->CreditRatingLevel);
-        }
 
         $this->CustomerRequestStatus = (int)$xml->Customer->RequestStatus;
         $this->CustomerLastStatusChange = trim((string)$xml->Customer->RequestStatus);
