@@ -360,11 +360,15 @@ function CreateShopRequestS4($doucmentId, $amount, $orderAmount, $orderCurrency,
 function CreateShopRequestS5Refund($doucmentId, $amount, $orderCurrency, $orderId, $customerId, $date)
 {
     $request = new ByjunoS5Request();
-    $request->setClientId(Shopware()->Config()->getByNamespace("ByjunoPayments", "byjuno_clientid"));
-    $request->setUserID(Shopware()->Config()->getByNamespace("ByjunoPayments", "byjuno_userid"));
-    $request->setPassword(Shopware()->Config()->getByNamespace("ByjunoPayments", "byjuno_password"));
+    $request->setClientId(Configuration::get("INTRUM_CLIENT_ID"));
+    $request->setUserID(Configuration::get("INTRUM_USER_ID"));
+    $request->setPassword(Configuration::get("INTRUM_PASSWORD"));
     $request->setVersion("1.00");
-    $request->setRequestEmail(Shopware()->Config()->getByNamespace("ByjunoPayments", "byjuno_techemail"));
+    try {
+        $request->setRequestEmail(Configuration::get("INTRUM_TECH_EMAIL"));
+    } catch (Exception $e) {
+
+    }
     $request->setRequestId(uniqid((String)$orderId . "_"));
     $request->setOrderId($orderId);
     $request->setClientRef($customerId);
@@ -378,11 +382,15 @@ function CreateShopRequestS5Refund($doucmentId, $amount, $orderCurrency, $orderI
 function CreateShopRequestS5Cancel($amount, $orderCurrency, $orderId, $customerId, $date)
 {
     $request = new ByjunoS5Request();
-    $request->setClientId(Shopware()->Config()->getByNamespace("ByjunoPayments", "byjuno_clientid"));
-    $request->setUserID(Shopware()->Config()->getByNamespace("ByjunoPayments", "byjuno_userid"));
-    $request->setPassword(Shopware()->Config()->getByNamespace("ByjunoPayments", "byjuno_password"));
+    $request->setClientId(Configuration::get("INTRUM_CLIENT_ID"));
+    $request->setUserID(Configuration::get("INTRUM_USER_ID"));
+    $request->setPassword(Configuration::get("INTRUM_PASSWORD"));
     $request->setVersion("1.00");
-    $request->setRequestEmail(Shopware()->Config()->getByNamespace("ByjunoPayments", "byjuno_techemail"));
+    try {
+        $request->setRequestEmail(Configuration::get("INTRUM_TECH_EMAIL"));
+    } catch (Exception $e) {
+
+    }
     $request->setRequestId(uniqid((String)$orderId . "_"));
     $request->setOrderId($orderId);
     $request->setClientRef($customerId);

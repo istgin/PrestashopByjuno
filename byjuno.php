@@ -168,6 +168,7 @@ class Byjuno extends PaymentModule
             || !$this->registerHook('displayAfterBodyOpeningTag')
             || !$this->registerHook('displayBeforeShoppingCartBlock')
             || !$this->registerHook('actionOrderStatusPostUpdate')
+            || !$this->registerHook('actionOrderSlipAdd')
             || !$this->registerHook('header')){
             return false;
         }
@@ -218,6 +219,61 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('BYJUNO_ALLOW_POSTAL', 'false');
         }
         return true;
+    }
+
+    public  function hookactionOrderSlipAdd($params)
+    {
+        /* @var $orderCore OrderCore */
+        $orderCore = $params["order"];
+        $order_module = $orderCore->module;
+        if ($order_module == "byjuno")
+        {
+            $slips = $orderCore->getOrderSlipsCollection();
+            $count = count($slips);
+            $i = 1;
+            /* @var $curSlip OrderSlipCore */
+            $curSlip = null;
+            foreach ($slips as $slip)
+            {
+                if ($i == $count) {
+                    $curSlip = $slip;
+                    break;
+                }
+                $i++;
+            }
+            $currency = CurrencyCore::getCurrency($orderCore->id_currency);
+            $time = strtotime($curSlip->date_add);
+            $dt = date("Y-m-d", $time);
+            $requestRefund = CreateShopRequestS5Refund($curSlip->id, $curSlip->total_shipping_tax_incl, $currency["iso_code"], $orderCore->reference, $orderCore->id_customer, $dt);
+            $xmlRequestS5 = $requestRefund->createRequest();
+            $byjunoCommunicator = new ByjunoCommunicator();
+            $byjunoCommunicator->setServer(Configuration::get("INTRUM_MODE"));
+            $responseS5 = $byjunoCommunicator->sendS4Request($xmlRequestS5);
+            $statusLog = "S5 refund";
+            $statusS5 = "ERR";
+            if (isset($responseS5)) {
+                $byjunoResponseS5 = new ByjunoS4Response();
+                $byjunoResponseS5->setRawResponse($responseS5);
+                $byjunoResponseS5->processResponse();
+                $statusS5 = $byjunoResponseS5->getProcessingInfoClassification();
+            }
+            $byjunoLogger = ByjunoLogger::getInstance();
+            $byjunoLogger->log(Array(
+                "firstname" => "-",
+                "lastname" => "-",
+                "town" => "-",
+                "postcode" => "-",
+                "street" => "-",
+                "country" => "-",
+                "ip" => $_SERVER["REMOTE_ADDR"],
+                "status" => $statusS5,
+                "request_id" => $requestRefund->getRequestId(),
+                "type" => $statusLog,
+                "error" => $statusS5,
+                "response" => $responseS5,
+                "request" => $xmlRequestS5
+            ));
+        }
     }
 
     public function hookActionOrderStatusPostUpdate($params)
@@ -273,14 +329,50 @@ class Byjuno extends PaymentModule
                         exit();
                     }
                 }
+            }
+        }
 
-              //  $request = CreateShopRequestS4($row["docID"], $row["amount"], $rowOrder["invoice_amount"], $rowOrder["currency"], $rowOrder["ordernumber"], $rowOrder["userID"], $row["date"]);
-                /*$statusLog = "S4 Request";
-                var_dump($orderStatus->id);
-                var_dump($params);
-                exit('bbb');
-                var_dump('aaa');
-                */
+        if ($orderStatus->id == Configuration::get('PS_OS_CANCELED')) {
+            $orderCore = new OrderCore((int)$params["id_order"]);
+            $order_module = $orderCore->module; // will return the payment module eg. ps_checkpayment , ps_wirepayment
+            if ($order_module == "byjuno") {
+                $currency = CurrencyCore::getCurrency($orderCore->id_currency);
+                $dt = date("Y-m-d", time());
+                $requestCancel = CreateShopRequestS5Cancel($orderCore->total_paid_tax_incl, $currency["iso_code"], $orderCore->reference, $orderCore->id_customer, $dt);
+                $xmlRequestS5 = $requestCancel->createRequest();
+                $byjunoCommunicator = new ByjunoCommunicator();
+                $byjunoCommunicator->setServer(Configuration::get("INTRUM_MODE"));
+                $responseS5 = $byjunoCommunicator->sendS4Request($xmlRequestS5);
+                $statusLog = "S5 cancel";
+                $statusS5 = "ERR";
+                if (isset($responseS5)) {
+                    $byjunoResponseS5 = new ByjunoS4Response();
+                    $byjunoResponseS5->setRawResponse($responseS5);
+                    $byjunoResponseS5->processResponse();
+                    $statusS5 = $byjunoResponseS5->getProcessingInfoClassification();
+                }
+                $byjunoLogger = ByjunoLogger::getInstance();
+                $byjunoLogger->log(Array(
+                    "firstname" => "-",
+                    "lastname" => "-",
+                    "town" => "-",
+                    "postcode" => "-",
+                    "street" => "-",
+                    "country" => "-",
+                    "ip" => $_SERVER["REMOTE_ADDR"],
+                    "status" => $statusS5,
+                    "request_id" => $requestCancel->getRequestId(),
+                    "type" => $statusLog,
+                    "error" => $statusS5,
+                    "response" => $responseS5,
+                    "request" => $xmlRequestS5
+                ));
+                if ($statusS5 == "ERR")
+                {
+                    $orderCore->setCurrentState(Configuration::get('BYJUNO_ORDER_S5_FAIL'));
+                    Tools::redirectAdmin(Context::getContext()->link->getAdminLink("AdminOrders")."&id_order=".$orderCore->id."&vieworder");
+                    exit();
+                }
             }
         }
     }
