@@ -275,6 +275,18 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="control-label col-lg-3 required">
+                    Enable gender &amp; birthday selection:
+                </label>
+
+                <div class="col-lg-9">
+                    <select name="BYJUNO_GENDER_BIRTHDAY" id="BYJUNO_GENDER_BIRTHDAY">
+                        <option value="false"{if ($BYJUNO_GENDER_BIRTHDAY == 'false')} selected{/if}>Disabled</option>
+                        <option value="true"{if ($BYJUNO_GENDER_BIRTHDAY == 'true')} selected{/if}>Enabled</option>
+                    </select>
+                </div>
+            </div>
             <div class="panel-footer">
                 <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
                 <button type="submit" value="1" id="module_form_submit_btn" name="btnSubmit"

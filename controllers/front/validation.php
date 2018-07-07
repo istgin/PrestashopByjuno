@@ -78,7 +78,7 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 		$xml = $request->createRequest();
 		$byjunoCommunicator = new ByjunoCommunicator();
 		$byjunoCommunicator->setServer(Configuration::get("INTRUM_MODE"));
-		$response = $byjunoCommunicator->sendRequest($xml);
+		$response = $byjunoCommunicator->sendRequest($xml, (int)Configuration::get("BYJUNO_CONN_TIMEOUT"));
 
 		if ($response) {
 			$byjunoResponse = new ByjunoResponse();
@@ -121,7 +121,7 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 
 		$requestS2 = CreatePrestaShopRequestAfterPaid($this->context->cart, $order, $this->context->currency, Tools::getValue('selected_plan'), $accept, $invoiceDelivery);
 		$xml = $requestS2->createRequest();
-		$responseS3 = $byjunoCommunicator->sendRequest($xml);
+		$responseS3 = $byjunoCommunicator->sendRequest($xml, (int)Configuration::get("BYJUNO_CONN_TIMEOUT"));
 		$statusS3 = 0;
 		if ($responseS3) {
 			$byjunoResponseS3 = new ByjunoResponse();

@@ -52,6 +52,12 @@ class Byjuno extends PaymentModule
         if (!$this->active)
             return;
 
+        $total = $this->context->cart->getOrderTotal(true, Cart::BOTH);
+        if ($total < Configuration::get("BYJUNO_MIN_AMOUNT") || $total > Configuration::get("BYJUNO_MAX_AMOUNT"))
+        {
+            returnl;
+        }
+
         $byjuno_invoice = false;
         $byjuno_installment= false;
         if (Configuration::get("single_invoice") == 'enable' || Configuration::get("byjuno_invoice") == 'enable')
@@ -71,7 +77,7 @@ class Byjuno extends PaymentModule
             $xml = $request->createRequest();
             $byjunoCommunicator = new ByjunoCommunicator();
             $byjunoCommunicator->setServer(Configuration::get("INTRUM_MODE"));
-            $response = $byjunoCommunicator->sendRequest($xml);
+            $response = $byjunoCommunicator->sendRequest($xml, (int)Configuration::get("BYJUNO_CONN_TIMEOUT"));
 
             if ($response) {
                 $byjunoResponse = new ByjunoResponse();
@@ -222,8 +228,13 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('BYJUNO_MAX_AMOUNT', '1000');
             Configuration::updateValue('BYJUNO_B2B', 'false');
             Configuration::updateValue('BYJUNO_S4_S5_ALLOWED', 'true');
-            Configuration::updateValue('BYJUNO_PROD_EMAIL', 'true');
-            Configuration::updateValue('BYJUNO_TEST_EMAIL', 'true');
+            Configuration::updateValue('BYJUNO_PROD_EMAIL', 'production@byjunyno.ch');
+            Configuration::updateValue('BYJUNO_TEST_EMAIL', 'test@byjunyno.ch');
+            Configuration::updateValue('intrum_tmxorgid', 'lq866c5i');
+            Configuration::updateValue('intrum_enabletmx', 'true');
+            Configuration::updateValue('BYJUNO_GENDER_BIRTHDAY', 'true');
+
+
         }
         return true;
     }
@@ -463,6 +474,7 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('BYJUNO_B2B', trim(Tools::getValue('BYJUNO_B2B')));
             Configuration::updateValue('BYJUNO_PROD_EMAIL', trim(Tools::getValue('BYJUNO_PROD_EMAIL')));
             Configuration::updateValue('BYJUNO_TEST_EMAIL', trim(Tools::getValue('BYJUNO_TEST_EMAIL')));
+            Configuration::updateValue('BYJUNO_GENDER_BIRTHDAY', trim(Tools::getValue('BYJUNO_GENDER_BIRTHDAY')));
         }
         if (Tools::isSubmit('submitLogSearch'))
         {
@@ -531,6 +543,7 @@ class Byjuno extends PaymentModule
             'BYJUNO_B2B' => Configuration::get("BYJUNO_B2B"),
             'BYJUNO_PROD_EMAIL' => Configuration::get("BYJUNO_PROD_EMAIL"),
             'BYJUNO_TEST_EMAIL' => Configuration::get("BYJUNO_TEST_EMAIL"),
+            'BYJUNO_GENDER_BIRTHDAY' => Configuration::get("BYJUNO_GENDER_BIRTHDAY"),
             'payment_methods' => $methods,
             'intrum_logs' => $this->getLogs(),
             'search_in_log' => Tools::getValue('searchInLog'),
