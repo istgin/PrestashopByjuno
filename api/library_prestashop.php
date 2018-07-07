@@ -94,7 +94,7 @@ function mapRepayment($type) {
     }
 }
 
-function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, CurrencyCore $currency, $msgtype) {
+function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, CurrencyCore $currency, $msgtype, $selected_gender = "", $selected_birthday = "") {
 
 	global $cookie;
     $invoice_address = new Address($cart->id_address_invoice);
@@ -138,6 +138,13 @@ function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, Currenc
 
     if (!empty($invoice_address->company)) {
         $request->setCompanyName1($invoice_address->company);
+    }
+
+    if ($selected_gender != "") {
+        $request->setGender($selected_gender);
+    }
+    if ($selected_birthday != "") {
+        $request->setDateOfBirth($selected_birthday);
     }
 
     $extraInfo["Name"] = 'ORDERCLOSED';
@@ -216,7 +223,7 @@ function byjunoIsStatusOk($status, $position)
     }
 }
 
-function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency $currency, $repayment, $riskOwner, $invoiceDelivery) {
+function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency $currency, $repayment, $riskOwner, $invoiceDelivery, $selected_gender = "", $selected_birthday = "") {
 
     global $cookie;
     $customer = new Customer($order->id_customer);
@@ -261,6 +268,13 @@ function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency
 
     if (!empty($invoice_address->company)) {
         $request->setCompanyName1($invoice_address->company);
+    }
+
+    if ($selected_gender != "") {
+        $request->setGender($selected_gender);
+    }
+    if ($selected_birthday != "") {
+        $request->setDateOfBirth($selected_birthday);
     }
 
     $extraInfo["Name"] = 'ORDERCLOSED';

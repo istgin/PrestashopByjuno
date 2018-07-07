@@ -63,6 +63,12 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 				$invoiceDelivery = 'email';
 			}
 		}
+		$selected_gender = "";
+		$selected_birthday = "";
+		if (Configuration::get('BYJUNO_GENDER_BIRTHDAY') == 'true') {
+			$selected_gender = Tools::getValue('selected_gender');
+			$selected_birthday = Tools::getValue('years').'-'.Tools::getValue('months').'-'.Tools::getValue('days');
+		}
 
 		$currency = $this->context->currency;
 		$total = (float)$cart->getOrderTotal(true, Cart::BOTH);
@@ -74,7 +80,7 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 			require(_PS_MODULE_DIR_.'intrumcom/api/library_prestashop.php');
 		}
 
-		$request = CreatePrestaShopRequest($this->context->cart, $this->context->customer, $this->context->currency, "ORDERREQUEST");
+		$request = CreatePrestaShopRequest($this->context->cart, $this->context->customer, $this->context->currency, "ORDERREQUEST", $selected_gender, $selected_birthday);
 		$invoice_address = new Address($this->context->cart->id_address_invoice);
 
 		$type = "S1 Request";
@@ -129,7 +135,7 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 		$this->module->validateOrder($cart->id, Configuration::get('BYJUNO_ORDER_STATE_DEFAULT'), $total, "Byjuno invoice", NULL, $mailVars, (int)$currency->id, false, $customer->secure_key);
 		$order = new OrderCore((int)$this->module->currentOrder);
 
-		$requestS2 = CreatePrestaShopRequestAfterPaid($this->context->cart, $order, $this->context->currency, Tools::getValue('selected_plan'), $accept, $invoiceDelivery);
+		$requestS2 = CreatePrestaShopRequestAfterPaid($this->context->cart, $order, $this->context->currency, Tools::getValue('selected_plan'), $accept, $invoiceDelivery, $selected_gender, $selected_birthday);
 
 		$typeS3 = "S3 Request";
 		$b2b = Configuration::get("BYJUNO_B2B") == 'enable';
