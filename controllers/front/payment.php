@@ -40,6 +40,8 @@ class ByjunoPaymentModuleFrontController extends ModuleFrontController
 		$this->display_column_left = false;
 		parent::initContent();
 		$cart = $this->context->cart;
+		/* @var $customer CustomerCore */
+		$customer = $this->context->customer;
 		$payment = 'invoice';
 		$paymentName = 'Byjuno Invoice';
 		$pp = Tools::getValue('paymentmethod');
@@ -83,14 +85,28 @@ class ByjunoPaymentModuleFrontController extends ModuleFrontController
 				$selected_payments[] = Array('name' => '4 installments in 12 months', 'id' => '');
 			}
 		}
+
+		$tm = strtotime($customer->birthday);
+		$years = Tools::dateYears();
+		$months = Tools::dateMonths();
+		$days = Tools::dateDays();
+
 		$invoice_address = new Address($cart->id_address_invoice);
 		$values = array(
 			'payment' => $payment,
 			'paymentname' => $paymentName,
 			'selected_payments' => $selected_payments,
 			'byjuno_allowpostal' => (Configuration::get('BYJUNO_ALLOW_POSTAL') == 'true') ? 1 : 0,
+			'byjuno_gender_birthday' => (Configuration::get('BYJUNO_GENDER_BIRTHDAY') == 'true') ? 1 : 0,
 			'email' => $this->context->customer->email,
-			'address' => trim($invoice_address->address1.' '.$invoice_address->address2).', '.$invoice_address->city.' '.$invoice_address->postcode
+			'address' => trim($invoice_address->address1.' '.$invoice_address->address2).', '.$invoice_address->city.' '.$invoice_address->postcode,
+			'years' => $years,
+			'sl_year' => date("Y", $tm),
+			'months' => $months,
+			'sl_month' => date("m", $tm),
+			'days' => $days,
+			'sl_day' => date("d", $tm),
+			'sl_gender' => $customer->id_gender
 		);
 		$this->context->smarty->assign($values);
 		$this->setTemplate('payment_execution.tpl');
