@@ -81,6 +81,8 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 		}
 
 		$request = CreatePrestaShopRequest($this->context->cart, $this->context->customer, $this->context->currency, "ORDERREQUEST", $selected_gender, $selected_birthday);
+		var_dump($request);
+		exit();
 		$invoice_address = new Address($this->context->cart->id_address_invoice);
 
 		$type = "S1 Request";
@@ -136,7 +138,6 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 		$order = new OrderCore((int)$this->module->currentOrder);
 
 		$requestS2 = CreatePrestaShopRequestAfterPaid($this->context->cart, $order, $this->context->currency, Tools::getValue('selected_plan'), $accept, $invoiceDelivery, $selected_gender, $selected_birthday);
-
 		$typeS3 = "S3 Request";
 		$b2b = Configuration::get("BYJUNO_B2B") == 'enable';
 		$xml = "";

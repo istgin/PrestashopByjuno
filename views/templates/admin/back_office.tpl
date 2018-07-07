@@ -226,7 +226,7 @@
                     </label>
 
                     <div class="col-lg-9">
-                        <select name="intrum_enabletmx" id="INTRUM_ENABLETMX">
+                        <select name="INTRUM_ENABLETMX" id="INTRUM_ENABLETMX">
                             <option value="false"{if ($INTRUM_ENABLETMX == 'false')} selected{/if}>Disabled</option>
                             <option value="true"{if ($INTRUM_ENABLETMX == 'true')} selected{/if}>Enabled</option>
                         </select>

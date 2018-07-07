@@ -164,6 +164,7 @@ function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, Currenc
     $request->setExtraInfo($extraInfo);
 
     if (Configuration::get("INTRUM_ENABLETMX") == 'true' && Configuration::get("INTRUM_TMXORGID") != '' && !empty($cookie->intrumId)) {
+        var_dump("XXX");
         $extraInfo["Name"] = 'DEVICE_FINGERPRINT_ID';
         $extraInfo["Value"] = $cookie->intrumId;
         $request->setExtraInfo($extraInfo);
