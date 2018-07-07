@@ -138,6 +138,7 @@ class Byjuno extends PaymentModule
         $this->context->controller->addCSS($this->_path.'byjuno.css', 'all');
     }
 
+    /*
     public function hookDisplayPaymentEU($params)
     {
         if (!$this->active)
@@ -145,12 +146,13 @@ class Byjuno extends PaymentModule
 
         $payment_options = array(
             'cta_text' => $this->l('XXXX'),
-            'logo' => Media::getMediaPath(_PS_MODULE_DIR_.$this->name.'/bankwire.jpg'),
+            'logo' => Media::getMediaPath(_PS_MODULE_DIR_.$this->name.'/byjuno.jpg'),
             'action' => $this->context->link->getModuleLink($this->name, 'validation', array(), true)
         );
 
         return $payment_options;
     }
+    */
 
     public function addOrderState($name, $color = '#FFF000', $send_mail = false, $paid = false)
     {
@@ -186,7 +188,6 @@ class Byjuno extends PaymentModule
     {
         if (!parent::install()
             || !$this->registerHook('payment')
-            || !$this->registerHook('displayPaymentEU')
             || !$this->registerHook('paymentReturn')
             || !$this->registerHook('displayAfterBodyOpeningTag')
             || !$this->registerHook('displayBeforeShoppingCartBlock')
