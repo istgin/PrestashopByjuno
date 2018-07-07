@@ -1,11 +1,36 @@
-p.payment_module a.byjunoinvoice
+p.payment_module a.byjunoinvoice_logo_de
 {
-    background: url(img/byjunoinvoice.png) 15px 12px no-repeat #fbfbfb;
+    background: url(https://byjuno.ch/Content/logo/de/6639/BJ_Rechnung_BLK.gif) 15px 23px no-repeat #fbfbfb;
 }
-p.payment_module a.byjunoinstallment
+p.payment_module a.byjunoinstallment_logo_de
 {
-    background: url(img/byjunoinstallment.png) 15px 12px no-repeat #fbfbfb;
+    background: url(https://byjuno.ch/Content/logo/de/6639/BJ_Ratenzahlung_BLK.gif) 15px 23px no-repeat #fbfbfb;
 }
+p.payment_module a.byjunoinvoice_logo_en
+{
+    background: url(https://byjuno.ch/Content/logo/en/6639/BJ_Invoice_BLK.gif) 15px 23px no-repeat #fbfbfb;
+}
+p.payment_module a.byjunoinstallment_logo_en
+{
+    background: url(https://byjuno.ch/Content/logo/en/6639/BJ_Installments_BLK.gif) 15px 23px no-repeat #fbfbfb;
+}
+p.payment_module a.byjunoinvoice_logo_fr
+{
+    background: url(https://byjuno.ch/Content/logo/fr/6639/BJ_Facture_BLK.gif) 15px 23px no-repeat #fbfbfb;
+}
+p.payment_module a.byjunoinstallment_logo_fr
+{
+    background: url(https://byjuno.ch/Content/logo/fr/6639/BJ_Paiement_echelonne_BLK.gif) 15px 23px no-repeat #fbfbfb;
+}
+p.payment_module_ a.byjunoinvoice_logo_it
+{
+    background: url(https://byjuno.ch/Content/logo/it/6639/BJ_Fattura_BLK.gif) 15px 23px no-repeat #fbfbfb;
+}
+p.payment_module a.byjunoinstallment_logo_it
+{
+    background: url(https://byjuno.ch/Content/logo/it/6639/BJ_Pagemento_Rateale_BLK.gif) 15px 23px no-repeat #fbfbfb;
+}
+
 
 p.payment_module a.cheque:after, p.payment_module a.byjunoinvoice:after, p.payment_module a.cash:after
 {

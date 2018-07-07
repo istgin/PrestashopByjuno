@@ -116,9 +116,15 @@ class Byjuno extends PaymentModule
                 return;
             }
         }
+        $lang = 'de';
+        $ln = Context::getContext()->language->iso_code;
+        if ($ln == 'de' || $ln == 'en' || $ln == 'it' || $ln == 'fr') {
+            $lang = $ln;
+        }
         $this->smarty->assign(array(
             'byjuno_invoice' => $byjuno_invoice,
             'byjuno_installment' => $byjuno_installment,
+            'lang' => $lang,
             'this_path' => $this->_path,
             'this_path_bw' => $this->_path,
             'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name.'/'

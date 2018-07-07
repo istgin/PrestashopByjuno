@@ -85,7 +85,6 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 
 		$type = "S1 Request";
 		$b2b = Configuration::get("BYJUNO_B2B") == 'enable';
-		$xml = "";
 		if ($b2b && !empty($invoice_address->company)) {
 			$type = "S1 Request B2B";
 			$xml = $request->createRequestCompany();

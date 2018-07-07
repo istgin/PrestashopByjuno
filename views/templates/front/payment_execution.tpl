@@ -13,12 +13,10 @@
 		<div class="box cheque-box">
 			<h3 class="page-subheading">{l s=$paymentname mod='byjuno'}</h3>
             <div class="required form-group">
-                <label for="selected_plan">{l s='Select payment plan' mod='byjuno'}<sup>*</sup></label>
-                <select name="selected_plan" id="selected_plan" class="form-control">
-                    {foreach from=$selected_payments item=s_payment}
-                        <option value="{$s_payment.id}">{l s=$s_payment.name mod='byjuno'}</option>
-                    {/foreach}
-                </select>
+                <label for="selected_plan">{l s='Select payment plan' mod='byjuno'}<sup>*</sup></label><br />
+				{foreach from=$selected_payments item=s_payment}
+					<input type="radio" name="selected_plan" class="form-control" value="{$s_payment.id}" {if $s_payment.selected == 1} checked="checked"{/if}> &nbsp;{l s=$s_payment.name mod='byjuno'}<br />
+				{/foreach}
             </div><br />
 			{if ($byjuno_allowpostal == 1)}
                 <div class="required form-group">
