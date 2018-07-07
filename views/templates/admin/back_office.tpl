@@ -212,6 +212,16 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label col-lg-3 required">
+                        Connection timeout to Byjuno CDP server in seconds:
+                    </label>
+
+                    <div class="col-lg-9">
+                        <input type="text" name="BYJUNO_CONN_TIMEOUT" id="BYJUNO_CONN_TIMEOUT"
+                               value="{$BYJUNO_CONN_TIMEOUT|escape}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
                         Enable ThreatMetrix
                     </label>
 
@@ -244,6 +254,26 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Production email of Byjuno:
+                    </label>
+
+                    <div class="col-lg-9">
+                        <input type="text" name="BYJUNO_PROD_EMAIL" id="BYJUNO_PROD_EMAIL"
+                               value="{$BYJUNO_PROD_EMAIL|escape}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Test email of Byjuno:
+                    </label>
+
+                    <div class="col-lg-9">
+                        <input type="text" name="BYJUNO_TEST_EMAIL" id="BYJUNO_TEST_EMAIL"
+                               value="{$BYJUNO_TEST_EMAIL|escape}"/>
+                    </div>
+                </div>
             </div>
             <div class="panel-footer">
                 <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
@@ -260,6 +290,26 @@
             </div>
             <div class="form-group">
                 <label class="control-label col-lg-3 required">
+                    Mininmal amount for checkout (default 10):
+                </label>
+
+                <div class="col-lg-9">
+                    <input type="text" name="BYJUNO_MIN_AMOUNT" id="BYJUNO_MIN_AMOUNT"
+                           value="{$BYJUNO_MIN_AMOUNT|escape}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-lg-3 required">
+                    Maximal amount for checkout  (default 1000)::
+                </label>
+
+                <div class="col-lg-9">
+                    <input type="text" name="BYJUNO_MAX_AMOUNT" id="BYJUNO_MAX_AMOUNT"
+                           value="{$BYJUNO_MAX_AMOUNT|escape}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-lg-3 required">
                     Credit check before show payments
                 </label>
 
@@ -267,6 +317,30 @@
                     <select name="BYJUNO_CREDIT_CHECK" id="BYJUNO_CREDIT_CHECK">
                         <option value="enable"{if ($BYJUNO_CREDIT_CHECK == 'enable')} selected{/if}>Enable</option>
                         <option value="disable"{if ($BYJUNO_CREDIT_CHECK == 'disable')} selected{/if}>Disable</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-lg-3 required">
+                    Enable B2B check:
+                </label>
+
+                <div class="col-lg-9">
+                    <select name="BYJUNO_B2B" id="BYJUNO_B2B">
+                        <option value="enable"{if ($BYJUNO_B2B == 'enable')} selected{/if}>Enable</option>
+                        <option value="disable"{if ($BYJUNO_B2B == 'disable')} selected{/if}>Disable</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-lg-3 required">
+                    S4 &amp; S5 transactions:
+                </label>
+
+                <div class="col-lg-9">
+                    <select name="BYJUNO_S4_S5_ALLOWED" id="BYJUNO_S4_S5_ALLOWED">
+                        <option value="enable"{if ($BYJUNO_S4_S5_ALLOWED == 'enable')} selected{/if}>Enable</option>
+                        <option value="disable"{if ($BYJUNO_S4_S5_ALLOWED == 'disable')} selected{/if}>Disable</option>
                     </select>
                 </div>
             </div>

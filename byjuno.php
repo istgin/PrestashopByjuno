@@ -217,6 +217,13 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('BYJUNO_S2_MERCHANT_ACCEPT', '');
             Configuration::updateValue('BYJUNO_S3_ACCEPT', '2');
             Configuration::updateValue('BYJUNO_ALLOW_POSTAL', 'false');
+            Configuration::updateValue('BYJUNO_CONN_TIMEOUT', '30');
+            Configuration::updateValue('BYJUNO_MIN_AMOUNT', '10');
+            Configuration::updateValue('BYJUNO_MAX_AMOUNT', '1000');
+            Configuration::updateValue('BYJUNO_B2B', 'false');
+            Configuration::updateValue('BYJUNO_S4_S5_ALLOWED', 'true');
+            Configuration::updateValue('BYJUNO_PROD_EMAIL', 'true');
+            Configuration::updateValue('BYJUNO_TEST_EMAIL', 'true');
         }
         return true;
     }
@@ -449,6 +456,13 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('BYJUNO_S2_MERCHANT_ACCEPT', trim(Tools::getValue('BYJUNO_S2_MERCHANT_ACCEPT')));
             Configuration::updateValue('BYJUNO_S3_ACCEPT', trim(Tools::getValue('BYJUNO_S3_ACCEPT')));
             Configuration::updateValue('BYJUNO_ALLOW_POSTAL', trim(Tools::getValue('BYJUNO_ALLOW_POSTAL')));
+            Configuration::updateValue('BYJUNO_CONN_TIMEOUT', trim(Tools::getValue('BYJUNO_CONN_TIMEOUT')));
+            Configuration::updateValue('BYJUNO_MIN_AMOUNT', trim(Tools::getValue('BYJUNO_MIN_AMOUNT')));
+            Configuration::updateValue('BYJUNO_MAX_AMOUNT', trim(Tools::getValue('BYJUNO_MAX_AMOUNT')));
+            Configuration::updateValue('BYJUNO_S4_S5_ALLOWED', trim(Tools::getValue('BYJUNO_S4_S5_ALLOWED')));
+            Configuration::updateValue('BYJUNO_B2B', trim(Tools::getValue('BYJUNO_B2B')));
+            Configuration::updateValue('BYJUNO_PROD_EMAIL', trim(Tools::getValue('BYJUNO_PROD_EMAIL')));
+            Configuration::updateValue('BYJUNO_TEST_EMAIL', trim(Tools::getValue('BYJUNO_TEST_EMAIL')));
         }
         if (Tools::isSubmit('submitLogSearch'))
         {
@@ -510,6 +524,13 @@ class Byjuno extends PaymentModule
             'BYJUNO_S2_MERCHANT_ACCEPT' => Configuration::get("BYJUNO_S2_MERCHANT_ACCEPT"),
             'BYJUNO_S3_ACCEPT' => Configuration::get("BYJUNO_S3_ACCEPT"),
             'BYJUNO_ALLOW_POSTAL' => Configuration::get("BYJUNO_ALLOW_POSTAL"),
+            'BYJUNO_CONN_TIMEOUT' => Configuration::get("BYJUNO_CONN_TIMEOUT"),
+            'BYJUNO_MIN_AMOUNT' => Configuration::get("BYJUNO_MIN_AMOUNT"),
+            'BYJUNO_MAX_AMOUNT' => Configuration::get("BYJUNO_MAX_AMOUNT"),
+            'BYJUNO_S4_S5_ALLOWED' => Configuration::get("BYJUNO_S4_S5_ALLOWED"),
+            'BYJUNO_B2B' => Configuration::get("BYJUNO_B2B"),
+            'BYJUNO_PROD_EMAIL' => Configuration::get("BYJUNO_PROD_EMAIL"),
+            'BYJUNO_TEST_EMAIL' => Configuration::get("BYJUNO_TEST_EMAIL"),
             'payment_methods' => $methods,
             'intrum_logs' => $this->getLogs(),
             'search_in_log' => Tools::getValue('searchInLog'),
