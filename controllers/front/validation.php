@@ -81,8 +81,6 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 		}
 
 		$request = CreatePrestaShopRequest($this->context->cart, $this->context->customer, $this->context->currency, "ORDERREQUEST", $selected_gender, $selected_birthday);
-		var_dump($request);
-		exit();
 		$invoice_address = new Address($this->context->cart->id_address_invoice);
 
 		$type = "S1 Request";
