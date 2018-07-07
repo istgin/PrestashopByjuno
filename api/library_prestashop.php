@@ -136,6 +136,10 @@ function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, Currenc
     $request->setMobile($invoice_address->phone_mobile);
     $request->setEmail($customer->email);
 
+    if (!empty($invoice_address->company)) {
+        $request->setCompanyName1($invoice_address->company);
+    }
+
     $extraInfo["Name"] = 'ORDERCLOSED';
     $extraInfo["Value"] = 'NO';
     $request->setExtraInfo($extraInfo);
@@ -254,6 +258,10 @@ function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency
     $request->setTelephonePrivate($invoice_address->phone);
     $request->setMobile($invoice_address->phone_mobile);
     $request->setEmail($customer->email);
+
+    if (!empty($invoice_address->company)) {
+        $request->setCompanyName1($invoice_address->company);
+    }
 
     $extraInfo["Name"] = 'ORDERCLOSED';
     $extraInfo["Value"] = 'YES';

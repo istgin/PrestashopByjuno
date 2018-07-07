@@ -226,9 +226,9 @@
                     </label>
 
                     <div class="col-lg-9">
-                        <select name="intrum_enabletmx" id="intrum_enabletmx">
-                            <option value="false"{if ($intrum_enabletmx == 'false')} selected{/if}>Disabled</option>
-                            <option value="true"{if ($intrum_enabletmx == 'true')} selected{/if}>Enabled</option>
+                        <select name="intrum_enabletmx" id="INTRUM_ENABLETMX">
+                            <option value="false"{if ($INTRUM_ENABLETMX == 'false')} selected{/if}>Disabled</option>
+                            <option value="true"{if ($INTRUM_ENABLETMX == 'true')} selected{/if}>Enabled</option>
                         </select>
                     </div>
                 </div>
@@ -238,8 +238,8 @@
                     </label>
 
                     <div class="col-lg-9">
-                        <input type="text" name="intrum_tmxorgid" id="intrum_tmxorgid"
-                               value="{$intrum_tmxorgid|escape}"/>
+                        <input type="text" name="INTRUM_TMXORGID" id="INTRUM_TMXORGID"
+                               value="{$INTRUM_TMXORGID|escape}"/>
                     </div>
                 </div>
                 <div class="form-group">

@@ -73,8 +73,19 @@ class Byjuno extends PaymentModule
         }
         if (Configuration::get("BYJUNO_CREDIT_CHECK") == 'enable') {
             $status = 0;
+            $invoice_address = new Address($this->context->cart->id_address_invoice);
             $request = CreatePrestaShopRequest($this->context->cart, $this->context->customer, $this->context->currency, "CREDITCHECK");
-            $xml = $request->createRequest();
+
+            $type = "Credit check";
+            $b2b = Configuration::get("BYJUNO_B2B") == 'enable';
+            $xml = "";
+            if ($b2b && !empty($invoice_address->company)) {
+                $type = "Credit check B2B";
+                $xml = $request->createRequestCompany();
+            } else {
+                $xml = $request->createRequest();
+            }
+
             $byjunoCommunicator = new ByjunoCommunicator();
             $byjunoCommunicator->setServer(Configuration::get("INTRUM_MODE"));
             $response = $byjunoCommunicator->sendRequest($xml, (int)Configuration::get("BYJUNO_CONN_TIMEOUT"));
@@ -96,7 +107,7 @@ class Byjuno extends PaymentModule
                 "ip" => $_SERVER["REMOTE_ADDR"],
                 "status" => $status,
                 "request_id" => $request->getRequestId(),
-                "type" => "Credit check",
+                "type" => $type,
                 "error" => ($status == 0) ? "ERROR" : "",
                 "response" => $response,
                 "request" => $xml
@@ -230,8 +241,8 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('BYJUNO_S4_S5_ALLOWED', 'true');
             Configuration::updateValue('BYJUNO_PROD_EMAIL', 'production@byjunyno.ch');
             Configuration::updateValue('BYJUNO_TEST_EMAIL', 'test@byjunyno.ch');
-            Configuration::updateValue('intrum_tmxorgid', 'lq866c5i');
-            Configuration::updateValue('intrum_enabletmx', 'true');
+            Configuration::updateValue('INTRUM_TMXORGID', 'lq866c5i');
+            Configuration::updateValue('INTRUM_ENABLETMX', 'true');
             Configuration::updateValue('BYJUNO_GENDER_BIRTHDAY', 'true');
 
 
@@ -451,8 +462,8 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('INTRUM_PASSWORD', trim(Tools::getValue('intrum_password')));
             Configuration::updateValue('INTRUM_TECH_EMAIL', trim(Tools::getValue('intrum_tech_email')));
             Configuration::updateValue('INTRUM_MIN_AMOUNT', trim(Tools::getValue('intrum_min_amount')));
-            Configuration::updateValue('INTRUM_ENABLETMX', trim(Tools::getValue('intrum_enabletmx')));
-            Configuration::updateValue('INTRUM_TMXORGID', trim(Tools::getValue('intrum_tmxorgid')));
+            Configuration::updateValue('INTRUM_ENABLETMX', trim(Tools::getValue('INTRUM_ENABLETMX')));
+            Configuration::updateValue('INTRUM_TMXORGID', trim(Tools::getValue('INTRUM_TMXORGID')));
             Configuration::updateValue('byjuno_invoice', trim(Tools::getValue('byjuno_invoice')));
             Configuration::updateValue('single_invoice', trim(Tools::getValue('single_invoice')));
             Configuration::updateValue('installment_3', trim(Tools::getValue('installment_3')));
@@ -521,8 +532,8 @@ class Byjuno extends PaymentModule
             'intrum_tech_email' => Configuration::get("INTRUM_TECH_EMAIL"),
             'intrum_min_amount' => Configuration::get("INTRUM_MIN_AMOUNT"),
             'intrum_show_log' => Configuration::get("INTRUM_SHOW_LOG"),
-            'intrum_enabletmx' => Configuration::get("INTRUM_ENABLETMX"),
-            'intrum_tmxorgid' => Configuration::get("INTRUM_TMXORGID"),
+            'INTRUM_ENABLETMX' => Configuration::get("INTRUM_ENABLETMX"),
+            'INTRUM_TMXORGID' => Configuration::get("INTRUM_TMXORGID"),
             'byjuno_invoice' => Configuration::get("byjuno_invoice"),
             'single_invoice' => Configuration::get("single_invoice"),
             'installment_3' => Configuration::get("installment_3"),

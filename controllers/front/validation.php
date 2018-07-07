@@ -75,7 +75,17 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 		}
 
 		$request = CreatePrestaShopRequest($this->context->cart, $this->context->customer, $this->context->currency, "ORDERREQUEST");
-		$xml = $request->createRequest();
+		$invoice_address = new Address($this->context->cart->id_address_invoice);
+
+		$type = "S1 Request";
+		$b2b = Configuration::get("BYJUNO_B2B") == 'enable';
+		$xml = "";
+		if ($b2b && !empty($invoice_address->company)) {
+			$type = "S1 Request B2B";
+			$xml = $request->createRequestCompany();
+		} else {
+			$xml = $request->createRequest();
+		}
 		$byjunoCommunicator = new ByjunoCommunicator();
 		$byjunoCommunicator->setServer(Configuration::get("INTRUM_MODE"));
 		$response = $byjunoCommunicator->sendRequest($xml, (int)Configuration::get("BYJUNO_CONN_TIMEOUT"));
@@ -97,7 +107,7 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 			"ip" => $_SERVER["REMOTE_ADDR"],
 			"status" => $status,
 			"request_id" => $request->getRequestId(),
-			"type" => "S1 Request",
+			"type" => $type,
 			"error" => ($status == 0) ? "ERROR" : "",
 			"response" => $response,
 			"request" => $xml
@@ -120,7 +130,17 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 		$order = new OrderCore((int)$this->module->currentOrder);
 
 		$requestS2 = CreatePrestaShopRequestAfterPaid($this->context->cart, $order, $this->context->currency, Tools::getValue('selected_plan'), $accept, $invoiceDelivery);
-		$xml = $requestS2->createRequest();
+
+		$typeS3 = "S3 Request";
+		$b2b = Configuration::get("BYJUNO_B2B") == 'enable';
+		$xml = "";
+		if ($b2b && !empty($invoice_address->company)) {
+			$typeS3 = "S3 Request B2B";
+			$xml = $request->createRequestCompany();
+		} else {
+			$xml = $request->createRequest();
+		}
+
 		$responseS3 = $byjunoCommunicator->sendRequest($xml, (int)Configuration::get("BYJUNO_CONN_TIMEOUT"));
 		$statusS3 = 0;
 		if ($responseS3) {
@@ -139,7 +159,7 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 			"ip" => $_SERVER["REMOTE_ADDR"],
 			"status" => $statusS3,
 			"request_id" => $requestS2->getRequestId(),
-			"type" => "S3 Request",
+			"type" => $typeS3,
 			"error" => ($statusS3 == 0) ? "ERROR" : "",
 			"response" => $responseS3,
 			"request" => $xml
