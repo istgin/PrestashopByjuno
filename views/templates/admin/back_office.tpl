@@ -202,16 +202,6 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label col-lg-3 required">
-                        Mininmal amount for credit check
-                    </label>
-
-                    <div class="col-lg-9">
-                        <input type="text" name="intrum_min_amount" id="intrum_min_amount"
-                               value="{$intrum_min_amount|escape}"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
                         Connection timeout to Byjuno CDP server in seconds:
                     </label>
 

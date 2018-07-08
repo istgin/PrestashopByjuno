@@ -468,7 +468,6 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('INTRUM_USER_ID', trim(Tools::getValue('INTRUM_USER_ID')));
             Configuration::updateValue('INTRUM_PASSWORD', trim(Tools::getValue('intrum_password')));
             Configuration::updateValue('INTRUM_TECH_EMAIL', trim(Tools::getValue('intrum_tech_email')));
-            Configuration::updateValue('INTRUM_MIN_AMOUNT', trim(Tools::getValue('intrum_min_amount')));
             Configuration::updateValue('INTRUM_ENABLETMX', trim(Tools::getValue('INTRUM_ENABLETMX')));
             Configuration::updateValue('INTRUM_TMXORGID', trim(Tools::getValue('INTRUM_TMXORGID')));
             Configuration::updateValue('byjuno_invoice', trim(Tools::getValue('byjuno_invoice')));
@@ -535,7 +534,6 @@ class Byjuno extends PaymentModule
             'INTRUM_USER_ID' => Configuration::get("INTRUM_USER_ID"),
             'intrum_password' => Configuration::get("INTRUM_PASSWORD"),
             'intrum_tech_email' => Configuration::get("INTRUM_TECH_EMAIL"),
-            'intrum_min_amount' => Configuration::get("INTRUM_MIN_AMOUNT"),
             'intrum_show_log' => Configuration::get("INTRUM_SHOW_LOG"),
             'INTRUM_ENABLETMX' => Configuration::get("INTRUM_ENABLETMX"),
             'INTRUM_TMXORGID' => Configuration::get("INTRUM_TMXORGID"),
