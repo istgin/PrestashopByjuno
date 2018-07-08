@@ -1,4 +1,4 @@
-{capture name=path}{l s='Byjuno Invoice' mod='byjuno'}{/capture}
+{capture name=path}{l s=$paymentname mod='byjuno'}{/capture}
 
 <h1 class="page-heading">{l s='Select payment' mod='byjuno'}</h1>
 
@@ -34,7 +34,7 @@
 					</select>
 				</div><br />
 				<div class="required form-group">
-					<label>{l s='Date of Birth'}</label><sup>*</sup>
+					<label>{l s='Date of Birth' mod='byjuno'}</label><sup>*</sup>
 					<div class="row">
 						<div class="col-xs-4" style="max-width: 94px;">
 							<select id="days" name="days" class="form-control" style="max-width: 82px;">
@@ -77,10 +77,10 @@
 		</div>
 		<p class="cart_navigation clearfix" id="cart_navigation">
 			<a href="{$link->getPageLink('order', true, NULL, "step=3")|escape:'html':'UTF-8'}" class="button-exclusive btn btn-default">
-				<i class="icon-chevron-left"></i>{l s='Other payment methods' mod='cheque'}
+				<i class="icon-chevron-left"></i>{l s='Other payment methods' mod='byjuno'}
 			</a>
 			<button type="submit" class="button btn btn-default button-medium">
-				<span>{l s='I confirm my order' mod='cheque'}<i class="icon-chevron-right right"></i></span>
+				<span>{l s='I confirm my order' mod='byjuno'}<i class="icon-chevron-right right"></i></span>
 			</button>
 		</p>
 	</form>
