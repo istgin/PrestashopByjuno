@@ -54,11 +54,11 @@ class ByjunoPaymentModuleFrontController extends ModuleFrontController
 			$paymentName = 'Byjuno Invoice';
 			if (Configuration::get("byjuno_invoice") == 'enable')
 			{
-				$selected_payments[] = Array('name' => 'Byjuno Invoice (with partial payment option)', 'id' => '', "selected" => 0);
+				$selected_payments[] = Array('name' => 'Byjuno Invoice (with partial payment option)', 'id' => 'byjuno_invoice', "selected" => 0);
 			}
 			if (Configuration::get("single_invoice") == 'enable')
 			{
-				$selected_payments[] = Array('name' => 'Byjuno Single Invoice', 'id' => '', "selected" => 0);
+				$selected_payments[] = Array('name' => 'Byjuno Single Invoice', 'id' => 'single_invoice', "selected" => 0);
 			}
 		}
 		if ($payment == 'installment')
@@ -66,23 +66,23 @@ class ByjunoPaymentModuleFrontController extends ModuleFrontController
 			$paymentName = 'Byjuno Installment';
 			if (Configuration::get("installment_3") == 'enable')
 			{
-				$selected_payments[] = Array('name' => '3 installments', 'id' => '', "selected" => 0);
+				$selected_payments[] = Array('name' => '3 installments', 'id' => 'installment_3', "selected" => 0);
 			}
 			if (Configuration::get("installment_10") == 'enable')
 			{
-				$selected_payments[] = Array('name' => '10 installments', 'id' => '', "selected" => 0);
+				$selected_payments[] = Array('name' => '10 installments', 'id' => 'installment_10', "selected" => 0);
 			}
 			if (Configuration::get("installment_12") == 'enable')
 			{
-				$selected_payments[] = Array('name' => '12 installments', 'id' => '', "selected" => 0);
+				$selected_payments[] = Array('name' => '12 installments', 'id' => 'installment_12', "selected" => 0);
 			}
 			if (Configuration::get("installment_24") == 'enable')
 			{
-				$selected_payments[] = Array('name' => '24 installments', 'id' => '', "selected" => 0);
+				$selected_payments[] = Array('name' => '24 installments', 'id' => 'installment_24', "selected" => 0);
 			}
 			if (Configuration::get("installment_4x12") == 'enable')
 			{
-				$selected_payments[] = Array('name' => '4 installments in 12 months', 'id' => '', "selected" => 0);
+				$selected_payments[] = Array('name' => '4 installments in 12 months', 'id' => 'installment_4x12', "selected" => 0);
 			}
 		}
 		$selected_payments[0]["selected"] = 1;

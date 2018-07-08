@@ -26,7 +26,7 @@ $_MODULE['<{byjuno}prestashop>payment_execution_9ed230c74799a3db4bdc4294b42080bd
 $_MODULE['<{byjuno}prestashop>payment_execution_ef5010d8911ba4b1a4d2665c22a8e51c'] = '24 Raten';
 $_MODULE['<{byjuno}prestashop>payment_execution_5d92fdfa267376f9c89c1a26f1d2e1c4'] = '4 Raten innerhalb von 12 Monaten';
 
-$_MODULE['<{byjuno}prestashop>payment_execution_06aac5c4279d0d93b5527804b88827e1'] = 'Byjuno Rechnung';
+$_MODULE['<{byjuno}prestashop>payment_execution_06aac5c4279d0d93b5527804b88827e1'] = 'Byjuno Invoice';
 $_MODULE['<{byjuno}prestashop>payment_execution_b7d009d8f8d9c3d5e07692546dcf3806'] = 'Byjuno Ratenzahlung';
 
 $_MODULE['<{byjuno}prestashop>payment_execution_962c29e9d818d87968b7460bf9a6472b'] = 'Select payment';
@@ -34,7 +34,7 @@ $_MODULE['<{byjuno}prestashop>payment_execution_879f6b8877752685a966564d072f498f
 $_MODULE['<{byjuno}prestashop>payment_execution_de373d72d209506f178c46735ecbf447'] = 'Select payment plan';
 $_MODULE['<{byjuno}prestashop>payment_execution_eaf1849876a6548ecc5b804d7da44b27'] = 'Select invoice delivery method';
 $_MODULE['<{byjuno}prestashop>payment_execution_dfc27ef27b631b0e7114573a439c3180'] = 'Rechnungsversand via E-Mail';
-$_MODULE['<{byjuno}prestashop>payment_execution_3cd02748d4e2c00844a284b71a479ba1'] = 'Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.50 pro Rate)';
+$_MODULE['<{byjuno}prestashop>payment_execution_3cd02748d4e2c00844a284b71a479ba1'] = 'Rechnungsversand in Papierform via Post (gegen GebÃ¼hr von CHF 3.50 pro Rate)';
 $_MODULE['<{byjuno}prestashop>payment_execution_019ec3132cdf8ee0f2e2a75cf5d3e459'] = 'Gender';
 $_MODULE['<{byjuno}prestashop>payment_execution_63889cfb9d3cbe05d1bd2be5cc9953fd'] = 'Male';
 $_MODULE['<{byjuno}prestashop>payment_execution_b719ce180ec7bd9641fece2f920f4817'] = 'Female';

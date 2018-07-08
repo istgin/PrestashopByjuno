@@ -5,7 +5,7 @@ $_MODULE = array();
 $_MODULE['<{byjuno}prestashop>payment_1335094cae0deb52ff6efc9b8840e8de'] = 'Pay by byjuno Rechnung';
 $_MODULE['<{byjuno}prestashop>payment_0388a4ccc8d2065cdc94da8fba58a30a'] = 'Facture Byjuno';
 $_MODULE['<{byjuno}prestashop>payment_4a08d53adc4052023681df0c2a89b073'] = 'Pay by byjuno installment';
-$_MODULE['<{byjuno}prestashop>payment_ee946970cb5f21c257e87b07e2122e06'] = 'Byjuno Paiement échelonné';
+$_MODULE['<{byjuno}prestashop>payment_ee946970cb5f21c257e87b07e2122e06'] = 'Byjuno Paiement Ã©chelonnÃ©';
 
 $_MODULE['<{byjuno}prestashop>payment_return_88526efe38fd18179a127024aba8c1d7'] = 'Your order on %s is complete.';
 $_MODULE['<{byjuno}prestashop>payment_return_b2f40690858b404ed10e62bdf422c704'] = 'Amount';
@@ -27,14 +27,14 @@ $_MODULE['<{byjuno}prestashop>payment_execution_ef5010d8911ba4b1a4d2665c22a8e51c
 $_MODULE['<{byjuno}prestashop>payment_execution_5d92fdfa267376f9c89c1a26f1d2e1c4'] = '4 tranches dans 12 mois';
 
 $_MODULE['<{byjuno}prestashop>payment_execution_06aac5c4279d0d93b5527804b88827e1'] = 'Facture Byjuno';
-$_MODULE['<{byjuno}prestashop>payment_execution_b7d009d8f8d9c3d5e07692546dcf3806'] = 'Byjuno Paiement échelonné';
+$_MODULE['<{byjuno}prestashop>payment_execution_b7d009d8f8d9c3d5e07692546dcf3806'] = 'Byjuno Paiement Ã©chelonnÃ©';
 
 $_MODULE['<{byjuno}prestashop>payment_execution_962c29e9d818d87968b7460bf9a6472b'] = 'Select payment';
 $_MODULE['<{byjuno}prestashop>payment_execution_879f6b8877752685a966564d072f498f'] = 'Your shopping cart is empty.';
 $_MODULE['<{byjuno}prestashop>payment_execution_de373d72d209506f178c46735ecbf447'] = 'Select payment plan';
 $_MODULE['<{byjuno}prestashop>payment_execution_eaf1849876a6548ecc5b804d7da44b27'] = 'Select invoice delivery method';
-$_MODULE['<{byjuno}prestashop>payment_execution_dfc27ef27b631b0e7114573a439c3180'] = 'Expédition facture via e-mail (sans frais)';
-$_MODULE['<{byjuno}prestashop>payment_execution_3cd02748d4e2c00844a284b71a479ba1'] = 'Expédition facture sous forme papier (au prix de CHF 3.50)';
+$_MODULE['<{byjuno}prestashop>payment_execution_dfc27ef27b631b0e7114573a439c3180'] = 'ExpÃ©dition facture via e-mail (sans frais)';
+$_MODULE['<{byjuno}prestashop>payment_execution_3cd02748d4e2c00844a284b71a479ba1'] = 'ExpÃ©dition facture sous forme papier (au prix de CHF 3.50)';
 $_MODULE['<{byjuno}prestashop>payment_execution_019ec3132cdf8ee0f2e2a75cf5d3e459'] = 'Gender';
 $_MODULE['<{byjuno}prestashop>payment_execution_63889cfb9d3cbe05d1bd2be5cc9953fd'] = 'Male';
 $_MODULE['<{byjuno}prestashop>payment_execution_b719ce180ec7bd9641fece2f920f4817'] = 'Female';

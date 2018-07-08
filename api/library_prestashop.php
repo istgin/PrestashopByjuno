@@ -75,6 +75,7 @@ function mapPaymentMethodToSpecs($method){
 }
 
 function mapRepayment($type) {
+
     if ($type == 'installment_3') {
         return "10";
     } else if ($type == 'installment_10') {
@@ -87,7 +88,7 @@ function mapRepayment($type) {
         return "1";
     } else if ($type == 'installment_4x10') {
         return "2";
-    } else if ($type == 'sinlge_invoice') {
+    } else if ($type == 'single_invoice') {
         return "3";
     } else {
         return "4";
@@ -164,7 +165,6 @@ function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, Currenc
     $request->setExtraInfo($extraInfo);
 
     if (Configuration::get("INTRUM_ENABLETMX") == 'true' && Configuration::get("INTRUM_TMXORGID") != '' && !empty($cookie->intrumId)) {
-        var_dump("XXX");
         $extraInfo["Name"] = 'DEVICE_FINGERPRINT_ID';
         $extraInfo["Value"] = $cookie->intrumId;
         $request->setExtraInfo($extraInfo);
