@@ -71,7 +71,7 @@ class Byjuno extends PaymentModule
             || Configuration::get("installment_4x12") == 'enable'){
             $byjuno_installment = true;
         }
-        if (Configuration::get("BYJUNO_CREDIT_CHECK") == 'enable') {
+        if (($byjuno_invoice || $byjuno_installment) && Configuration::get("BYJUNO_CREDIT_CHECK") == 'enable') {
             $status = 0;
             $invoice_address = new Address($this->context->cart->id_address_invoice);
             $request = CreatePrestaShopRequest($this->context->cart, $this->context->customer, $this->context->currency, "CREDITCHECK");
@@ -244,10 +244,8 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('BYJUNO_CONN_TIMEOUT', '30');
             Configuration::updateValue('BYJUNO_MIN_AMOUNT', '10');
             Configuration::updateValue('BYJUNO_MAX_AMOUNT', '1000');
-            Configuration::updateValue('BYJUNO_B2B', 'false');
-            Configuration::updateValue('BYJUNO_S4_S5_ALLOWED', 'true');
-            Configuration::updateValue('BYJUNO_PROD_EMAIL', 'production@byjunyno.ch');
-            Configuration::updateValue('BYJUNO_TEST_EMAIL', 'test@byjunyno.ch');
+            Configuration::updateValue('BYJUNO_B2B', 'disable');
+            Configuration::updateValue('BYJUNO_S4_S5_ALLOWED', 'enable');
             Configuration::updateValue('INTRUM_TMXORGID', 'lq866c5i');
             Configuration::updateValue('INTRUM_ENABLETMX', 'true');
             Configuration::updateValue('BYJUNO_GENDER_BIRTHDAY', 'true');
@@ -257,8 +255,11 @@ class Byjuno extends PaymentModule
         return true;
     }
 
-    public  function hookactionOrderSlipAdd($params)
+    public function hookActionOrderSlipAdd($params)
     {
+        if (Configuration::get("BYJUNO_S4_S5_ALLOWED") != 'enable') {
+            return;
+        }
         /* @var $orderCore OrderCore */
         $orderCore = $params["order"];
         $order_module = $orderCore->module;
@@ -314,6 +315,9 @@ class Byjuno extends PaymentModule
 
     public function hookActionOrderStatusPostUpdate($params)
     {
+        if (Configuration::get("BYJUNO_S4_S5_ALLOWED") != 'enable') {
+            return;
+        }
         /* @var $orderStatus OrderStateCore */
         $orderStatus = $params["newOrderStatus"];
         if ($orderStatus->id == Configuration::get('PS_OS_PAYMENT')) {
@@ -437,10 +441,6 @@ class Byjuno extends PaymentModule
 
     private function _postProcess()
     {
-		if (Tools::isSubmit('upgradehook'))
-        {
-			$this->moveOverriteFilesWithReplace();
-		}
         if (Tools::isSubmit('submitIntrumMethods'))
         {
             $data = Tools::getValue('data');
@@ -490,8 +490,6 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('BYJUNO_MAX_AMOUNT', trim(Tools::getValue('BYJUNO_MAX_AMOUNT')));
             Configuration::updateValue('BYJUNO_S4_S5_ALLOWED', trim(Tools::getValue('BYJUNO_S4_S5_ALLOWED')));
             Configuration::updateValue('BYJUNO_B2B', trim(Tools::getValue('BYJUNO_B2B')));
-            Configuration::updateValue('BYJUNO_PROD_EMAIL', trim(Tools::getValue('BYJUNO_PROD_EMAIL')));
-            Configuration::updateValue('BYJUNO_TEST_EMAIL', trim(Tools::getValue('BYJUNO_TEST_EMAIL')));
             Configuration::updateValue('BYJUNO_GENDER_BIRTHDAY', trim(Tools::getValue('BYJUNO_GENDER_BIRTHDAY')));
         }
         if (Tools::isSubmit('submitLogSearch'))
@@ -559,8 +557,6 @@ class Byjuno extends PaymentModule
             'BYJUNO_MAX_AMOUNT' => Configuration::get("BYJUNO_MAX_AMOUNT"),
             'BYJUNO_S4_S5_ALLOWED' => Configuration::get("BYJUNO_S4_S5_ALLOWED"),
             'BYJUNO_B2B' => Configuration::get("BYJUNO_B2B"),
-            'BYJUNO_PROD_EMAIL' => Configuration::get("BYJUNO_PROD_EMAIL"),
-            'BYJUNO_TEST_EMAIL' => Configuration::get("BYJUNO_TEST_EMAIL"),
             'BYJUNO_GENDER_BIRTHDAY' => Configuration::get("BYJUNO_GENDER_BIRTHDAY"),
             'payment_methods' => $methods,
             'intrum_logs' => $this->getLogs(),

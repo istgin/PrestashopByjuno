@@ -254,26 +254,6 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
-                        Production email of Byjuno:
-                    </label>
-
-                    <div class="col-lg-9">
-                        <input type="text" name="BYJUNO_PROD_EMAIL" id="BYJUNO_PROD_EMAIL"
-                               value="{$BYJUNO_PROD_EMAIL|escape}"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
-                        Test email of Byjuno:
-                    </label>
-
-                    <div class="col-lg-9">
-                        <input type="text" name="BYJUNO_TEST_EMAIL" id="BYJUNO_TEST_EMAIL"
-                               value="{$BYJUNO_TEST_EMAIL|escape}"/>
-                    </div>
-                </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-lg-3 required">
