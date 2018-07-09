@@ -74,6 +74,26 @@ function mapPaymentMethodToSpecs($method){
     return $method;
 }
 
+function mapMethod($method) {
+    if ($method == 'installment_3') {
+        return "INSTALLMENT";
+    } else if ($method == 'installment_10') {
+        return "INSTALLMENT";
+    } else if ($method == 'installment_12') {
+        return "INSTALLMENT";
+    } else if ($method == 'installment_24') {
+        return "INSTALLMENT";
+    } else if ($method == 'installment_4x12') {
+        return "INSTALLMENT";
+    } else if ($method == 'installment_4x10') {
+        return "INSTALLMENT";
+    } else if ($method == 'single_invoice') {
+        return "INVOICE";
+    } else {
+        return "INVOICE";
+    }
+}
+
 function mapRepayment($type) {
 
     if ($type == 'installment_3') {
@@ -334,8 +354,14 @@ function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'PAYMENTMETHOD';
-    $extraInfo["Value"] = mapRepayment($repayment);
+    $extraInfo["Value"] = mapMethod($repayment);
     $request->setExtraInfo($extraInfo);
+
+    if ($repayment != "") {
+        $extraInfo["Name"] = 'REPAYMENTTYPE';
+        $extraInfo["Value"] = mapRepayment($repayment);
+        $request->setExtraInfo($extraInfo);
+    }
 
     if ($invoiceDelivery == 'postal') {
         $extraInfo["Name"] = 'PAPER_INVOICE';
