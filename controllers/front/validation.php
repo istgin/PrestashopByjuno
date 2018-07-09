@@ -134,15 +134,15 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 		$this->module->validateOrder($cart->id, Configuration::get('BYJUNO_ORDER_STATE_DEFAULT'), $total, "Byjuno invoice", NULL, $mailVars, (int)$currency->id, false, $customer->secure_key);
 		$order = new OrderCore((int)$this->module->currentOrder);
 
-		$requestS2 = CreatePrestaShopRequestAfterPaid($this->context->cart, $order, $this->context->currency, Tools::getValue('selected_plan'), $accept, $invoiceDelivery, $selected_gender, $selected_birthday);
+		$requestS3 = CreatePrestaShopRequestAfterPaid($this->context->cart, $order, $this->context->currency, Tools::getValue('selected_plan'), $accept, $invoiceDelivery, $selected_gender, $selected_birthday);
 		$typeS3 = "S3 Request";
 		$b2b = Configuration::get("BYJUNO_B2B") == 'enable';
 		$xml = "";
 		if ($b2b && !empty($invoice_address->company)) {
 			$typeS3 = "S3 Request B2B";
-			$xml = $request->createRequestCompany();
+			$xml = $requestS3->createRequestCompany();
 		} else {
-			$xml = $request->createRequest();
+			$xml = $requestS3->createRequest();
 		}
 
 		$responseS3 = $byjunoCommunicator->sendRequest($xml, (int)Configuration::get("BYJUNO_CONN_TIMEOUT"));
@@ -154,15 +154,15 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 			$statusS3 = $byjunoResponseS3->getCustomerRequestStatus();
 		}
 		$byjunoLogger->log(Array(
-			"firstname" => $requestS2->getFirstName(),
-			"lastname" => $requestS2->getLastName(),
-			"town" => $requestS2->getTown(),
-			"postcode" => $requestS2->getPostCode(),
-			"street" => trim($requestS2->getFirstLine().' '.$requestS2->getHouseNumber()),
-			"country" => $requestS2->getCountryCode(),
+			"firstname" => $requestS3->getFirstName(),
+			"lastname" => $requestS3->getLastName(),
+			"town" => $requestS3->getTown(),
+			"postcode" => $requestS3->getPostCode(),
+			"street" => trim($requestS3->getFirstLine().' '.$requestS3->getHouseNumber()),
+			"country" => $requestS3->getCountryCode(),
 			"ip" => $_SERVER["REMOTE_ADDR"],
 			"status" => $statusS3,
-			"request_id" => $requestS2->getRequestId(),
+			"request_id" => $requestS3->getRequestId(),
 			"type" => $typeS3,
 			"error" => ($statusS3 == 0) ? "ERROR" : "",
 			"response" => $responseS3,
