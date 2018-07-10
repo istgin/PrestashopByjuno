@@ -645,7 +645,7 @@ class Byjuno extends PaymentModule
                 $domOutput->loadXML($xml["response"]);
                 $domOutput->formatOutput = TRUE;
                 $return["input"] = htmlspecialchars($domInput->saveXml());
-                $return["output"] = htmlspecialchars($domInput->saveXml());
+                $return["output"] = htmlspecialchars($domOutput->saveXml());
             } else {
                 $return["input"] = htmlspecialchars($domInput->saveXml());
                 $return["output"] = htmlspecialchars("Raw data: ".$xml["response"]);

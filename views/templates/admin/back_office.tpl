@@ -129,8 +129,8 @@
             <td>Response</td>
         </tr>
         <tr>
-            <td width="50%" style="border: 1px solid #CCCCCC; padding: 5px;"><code style="width: 100%; word-wrap: break-word; white-space: pre-wrap;">{$intrum_single_log["input"]}</code></td>
-            <td width="50%" style="border: 1px solid #CCCCCC; padding: 5px;"><code style="width: 100%; word-wrap: break-word; white-space: pre-wrap;">{$intrum_single_log["output"]}</code></td>
+            <td width="50%" style="border: 1px solid #CCCCCC; background-color: #FFFFFF; padding: 5px;" valign="top"><code style="width: 100%; word-wrap: break-word; white-space: pre-wrap;">{$intrum_single_log["input"]}</code></td>
+            <td width="50%" style="border: 1px solid #CCCCCC; background-color: #FFFFFF; padding: 5px;" valign="top"><code style="width: 100%; word-wrap: break-word; white-space: pre-wrap;">{$intrum_single_log["output"]}</code></td>
         </tr>
     </table>
 {elseif ($showlogs)}
