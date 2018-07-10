@@ -557,12 +557,13 @@ class Byjuno extends PaymentModule
             'BYJUNO_B2B' => Configuration::get("BYJUNO_B2B"),
             'BYJUNO_GENDER_BIRTHDAY' => Configuration::get("BYJUNO_GENDER_BIRTHDAY"),
             'payment_methods' => $methods,
-            'intrum_logs' => $this->getLogs(),
+            'intrum_logs' => self::getLogs(),
             'search_in_log' => Tools::getValue('searchInLog'),
             'showlogs' => Tools::getValue('logs') != "" ? 1 : 0,
             'url' => "?controller=AdminModules&token=".Tools::getValue('token')."&configure=byjuno&tab_module=payments_gateways&module_name=byjuno",
             'urllogs' => "?controller=AdminModules&token=".Tools::getValue('token')."&configure=byjuno&tab_module=payments_gateways&module_name=byjuno&logs=true",
-            'intrum_view_xml' => Tools::getValue('viewxml') != "" ? 1 : 0
+            'intrum_view_xml' => Tools::getValue('viewxml') != "" ? 1 : 0,
+            'intrum_single_log' => self::getSingleLog(Tools::getValue('viewxml'))
         );
         $this->context->smarty->assign($values);
 
@@ -615,6 +616,42 @@ class Byjuno extends PaymentModule
                 LIMIT 20 ');
         }
 
+    }
+
+    public static function getSingleLog($id) {
+
+        $val = abs(intval($id));
+        $return = array();
+        if ($val > 0)
+        {
+            $sql = '
+                SELECT *
+                FROM `'._DB_PREFIX_.'intrum_logs` as I
+                WHERE I.intrum_id like \'%'.pSQL($val).'%\'
+                ';
+            $xml = Db::getInstance()->getRow($sql);
+
+
+            $domInput = new DOMDocument();
+            $domInput->preserveWhiteSpace = FALSE;
+            $domInput->loadXML($xml["request"]);
+            $elem = $domInput->getElementsByTagName('Request');
+            $domInput->formatOutput = TRUE;
+            libxml_use_internal_errors(true);
+            $testXml = simplexml_load_string($xml["response"]);
+            $domOutput = new DOMDocument();
+            $domOutput->preserveWhiteSpace = FALSE;
+            if ($testXml) {
+                $domOutput->loadXML($xml["response"]);
+                $domOutput->formatOutput = TRUE;
+                $return["input"] = htmlspecialchars($domInput->saveXml());
+                $return["output"] = htmlspecialchars($domInput->saveXml());
+            } else {
+                $return["input"] = htmlspecialchars($domInput->saveXml());
+                $return["output"] = htmlspecialchars("Raw data: ".$xml["response"]);
+            }
+        }
+        return $return;
     }
 
     public static function searchLogs() {

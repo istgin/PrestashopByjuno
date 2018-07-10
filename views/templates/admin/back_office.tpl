@@ -121,6 +121,18 @@
     <li><a href="{$urllogs}" id="href-logs" title="Logs"><span>Logs</span></a></li>
 </ul>
 {if ($intrum_view_xml)}
+    <a href="javascript:history.go(-1)">Back to log</a>
+    <h1>Input & output XML</h1>
+    <table width="100%">
+        <tr>
+            <td>Input</td>
+            <td>Response</td>
+        </tr>
+        <tr>
+            <td width="50%" style="border: 1px solid #CCCCCC; padding: 5px;"><code style="width: 100%; word-wrap: break-word; white-space: pre-wrap;">{$intrum_single_log["input"]}</code></td>
+            <td width="50%" style="border: 1px solid #CCCCCC; padding: 5px;"><code style="width: 100%; word-wrap: break-word; white-space: pre-wrap;">{$intrum_single_log["output"]}</code></td>
+        </tr>
+    </table>
 {elseif ($showlogs)}
     <div id="tab-logs">
         <div>
