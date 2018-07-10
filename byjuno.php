@@ -559,6 +559,10 @@ class Byjuno extends PaymentModule
             'payment_methods' => $methods,
             'intrum_logs' => $this->getLogs(),
             'search_in_log' => Tools::getValue('searchInLog'),
+            'showlogs' => Tools::getValue('logs') != "" ? 1 : 0,
+            'url' => "?controller=AdminModules&token=".Tools::getValue('token')."&configure=byjuno&tab_module=payments_gateways&module_name=byjuno",
+            'urllogs' => "?controller=AdminModules&token=".Tools::getValue('token')."&configure=byjuno&tab_module=payments_gateways&module_name=byjuno&logs=true",
+            'intrum_view_xml' => Tools::getValue('viewxml') != "" ? 1 : 0
         );
         $this->context->smarty->assign($values);
 

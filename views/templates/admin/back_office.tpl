@@ -102,19 +102,6 @@
         clear: both;
         display: block;
     }
-
-    {if ($intrum_show_log == 'true')}
-    #tab-settings {
-        display: none;
-    }
-
-    {/if}
-    {if ($intrum_show_log == 'false')}
-    #tab-logs {
-        display: none;
-    }
-
-    {/if}
     table.table-logs {
         width: 100%;
         border-collapse: collapse;
@@ -128,430 +115,431 @@
 </style>
 <h1 style="padding: 0; margin: 0">Byjuno payment gateway configuration</h1>
 
+
 <ul class="tab nav nav-tabs">
-    <li><a href="#" id="href-settings" title="Settings"><span>Settings</span></a></li>
-    <li><a href="#" id="href-logs" title="Logs"><span>Logs</span></a></li>
+    <li><a href="{$url}" id="href-settings" title="Settings"><span>Settings</span></a></li>
+    <li><a href="{$urllogs}" id="href-logs" title="Logs"><span>Logs</span></a></li>
 </ul>
-
-<div id="tab-settings">
-    {if ($intrum_submit_main == 'OK')}
-        <div class="alert alert-success" style="width: 100%">
-            Configuration saved
+{if ($intrum_view_xml)}
+{elseif ($showlogs)}
+    <div id="tab-logs">
+        <div>
+            Searh in log
+            <form method="post" action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}">
+                <input value="{$search_in_log|escape}" name="searchInLog"> <input type="submit" value="search">
+                <input type="hidden" value="ok" name="submitLogSearch">
+            </form>
         </div>
-    {/if}
-    <form method="post" class="defaultForm form-horizontal"
-          action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}"
-          id="intrum_main_configuration">
-
-        <div class="panel" id="fieldset_0">
-            <div class="panel-heading">
-                <i class="icon-cogs"></i> General settings
+        <br/>
+        {if !$search_in_log}Last 20 results
+        {else}
+            Search result for string "{$search_in_log|escape}"
+        {/if}
+        <table class="table-logs">
+            <tr>
+                <td>Firstname</td>
+                <td>Lastname</td>
+                <td>IP</td>
+                <td>Status</td>
+                <td>Date</td>
+                <td>Request ID</td>
+                <td>Type</td>
+            </tr>
+            {foreach from=$intrum_logs item=log}
+                <tr>
+                    <td>{$log.firstname|escape}</td>
+                    <td>{$log.lastname|escape}</td>
+                    <td>{$log.ip|escape}</td>
+                    <td>{if ($log.status === '0')}Error{else}{$log.status|escape}{/if}</td>
+                    <td>{$log.creation_date|escape}</td>
+                    <td>{$log.request_id|escape}</td>
+                    <td><a href="{$url}&viewxml={$log.intrum_id}">{$log.type|escape}</a>
+                    </td>
+                </tr>
+            {/foreach}
+            {if !$intrum_logs}
+                <tr>
+                    <td colspan="5" style="padding: 10px">
+                        No results found
+                    </td>
+                </tr>
+            {/if}
+        </table>
+    </div>
+{else}
+    <div id="tab-settings">
+        {if ($intrum_submit_main == 'OK')}
+            <div class="alert alert-success" style="width: 100%">
+                Configuration saved
             </div>
-            <div class="form-wrapper">
+        {/if}
+        <form method="post" class="defaultForm form-horizontal"
+              action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}"
+              id="intrum_main_configuration">
+
+            <div class="panel" id="fieldset_0">
+                <div class="panel-heading">
+                    <i class="icon-cogs"></i> General settings
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            Mode
+                        </label>
+
+                        <div class="col-lg-9">
+                            <select name="intrum_mode" id="intrum_mode">
+                                <option value="test"{if ($intrum_mode == 'test')} selected{/if}>Test mode</option>
+                                <option value="live"{if ($intrum_mode == 'live')} selected{/if}>Production mode</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            Client ID
+                        </label>
+
+                        <div class="col-lg-9">
+                            <input type="text" name="intrum_client_id" id="intrum_client_id"
+                                   value="{$intrum_client_id|escape}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            User ID
+                        </label>
+
+                        <div class="col-lg-9">
+                            <input type="text" name="INTRUM_USER_ID" id="INTRUM_USER_ID"
+                                   value="{$INTRUM_USER_ID|escape}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            Password
+                        </label>
+
+                        <div class="col-lg-9">
+                            <input type="password" name="intrum_password" id="intrum_password"
+                                   value="{$intrum_password|escape}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            Technical Contact (E-mail)
+                        </label>
+
+                        <div class="col-lg-9">
+                            <input type="text" name="intrum_tech_email" id="intrum_tech_email"
+                                   value="{$intrum_tech_email|escape}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            Connection timeout to Byjuno CDP server in seconds:
+                        </label>
+
+                        <div class="col-lg-9">
+                            <input type="text" name="BYJUNO_CONN_TIMEOUT" id="BYJUNO_CONN_TIMEOUT"
+                                   value="{$BYJUNO_CONN_TIMEOUT|escape}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            Enable ThreatMetrix
+                        </label>
+
+                        <div class="col-lg-9">
+                            <select name="INTRUM_ENABLETMX" id="INTRUM_ENABLETMX">
+                                <option value="false"{if ($INTRUM_ENABLETMX == 'false')} selected{/if}>Disabled</option>
+                                <option value="true"{if ($INTRUM_ENABLETMX == 'true')} selected{/if}>Enabled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            ThreatMetrix orgid
+                        </label>
+
+                        <div class="col-lg-9">
+                            <input type="text" name="INTRUM_TMXORGID" id="INTRUM_TMXORGID"
+                                   value="{$INTRUM_TMXORGID|escape}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            Allow postal delivery
+                        </label>
+
+                        <div class="col-lg-9">
+                            <select name="BYJUNO_ALLOW_POSTAL" id="BYJUNO_ALLOW_POSTAL">
+                                <option value="false"{if ($BYJUNO_ALLOW_POSTAL == 'false')} selected{/if}>Disabled
+                                </option>
+                                <option value="true"{if ($BYJUNO_ALLOW_POSTAL == 'true')} selected{/if}>Enabled</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="control-label col-lg-3 required">
-                        Mode
+                        Enable gender &amp; birthday selection:
                     </label>
 
                     <div class="col-lg-9">
-                        <select name="intrum_mode" id="intrum_mode">
-                            <option value="test"{if ($intrum_mode == 'test')} selected{/if}>Test mode</option>
-                            <option value="live"{if ($intrum_mode == 'live')} selected{/if}>Production mode</option>
+                        <select name="BYJUNO_GENDER_BIRTHDAY" id="BYJUNO_GENDER_BIRTHDAY">
+                            <option value="false"{if ($BYJUNO_GENDER_BIRTHDAY == 'false')} selected{/if}>Disabled
+                            </option>
+                            <option value="true"{if ($BYJUNO_GENDER_BIRTHDAY == 'true')} selected{/if}>Enabled</option>
                         </select>
                     </div>
                 </div>
+                <div class="panel-footer">
+                    <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
+                    <button type="submit" value="1" id="module_form_submit_btn" name="btnSubmit"
+                            class="btn btn-default pull-right">
+                        <i class="process-icon-save"></i> Save
+                    </button>
+                </div>
+            </div>
+
+            <div class="panel" id="fieldset_0">
+                <div class="panel-heading">
+                    <i class="icon-cogs"></i> Risk managment
+                </div>
                 <div class="form-group">
                     <label class="control-label col-lg-3 required">
-                        Client ID
+                        Mininmal amount for checkout (default 10):
                     </label>
 
                     <div class="col-lg-9">
-                        <input type="text" name="intrum_client_id" id="intrum_client_id"
-                               value="{$intrum_client_id|escape}"/>
+                        <input type="text" name="BYJUNO_MIN_AMOUNT" id="BYJUNO_MIN_AMOUNT"
+                               value="{$BYJUNO_MIN_AMOUNT|escape}"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-lg-3 required">
-                        User ID
+                        Maximal amount for checkout (default 1000)::
                     </label>
 
                     <div class="col-lg-9">
-                        <input type="text" name="INTRUM_USER_ID" id="INTRUM_USER_ID"
-                               value="{$INTRUM_USER_ID|escape}"/>
+                        <input type="text" name="BYJUNO_MAX_AMOUNT" id="BYJUNO_MAX_AMOUNT"
+                               value="{$BYJUNO_MAX_AMOUNT|escape}"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-lg-3 required">
-                        Password
+                        Credit check before show payments
                     </label>
 
                     <div class="col-lg-9">
-                        <input type="password" name="intrum_password" id="intrum_password"
-                               value="{$intrum_password|escape}"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
-                        Technical Contact (E-mail)
-                    </label>
-
-                    <div class="col-lg-9">
-                        <input type="text" name="intrum_tech_email" id="intrum_tech_email"
-                               value="{$intrum_tech_email|escape}"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
-                        Connection timeout to Byjuno CDP server in seconds:
-                    </label>
-
-                    <div class="col-lg-9">
-                        <input type="text" name="BYJUNO_CONN_TIMEOUT" id="BYJUNO_CONN_TIMEOUT"
-                               value="{$BYJUNO_CONN_TIMEOUT|escape}"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
-                        Enable ThreatMetrix
-                    </label>
-
-                    <div class="col-lg-9">
-                        <select name="INTRUM_ENABLETMX" id="INTRUM_ENABLETMX">
-                            <option value="false"{if ($INTRUM_ENABLETMX == 'false')} selected{/if}>Disabled</option>
-                            <option value="true"{if ($INTRUM_ENABLETMX == 'true')} selected{/if}>Enabled</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
-                        ThreatMetrix orgid
-                    </label>
-
-                    <div class="col-lg-9">
-                        <input type="text" name="INTRUM_TMXORGID" id="INTRUM_TMXORGID"
-                               value="{$INTRUM_TMXORGID|escape}"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
-                        Allow postal delivery
-                    </label>
-
-                    <div class="col-lg-9">
-                        <select name="BYJUNO_ALLOW_POSTAL" id="BYJUNO_ALLOW_POSTAL">
-                            <option value="false"{if ($BYJUNO_ALLOW_POSTAL == 'false')} selected{/if}>Disabled</option>
-                            <option value="true"{if ($BYJUNO_ALLOW_POSTAL == 'true')} selected{/if}>Enabled</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-lg-3 required">
-                    Enable gender &amp; birthday selection:
-                </label>
-
-                <div class="col-lg-9">
-                    <select name="BYJUNO_GENDER_BIRTHDAY" id="BYJUNO_GENDER_BIRTHDAY">
-                        <option value="false"{if ($BYJUNO_GENDER_BIRTHDAY == 'false')} selected{/if}>Disabled</option>
-                        <option value="true"{if ($BYJUNO_GENDER_BIRTHDAY == 'true')} selected{/if}>Enabled</option>
-                    </select>
-                </div>
-            </div>
-            <div class="panel-footer">
-                <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
-                <button type="submit" value="1" id="module_form_submit_btn" name="btnSubmit"
-                        class="btn btn-default pull-right">
-                    <i class="process-icon-save"></i> Save
-                </button>
-            </div>
-        </div>
-
-        <div class="panel" id="fieldset_0">
-            <div class="panel-heading">
-                <i class="icon-cogs"></i> Risk managment
-            </div>
-            <div class="form-group">
-                <label class="control-label col-lg-3 required">
-                    Mininmal amount for checkout (default 10):
-                </label>
-
-                <div class="col-lg-9">
-                    <input type="text" name="BYJUNO_MIN_AMOUNT" id="BYJUNO_MIN_AMOUNT"
-                           value="{$BYJUNO_MIN_AMOUNT|escape}"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-lg-3 required">
-                    Maximal amount for checkout  (default 1000)::
-                </label>
-
-                <div class="col-lg-9">
-                    <input type="text" name="BYJUNO_MAX_AMOUNT" id="BYJUNO_MAX_AMOUNT"
-                           value="{$BYJUNO_MAX_AMOUNT|escape}"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-lg-3 required">
-                    Credit check before show payments
-                </label>
-
-                <div class="col-lg-9">
-                    <select name="BYJUNO_CREDIT_CHECK" id="BYJUNO_CREDIT_CHECK">
-                        <option value="enable"{if ($BYJUNO_CREDIT_CHECK == 'enable')} selected{/if}>Enable</option>
-                        <option value="disable"{if ($BYJUNO_CREDIT_CHECK == 'disable')} selected{/if}>Disable</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-lg-3 required">
-                    Enable B2B check:
-                </label>
-
-                <div class="col-lg-9">
-                    <select name="BYJUNO_B2B" id="BYJUNO_B2B">
-                        <option value="enable"{if ($BYJUNO_B2B == 'enable')} selected{/if}>Enable</option>
-                        <option value="disable"{if ($BYJUNO_B2B == 'disable')} selected{/if}>Disable</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-lg-3 required">
-                    S4 &amp; S5 transactions:
-                </label>
-
-                <div class="col-lg-9">
-                    <select name="BYJUNO_S4_S5_ALLOWED" id="BYJUNO_S4_S5_ALLOWED">
-                        <option value="enable"{if ($BYJUNO_S4_S5_ALLOWED == 'enable')} selected{/if}>Enable</option>
-                        <option value="disable"{if ($BYJUNO_S4_S5_ALLOWED == 'disable')} selected{/if}>Disable</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-wrapper">
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
-                        Accepted CDP risks if credit check enabled (comma separated):
-                    </label>
-
-                    <div class="col-lg-9">
-                        <input type="text" name="BYJUNO_CDP_ACCEPT" id="BYJUNO_CDP_ACCEPT"
-                               value="{$BYJUNO_CDP_ACCEPT|escape}"/>
-                    </div>
-                </div>
-            </div>
-            <div class="form-wrapper">
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
-                        Accepted Byjuno Risk for S2 (comma separated):
-                    </label>
-
-                    <div class="col-lg-9">
-                        <input type="text" name="BYJUNO_S2_IJ_ACCEPT" id="BYJUNO_S2_IJ_ACCEPT"
-                               value="{$BYJUNO_S2_IJ_ACCEPT|escape}"/>
-                    </div>
-                </div>
-            </div>
-            <div class="form-wrapper">
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
-                        Accepted Merchant Risk for S2 (comma separated):
-                    </label>
-
-                    <div class="col-lg-9">
-                        <input type="text" name="BYJUNO_S2_MERCHANT_ACCEPT" id="BYJUNO_S2_MERCHANT_ACCEPT"
-                               value="{$BYJUNO_S2_MERCHANT_ACCEPT|escape}"/>
-                    </div>
-                </div>
-            </div>
-            <div class="form-wrapper">
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
-                        Accepted statuses for S3 response (comma separated):
-                    </label>
-
-                    <div class="col-lg-9">
-                        <input type="text" name="BYJUNO_S3_ACCEPT" id="BYJUNO_S3_ACCEPT"
-                               value="{$BYJUNO_S3_ACCEPT|escape}"/>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-footer">
-                <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
-                <button type="submit" value="1" id="module_form_submit_btn" name="btnSubmit"
-                        class="btn btn-default pull-right">
-                    <i class="process-icon-save"></i> Save
-                </button>
-            </div>
-        </div>
-
-        <div class="panel" id="fieldset_0">
-            <div class="panel-heading">
-                <i class="icon-cogs"></i> Byjuno Invoice payment settings
-            </div>
-            <div class="form-wrapper">
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
-                        Byjuno Invoice (with partial payment option)
-                    </label>
-
-                    <div class="col-lg-9">
-                        <select name="byjuno_invoice" id="byjuno_invoice">
-                            <option value="enable"{if ($byjuno_invoice == 'enable')} selected{/if}>Enable</option>
-                            <option value="disable"{if ($byjuno_invoice == 'disable')} selected{/if}>Disable</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
-                        Single invoice
-                    </label>
-
-                    <div class="col-lg-9">
-                        <select name="single_invoice" id="single_invoice">
-                            <option value="enable"{if ($single_invoice == 'enable')} selected{/if}>Enable</option>
-                            <option value="disable"{if ($single_invoice == 'disable')} selected{/if}>Disable</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-footer">
-                <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
-                <button type="submit" value="1" id="module_form_submit_btn" name="btnSubmit"
-                        class="btn btn-default pull-right">
-                    <i class="process-icon-save"></i> Save
-                </button>
-            </div>
-        </div>
-
-        <div class="panel" id="fieldset_0">
-            <div class="panel-heading">
-                <i class="icon-cogs"></i> Byjuno Installment payment settings
-            </div>
-            <div class="form-wrapper">
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
-                        3 installments
-                    </label>
-
-                    <div class="col-lg-9">
-                        <select name="installment_3" id="installment_3">
-                            <option value="enable"{if ($installment_3 == 'enable')} selected{/if}>Enable</option>
-                            <option value="disable"{if ($installment_3 == 'disable')} selected{/if}>Disable</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
-                        10 installments
-                    </label>
-
-                    <div class="col-lg-9">
-                        <select name="installment_10" id="installment_10">
-                            <option value="enable"{if ($installment_10 == 'enable')} selected{/if}>Enable</option>
-                            <option value="disable"{if ($installment_10 == 'disable')} selected{/if}>Disable
+                        <select name="BYJUNO_CREDIT_CHECK" id="BYJUNO_CREDIT_CHECK">
+                            <option value="enable"{if ($BYJUNO_CREDIT_CHECK == 'enable')} selected{/if}>Enable</option>
+                            <option value="disable"{if ($BYJUNO_CREDIT_CHECK == 'disable')} selected{/if}>Disable
                             </option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-lg-3 required">
-                        12 installments
+                        Enable B2B check:
                     </label>
 
                     <div class="col-lg-9">
-                        <select name="installment_12" id="installment_12">
-                            <option value="enable"{if ($installment_12 == 'enable')} selected{/if}>Enable</option>
-                            <option value="disable"{if ($installment_12 == 'disable')} selected{/if}>Disable
-                            </option>
+                        <select name="BYJUNO_B2B" id="BYJUNO_B2B">
+                            <option value="enable"{if ($BYJUNO_B2B == 'enable')} selected{/if}>Enable</option>
+                            <option value="disable"{if ($BYJUNO_B2B == 'disable')} selected{/if}>Disable</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-lg-3 required">
-                        24 installments
+                        S4 &amp; S5 transactions:
                     </label>
 
                     <div class="col-lg-9">
-                        <select name="installment_24" id="installment_24">
-                            <option value="enable"{if ($installment_24 == 'enable')} selected{/if}>Enable</option>
-                            <option value="disable"{if ($installment_24 == 'disable')} selected{/if}>Disable
+                        <select name="BYJUNO_S4_S5_ALLOWED" id="BYJUNO_S4_S5_ALLOWED">
+                            <option value="enable"{if ($BYJUNO_S4_S5_ALLOWED == 'enable')} selected{/if}>Enable</option>
+                            <option value="disable"{if ($BYJUNO_S4_S5_ALLOWED == 'disable')} selected{/if}>Disable
                             </option>
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-lg-3 required">
-                        4 installments in 12 months
-                    </label>
+                <div class="form-wrapper">
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            Accepted CDP risks if credit check enabled (comma separated):
+                        </label>
 
-                    <div class="col-lg-9">
-                        <select name="installment_4x12" id="installment_4x12">
-                            <option value="enable"{if ($installment_4x12 == 'enable')} selected{/if}>Enable</option>
-                            <option value="disable"{if ($installment_4x12 == 'disable')} selected{/if}>Disable
-                            </option>
-                        </select>
+                        <div class="col-lg-9">
+                            <input type="text" name="BYJUNO_CDP_ACCEPT" id="BYJUNO_CDP_ACCEPT"
+                                   value="{$BYJUNO_CDP_ACCEPT|escape}"/>
+                        </div>
                     </div>
                 </div>
+                <div class="form-wrapper">
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            Accepted Byjuno Risk for S2 (comma separated):
+                        </label>
+
+                        <div class="col-lg-9">
+                            <input type="text" name="BYJUNO_S2_IJ_ACCEPT" id="BYJUNO_S2_IJ_ACCEPT"
+                                   value="{$BYJUNO_S2_IJ_ACCEPT|escape}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            Accepted Merchant Risk for S2 (comma separated):
+                        </label>
+
+                        <div class="col-lg-9">
+                            <input type="text" name="BYJUNO_S2_MERCHANT_ACCEPT" id="BYJUNO_S2_MERCHANT_ACCEPT"
+                                   value="{$BYJUNO_S2_MERCHANT_ACCEPT|escape}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            Accepted statuses for S3 response (comma separated):
+                        </label>
+
+                        <div class="col-lg-9">
+                            <input type="text" name="BYJUNO_S3_ACCEPT" id="BYJUNO_S3_ACCEPT"
+                                   value="{$BYJUNO_S3_ACCEPT|escape}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
+                    <button type="submit" value="1" id="module_form_submit_btn" name="btnSubmit"
+                            class="btn btn-default pull-right">
+                        <i class="process-icon-save"></i> Save
+                    </button>
+                </div>
             </div>
-            <div class="panel-footer">
-                <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
-                <button type="submit" value="1" id="module_form_submit_btn" name="btnSubmit"
-                        class="btn btn-default pull-right">
-                    <i class="process-icon-save"></i> Save
-                </button>
+
+            <div class="panel" id="fieldset_0">
+                <div class="panel-heading">
+                    <i class="icon-cogs"></i> Byjuno Invoice payment settings
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            Byjuno Invoice (with partial payment option)
+                        </label>
+
+                        <div class="col-lg-9">
+                            <select name="byjuno_invoice" id="byjuno_invoice">
+                                <option value="enable"{if ($byjuno_invoice == 'enable')} selected{/if}>Enable</option>
+                                <option value="disable"{if ($byjuno_invoice == 'disable')} selected{/if}>Disable
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            Single invoice
+                        </label>
+
+                        <div class="col-lg-9">
+                            <select name="single_invoice" id="single_invoice">
+                                <option value="enable"{if ($single_invoice == 'enable')} selected{/if}>Enable</option>
+                                <option value="disable"{if ($single_invoice == 'disable')} selected{/if}>Disable
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
+                    <button type="submit" value="1" id="module_form_submit_btn" name="btnSubmit"
+                            class="btn btn-default pull-right">
+                        <i class="process-icon-save"></i> Save
+                    </button>
+                </div>
             </div>
-        </div>
-    </form>
-</div>
-<div id="tab-logs">
-    <div>
-        Searh in log
-        <form method="post" action="{$smarty.server.REQUEST_URI|escape:'htmlall':'UTF-8'}">
-            <input value="{$search_in_log|escape}" name="searchInLog"> <input type="submit" value="search">
-            <input type="hidden" value="ok" name="submitLogSearch">
+
+            <div class="panel" id="fieldset_0">
+                <div class="panel-heading">
+                    <i class="icon-cogs"></i> Byjuno Installment payment settings
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            3 installments
+                        </label>
+
+                        <div class="col-lg-9">
+                            <select name="installment_3" id="installment_3">
+                                <option value="enable"{if ($installment_3 == 'enable')} selected{/if}>Enable</option>
+                                <option value="disable"{if ($installment_3 == 'disable')} selected{/if}>Disable</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            10 installments
+                        </label>
+
+                        <div class="col-lg-9">
+                            <select name="installment_10" id="installment_10">
+                                <option value="enable"{if ($installment_10 == 'enable')} selected{/if}>Enable</option>
+                                <option value="disable"{if ($installment_10 == 'disable')} selected{/if}>Disable
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            12 installments
+                        </label>
+
+                        <div class="col-lg-9">
+                            <select name="installment_12" id="installment_12">
+                                <option value="enable"{if ($installment_12 == 'enable')} selected{/if}>Enable</option>
+                                <option value="disable"{if ($installment_12 == 'disable')} selected{/if}>Disable
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            24 installments
+                        </label>
+
+                        <div class="col-lg-9">
+                            <select name="installment_24" id="installment_24">
+                                <option value="enable"{if ($installment_24 == 'enable')} selected{/if}>Enable</option>
+                                <option value="disable"{if ($installment_24 == 'disable')} selected{/if}>Disable
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            4 installments in 12 months
+                        </label>
+
+                        <div class="col-lg-9">
+                            <select name="installment_4x12" id="installment_4x12">
+                                <option value="enable"{if ($installment_4x12 == 'enable')} selected{/if}>Enable</option>
+                                <option value="disable"{if ($installment_4x12 == 'disable')} selected{/if}>Disable
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
+                    <button type="submit" value="1" id="module_form_submit_btn" name="btnSubmit"
+                            class="btn btn-default pull-right">
+                        <i class="process-icon-save"></i> Save
+                    </button>
+                </div>
+            </div>
         </form>
     </div>
-    <br/>
-    {if !$search_in_log}Last 20 results
-    {else}
-        Search result for string "{$search_in_log|escape}"
-    {/if}
-    <table class="table-logs">
-        <tr>
-            <td>Firstname</td>
-            <td>Lastname</td>
-            <td>IP</td>
-            <td>Status</td>
-            <td>Date</td>
-            <td>Request ID</td>
-            <td>Type</td>
-        </tr>
-        {foreach from=$intrum_logs item=log}
-            <tr>
-                <td>{$log.firstname|escape}</td>
-                <td>{$log.lastname|escape}</td>
-                <td>{$log.ip|escape}</td>
-                <td>{if ($log.status === '0')}Error{else}{$log.status|escape}{/if}</td>
-                <td>{$log.creation_date|escape}</td>
-                <td>{$log.request_id|escape}</td>
-                <td>{$log.type|escape}</td>
-            </tr>
-        {/foreach}
-        {if !$intrum_logs}
-            <tr>
-                <td colspan="5" style="padding: 10px">
-                    No results found
-                </td>
-            </tr>
-        {/if}
-    </table>
-</div>
-<script>
-    $("#href-settings").click(function (e) {
-        $("#tab-logs").hide();
-        $("#tab-settings").show();
-    });
-    $("#href-logs").click(function (e) {
-        $("#tab-settings").hide();
-        $("#tab-logs").show();
-    });
-</script>
+{/if}
