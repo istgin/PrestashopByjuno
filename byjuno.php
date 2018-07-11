@@ -274,10 +274,23 @@ class Byjuno extends PaymentModule
                 }
                 $i++;
             }
+
+            $invoices = $orderCore->getInvoicesCollection();
+            $curInvoice = null;
+            foreach ($invoices as $invoice) {
+                /* @var $invoice OrderInvoiceCore */
+                $curInvoice = $invoice;
+            }
+            if ($curInvoice == null)
+            {
+                return;
+            }
+            $invoiceNum = $curInvoice->getInvoiceNumberFormatted($id_lang = Context::getContext()->language->id, (int)$orderCore->id_shop);
             $currency = CurrencyCore::getCurrency($orderCore->id_currency);
             $time = strtotime($curSlip->date_add);
             $dt = date("Y-m-d", $time);
-            $requestRefund = CreateShopRequestS5Refund($curSlip->id, $curSlip->total_shipping_tax_incl, $currency["iso_code"], $orderCore->reference, $orderCore->id_customer, $dt);
+            $amount = $curSlip->total_shipping_tax_incl + $curSlip->amount;
+            $requestRefund = CreateShopRequestS5Refund($invoiceNum, $amount, $currency["iso_code"], $orderCore->reference, $orderCore->id_customer, $dt);
             $xmlRequestS5 = $requestRefund->createRequest();
             $byjunoCommunicator = new ByjunoCommunicator();
             $byjunoCommunicator->setServer(Configuration::get("INTRUM_MODE"));

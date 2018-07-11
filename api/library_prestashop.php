@@ -406,7 +406,7 @@ function CreateShopRequestS4($doucmentId, $amount, $orderAmount, $orderCurrency,
     $request->setOpenBalance(number_format($orderAmount, 2, '.', ''));
     return $request;
 }
-function CreateShopRequestS5Refund($doucmentId, $amount, $orderCurrency, $orderId, $customerId, $date)
+function CreateShopRequestS5Refund($documentId, $amount, $orderCurrency, $orderId, $customerId, $date)
 {
     $request = new ByjunoS5Request();
     $request->setClientId(Configuration::get("INTRUM_CLIENT_ID"));
@@ -425,7 +425,7 @@ function CreateShopRequestS5Refund($doucmentId, $amount, $orderCurrency, $orderI
     $request->setTransactionAmount(number_format($amount, 2, '.', ''));
     $request->setTransactionCurrency($orderCurrency);
     $request->setTransactionType("REFUND");
-    $request->setAdditional2($doucmentId);
+    $request->setAdditional2($documentId);
     return $request;
 }
 function CreateShopRequestS5Cancel($amount, $orderCurrency, $orderId, $customerId, $date)
