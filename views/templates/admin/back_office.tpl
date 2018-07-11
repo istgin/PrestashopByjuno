@@ -365,13 +365,39 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label col-lg-3 required">
-                        S4 &amp; S5 transactions:
+                        S4 transactions:
                     </label>
 
                     <div class="col-lg-9">
-                        <select name="BYJUNO_S4_S5_ALLOWED" id="BYJUNO_S4_S5_ALLOWED">
-                            <option value="enable"{if ($BYJUNO_S4_S5_ALLOWED == 'enable')} selected{/if}>Enable</option>
-                            <option value="disable"{if ($BYJUNO_S4_S5_ALLOWED == 'disable')} selected{/if}>Disable
+                        <select name="BYJUNO_S4_ALLOWED" id="BYJUNO_S4_ALLOWED">
+                            <option value="enable"{if ($BYJUNO_S4_ALLOWED == 'enable')} selected{/if}>Enable</option>
+                            <option value="disable"{if ($BYJUNO_S4_ALLOWED == 'disable')} selected{/if}>Disable
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Cancel S5 transactions:
+                    </label>
+
+                    <div class="col-lg-9">
+                        <select name="BYJUNO_CANCEL_S5_ALLOWED" id="BYJUNO_CANCEL_S5_ALLOWED">
+                            <option value="enable"{if ($BYJUNO_CANCEL_S5_ALLOWED == 'enable')} selected{/if}>Enable</option>
+                            <option value="disable"{if ($BYJUNO_CANCEL_S5_ALLOWED == 'disable')} selected{/if}>Disable
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        Refund S5 transactions:
+                    </label>
+
+                    <div class="col-lg-9">
+                        <select name="BYJUNO_REFUND_S5_ALLOWED" id="BYJUNO_REFUND_S5_ALLOWED">
+                            <option value="enable"{if ($BYJUNO_REFUND_S5_ALLOWED == 'enable')} selected{/if}>Enable</option>
+                            <option value="disable"{if ($BYJUNO_REFUND_S5_ALLOWED == 'disable')} selected{/if}>Disable
                             </option>
                         </select>
                     </div>
