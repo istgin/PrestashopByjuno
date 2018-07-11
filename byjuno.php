@@ -324,9 +324,9 @@ class Byjuno extends PaymentModule
 
     public function hookActionOrderStatusPostUpdate($params)
     {
+        /* @var $orderStatus OrderStateCore */
+        $orderStatus = $params["newOrderStatus"];
         if (Configuration::get("BYJUNO_S4_ALLOWED") == 'enable') {
-            /* @var $orderStatus OrderStateCore */
-            $orderStatus = $params["newOrderStatus"];
             if ($orderStatus->id == Configuration::get('BYJUNO_S4_TRIGGER')) {
                 $orderCore = new OrderCore((int)$params["id_order"]);
                 $order_module = $orderCore->module; // will return the payment module eg. ps_checkpayment , ps_wirepayment
