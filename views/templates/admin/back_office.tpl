@@ -196,7 +196,7 @@
                 <div class="form-wrapper">
                     <div class="form-group">
                         <label class="control-label col-lg-3 required">
-                            Mode
+                            Mode:
                         </label>
 
                         <div class="col-lg-9">
@@ -208,7 +208,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-lg-3 required">
-                            Client ID
+                            Client ID:
                         </label>
 
                         <div class="col-lg-9">
@@ -218,7 +218,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-lg-3 required">
-                            User ID
+                            User ID:
                         </label>
 
                         <div class="col-lg-9">
@@ -228,7 +228,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-lg-3 required">
-                            Password
+                            Password:
                         </label>
 
                         <div class="col-lg-9">
@@ -238,7 +238,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-lg-3 required">
-                            Technical Contact (E-mail)
+                            Technical Contact (E-mail):
                         </label>
 
                         <div class="col-lg-9">
@@ -258,7 +258,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-lg-3 required">
-                            Enable ThreatMetrix
+                            Enable ThreatMetrix:
                         </label>
 
                         <div class="col-lg-9">
@@ -270,7 +270,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-lg-3 required">
-                            ThreatMetrix orgid
+                            ThreatMetrix orgid:
                         </label>
 
                         <div class="col-lg-9">
@@ -280,7 +280,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-lg-3 required">
-                            Allow postal delivery
+                            Allow postal delivery:
                         </label>
 
                         <div class="col-lg-9">
@@ -330,7 +330,7 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label col-lg-3 required">
-                        Maximal amount for checkout (default 1000)::
+                        Maximal amount for checkout (default 1000):
                     </label>
 
                     <div class="col-lg-9">
@@ -340,7 +340,7 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label col-lg-3 required">
-                        Credit check before show payments
+                        Credit check before show payments:
                     </label>
 
                     <div class="col-lg-9">
@@ -373,6 +373,18 @@
                             <option value="enable"{if ($BYJUNO_S4_ALLOWED == 'enable')} selected{/if}>Enable</option>
                             <option value="disable"{if ($BYJUNO_S4_ALLOWED == 'disable')} selected{/if}>Disable
                             </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 required">
+                        S4 trigger order state:
+                    </label>
+                    <div class="col-lg-9">
+                        <select name="BYJUNO_S4_TRIGGER" id="BYJUNO_S4_TRIGGER">
+                            {foreach from=$order_status_list item=ostatus}
+                                <option value="{$ostatus['id_order_state']}"{if ($BYJUNO_S4_TRIGGER == $ostatus['id_order_state'])} selected{/if}>{$ostatus['name']}</option>
+                            {/foreach}>
                         </select>
                     </div>
                 </div>
@@ -466,7 +478,7 @@
                 <div class="form-wrapper">
                     <div class="form-group">
                         <label class="control-label col-lg-3 required">
-                            Byjuno Invoice (with partial payment option)
+                            Byjuno Invoice (with partial payment option):
                         </label>
 
                         <div class="col-lg-9">
@@ -479,7 +491,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-lg-3 required">
-                            Single invoice
+                            Single invoice:
                         </label>
 
                         <div class="col-lg-9">
@@ -507,7 +519,7 @@
                 <div class="form-wrapper">
                     <div class="form-group">
                         <label class="control-label col-lg-3 required">
-                            3 installments
+                            3 installments:
                         </label>
 
                         <div class="col-lg-9">
@@ -519,7 +531,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-lg-3 required">
-                            10 installments
+                            10 installments:
                         </label>
 
                         <div class="col-lg-9">
@@ -532,7 +544,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-lg-3 required">
-                            12 installments
+                            12 installments:
                         </label>
 
                         <div class="col-lg-9">
@@ -545,7 +557,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-lg-3 required">
-                            24 installments
+                            24 installments:
                         </label>
 
                         <div class="col-lg-9">
@@ -558,7 +570,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-lg-3 required">
-                            4 installments in 12 months
+                            4 installments in 12 months:
                         </label>
 
                         <div class="col-lg-9">

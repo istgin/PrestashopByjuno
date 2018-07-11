@@ -9,7 +9,7 @@
 
 
 
-function getClientIp() {
+function byjunoGetClientIp() {
     $ipaddress = '';
     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
         $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
@@ -181,7 +181,7 @@ function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, Currenc
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'IP';
-    $extraInfo["Value"] = getClientIp();
+    $extraInfo["Value"] = byjunoGetClientIp();
     $request->setExtraInfo($extraInfo);
 
     if (Configuration::get("INTRUM_ENABLETMX") == 'true' && Configuration::get("INTRUM_TMXORGID") != '' && !empty($cookie->intrumId)) {
@@ -311,7 +311,7 @@ function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'IP';
-    $extraInfo["Value"] = getClientIp();
+    $extraInfo["Value"] = byjunoGetClientIp();
     $request->setExtraInfo($extraInfo);
 
     if (Configuration::get("INTRUM_ENABLETMX") == 'true' && Configuration::get("INTRUM_TMXORGID") != '' && !empty($cookie->intrumId)) {
@@ -376,7 +376,7 @@ function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency
     }
 
     $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-    $extraInfo["Value"] = 'Byjuno Prestashop module 1.5';
+    $extraInfo["Value"] = 'Byjuno Prestashop module 1.0.0';
     $request->setExtraInfo($extraInfo);	
 
     return $request;

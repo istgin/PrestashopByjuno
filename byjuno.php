@@ -50,8 +50,8 @@ class Byjuno extends PaymentModule
             return;
 
         $total = $this->context->cart->getOrderTotal(true, Cart::BOTH);
-        if ($total < Configuration::get("BYJUNO_MIN_AMOUNT") || $total > Configuration::get("BYJUNO_MAX_AMOUNT")) {
-            returnl;
+        if ((float)$total < (float)Configuration::get("BYJUNO_MIN_AMOUNT") || (float)$total > (float)Configuration::get("BYJUNO_MAX_AMOUNT")) {
+            return;
         }
 
         $byjuno_invoice = false;
@@ -100,7 +100,7 @@ class Byjuno extends PaymentModule
                 "postcode" => $request->getPostCode(),
                 "street" => trim($request->getFirstLine() . ' ' . $request->getHouseNumber()),
                 "country" => $request->getCountryCode(),
-                "ip" => $_SERVER["REMOTE_ADDR"],
+                "ip" => byjunoGetClientIp(),
                 "status" => $status,
                 "request_id" => $request->getRequestId(),
                 "type" => $type,
@@ -247,7 +247,7 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('INTRUM_TMXORGID', 'lq866c5i');
             Configuration::updateValue('INTRUM_ENABLETMX', 'true');
             Configuration::updateValue('BYJUNO_GENDER_BIRTHDAY', 'true');
-
+            Configuration::updateValue('BYJUNO_S4_TRIGGER', Configuration::get('PS_OS_PAYMENT'));
 
         }
         return true;
@@ -311,7 +311,7 @@ class Byjuno extends PaymentModule
                 "postcode" => "-",
                 "street" => "-",
                 "country" => "-",
-                "ip" => $_SERVER["REMOTE_ADDR"],
+                "ip" => byjunoGetClientIp(),
                 "status" => $statusS5,
                 "request_id" => $requestRefund->getRequestId(),
                 "type" => $statusLog,
@@ -327,7 +327,7 @@ class Byjuno extends PaymentModule
         if (Configuration::get("BYJUNO_S4_ALLOWED") == 'enable') {
             /* @var $orderStatus OrderStateCore */
             $orderStatus = $params["newOrderStatus"];
-            if ($orderStatus->id == Configuration::get('PS_OS_PAYMENT')) {
+            if ($orderStatus->id == Configuration::get('BYJUNO_S4_TRIGGER')) {
                 $orderCore = new OrderCore((int)$params["id_order"]);
                 $order_module = $orderCore->module; // will return the payment module eg. ps_checkpayment , ps_wirepayment
                 if ($order_module == "byjuno") {
@@ -359,7 +359,7 @@ class Byjuno extends PaymentModule
                             "postcode" => "-",
                             "street" => "-",
                             "country" => "-",
-                            "ip" => $_SERVER["REMOTE_ADDR"],
+                            "ip" => byjunoGetClientIp(),
                             "status" => $statusS4,
                             "request_id" => $requestInvoice->getRequestId(),
                             "type" => $statusLog,
@@ -405,7 +405,7 @@ class Byjuno extends PaymentModule
                         "postcode" => "-",
                         "street" => "-",
                         "country" => "-",
-                        "ip" => $_SERVER["REMOTE_ADDR"],
+                        "ip" => byjunoGetClientIp(),
                         "status" => $statusS5,
                         "request_id" => $requestCancel->getRequestId(),
                         "type" => $statusLog,
@@ -497,6 +497,7 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('BYJUNO_REFUND_S5_ALLOWED', trim(Tools::getValue('BYJUNO_REFUND_S5_ALLOWED')));
             Configuration::updateValue('BYJUNO_B2B', trim(Tools::getValue('BYJUNO_B2B')));
             Configuration::updateValue('BYJUNO_GENDER_BIRTHDAY', trim(Tools::getValue('BYJUNO_GENDER_BIRTHDAY')));
+            Configuration::updateValue('BYJUNO_S4_TRIGGER', trim(Tools::getValue('BYJUNO_S4_TRIGGER')));
         }
         if (Tools::isSubmit('submitLogSearch')) {
             Configuration::updateValue('INTRUM_SHOW_LOG', 'true');
@@ -564,6 +565,7 @@ class Byjuno extends PaymentModule
             'BYJUNO_REFUND_S5_ALLOWED' => Configuration::get("BYJUNO_REFUND_S5_ALLOWED"),
             'BYJUNO_B2B' => Configuration::get("BYJUNO_B2B"),
             'BYJUNO_GENDER_BIRTHDAY' => Configuration::get("BYJUNO_GENDER_BIRTHDAY"),
+            'BYJUNO_S4_TRIGGER' => Configuration::get('BYJUNO_S4_TRIGGER'),
             'payment_methods' => $methods,
             'intrum_logs' => self::getLogs(),
             'search_in_log' => Tools::getValue('searchInLog'),
@@ -571,7 +573,8 @@ class Byjuno extends PaymentModule
             'url' => "?controller=AdminModules&token=" . Tools::getValue('token') . "&configure=byjuno&tab_module=payments_gateways&module_name=byjuno",
             'urllogs' => "?controller=AdminModules&token=" . Tools::getValue('token') . "&configure=byjuno&tab_module=payments_gateways&module_name=byjuno&logs=true",
             'intrum_view_xml' => Tools::getValue('viewxml') != "" ? 1 : 0,
-            'intrum_single_log' => self::getSingleLog(Tools::getValue('viewxml'))
+            'intrum_single_log' => self::getSingleLog(Tools::getValue('viewxml')),
+            'order_status_list' => OrderStateCore::getOrderStates((int)Configuration::get('PS_LANG_DEFAULT'))
         );
         $this->context->smarty->assign($values);
 
