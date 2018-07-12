@@ -41,6 +41,9 @@ $_MODULE['<{byjuno}prestashop>payment_execution_b719ce180ec7bd9641fece2f920f4817
 $_MODULE['<{byjuno}prestashop>payment_execution_10803b83a68db8f7e7a33e3b41e184d0'] = 'Geburtsdatum';
 $_MODULE['<{byjuno}prestashop>payment_execution_569fd05bdafa1712c4f6be5b153b8418'] = 'Andere Zahlungsmethoden';
 $_MODULE['<{byjuno}prestashop>payment_execution_46b9e3665f187c739c55983f757ccda0'] = 'Bestellung abschliessen';
+$_MODULE['<{byjuno}prestashop>payment_execution_a6d6486d3d26f3ee5d215b120b4d9aa9'] = 'I agree with terms and conditions';
+$_MODULE['<{byjuno}prestashop>payment_execution_ebd29ea4b1bd3dc92af6104cb4efa135'] = 'You must agree with terms & conditions';
+
 
 
 return $_MODULE;
