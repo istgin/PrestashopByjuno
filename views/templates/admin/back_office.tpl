@@ -590,6 +590,101 @@
                     </button>
                 </div>
             </div>
+
+            <div class="panel" id="fieldset_0">
+                <div class="panel-heading">
+                    <i class="icon-cogs"></i> Terms & conditions URL's
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            T&C Byjuno Invoice (DE):
+                        </label>
+                        <div class="col-lg-9">
+                            <input type="text" name="BYJUNO_TOC_INVOICE_DE" id="BYJUNO_TOC_INVOICE_DE"
+                                   value="{$BYJUNO_TOC_INVOICE_DE}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            T&C Byjuno Installment (DE):
+                        </label>
+                        <div class="col-lg-9">
+                            <input type="text" name="BYJUNO_TOC_INSTALLMENT_DE" id="BYJUNO_TOC_INSTALLMENT_DE"
+                                   value="{$BYJUNO_TOC_INSTALLMENT_DE}"/>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            T&C Byjuno Invoice (FR):
+                        </label>
+                        <div class="col-lg-9">
+                            <input type="text" name="BYJUNO_TOC_INVOICE_FR" id="BYJUNO_TOC_INVOICE_FR"
+                                   value="{$BYJUNO_TOC_INVOICE_FR}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            T&C Byjuno Installment (FR):
+                        </label>
+                        <div class="col-lg-9">
+                            <input type="text" name="BYJUNO_TOC_INSTALLMENT_FR" id="BYJUNO_TOC_INSTALLMENT_FR"
+                                   value="{$BYJUNO_TOC_INSTALLMENT_FR}"/>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            T&C Byjuno Invoice (IT):
+                        </label>
+                        <div class="col-lg-9">
+                            <input type="text" name="BYJUNO_TOC_INVOICE_IT" id="BYJUNO_TOC_INVOICE_IT"
+                                   value="{$BYJUNO_TOC_INVOICE_IT}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            T&C Byjuno Installment (IT):
+                        </label>
+                        <div class="col-lg-9">
+                            <input type="text" name="BYJUNO_TOC_INSTALLMENT_IT" id="BYJUNO_TOC_INSTALLMENT_IT"
+                                   value="{$BYJUNO_TOC_INSTALLMENT_IT}"/>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            T&C Byjuno Invoice (EN):
+                        </label>
+                        <div class="col-lg-9">
+                            <input type="text" name="BYJUNO_TOC_INVOICE_EN" id="BYJUNO_TOC_INVOICE_EN"
+                                   value="{$BYJUNO_TOC_INVOICE_EN}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 required">
+                            T&C Byjuno Installment (EN):
+                        </label>
+                        <div class="col-lg-9">
+                            <input type="text" name="BYJUNO_TOC_INSTALLMENT_EN" id="BYJUNO_TOC_INSTALLMENT_EN"
+                                   value="{$BYJUNO_TOC_INSTALLMENT_EN}"/>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="panel-footer">
+                    <input type="hidden" name="submitIntrumMain" value="intrum_main_configuration"/>
+                    <button type="submit" value="1" id="module_form_submit_btn" name="btnSubmit"
+                            class="btn btn-default pull-right">
+                        <i class="process-icon-save"></i> Save
+                    </button>
+                </div>
+            </div>
+
         </form>
     </div>
 {/if}

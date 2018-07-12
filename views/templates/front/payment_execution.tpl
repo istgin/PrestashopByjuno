@@ -8,7 +8,13 @@
 {if isset($nbProducts) && $nbProducts <= 0}
 	<p class="alert alert-warning">{l s='Your shopping cart is empty.' mod='byjuno'}</p>
 {else}
-
+	<style>
+		div.byjuno_toc .checker,
+		.checker+label {
+			display: inline-block;
+			vertical-align: middle;
+		}
+	</style>
 	<form action="{$link->getModuleLink('byjuno', 'validation', [], true)|escape:'html':'UTF-8'}" method="post">
 		<div class="box cheque-box">
 			<h3 class="page-subheading">{l s=$paymentname mod='byjuno'}</h3>
@@ -74,6 +80,15 @@
 					</div>
 				</div><br />
 			{/if}
+			{if ($agree_error == 1)}
+				<div class="alert alert-danger">
+					{l s='You must agree terms conditions' mod='byjuno'}
+				</div>
+			{/if}
+			<div class="form-group byjuno_toc">
+				<input type="checkbox" value="terms_conditions" name="terms_conditions" id="terms_conditions" style="display: inline-block" />
+				<a href="{$toc_url}" target="_blank" style="font-weight: bold; text-decoration: underline">{l s='I agree with terms and conditions' mod='byjuno'}</a><sup>*</sup>
+			</div>
 		</div>
 		<p class="cart_navigation clearfix" id="cart_navigation">
 			<a href="{$link->getPageLink('order', true, NULL, "step=3")|escape:'html':'UTF-8'}" class="button-exclusive btn btn-default">

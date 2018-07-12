@@ -34,6 +34,18 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 	 */
 	public function postProcess()
 	{
+		$repayment = mapRepayment(Tools::getValue('selected_plan'));
+		$toc = Tools::getValue('terms_conditions');
+		if (empty($toc) || !$toc || $toc != "terms_conditions")
+		{
+			if ($repayment == 3 || $repayment == 4) {
+				$backLink = $this->context->link->getModuleLink('byjuno', 'payment', Array("paymentmethod" => "invoice", "agree" => "false"));
+			} else {
+				$backLink = $this->context->link->getModuleLink('byjuno', 'payment', Array("paymentmethod" => "installment", "agree" => "false"));
+			}
+			Tools::redirect($backLink);
+			exit();
+		}
 		$errorlnk = $this->context->link->getModuleLink('byjuno', 'errorpayment');
 		$cart = $this->context->cart;
 		if ($cart->id_customer == 0 || $cart->id_address_delivery == 0 || $cart->id_address_invoice == 0 || !$this->module->active)

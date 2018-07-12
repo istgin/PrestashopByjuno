@@ -248,6 +248,14 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('INTRUM_ENABLETMX', 'true');
             Configuration::updateValue('BYJUNO_GENDER_BIRTHDAY', 'true');
             Configuration::updateValue('BYJUNO_S4_TRIGGER', Configuration::get('PS_OS_PAYMENT'));
+            Configuration::updateValue('BYJUNO_TOC_INVOICE_EN', 'https://byjuno.ch/en/3a/terms/');
+            Configuration::updateValue('BYJUNO_TOC_INSTALLMENT_EN', 'https://byjuno.ch/en/1b/terms/');
+            Configuration::updateValue('BYJUNO_TOC_INVOICE_DE', 'https://byjuno.ch/de/3a/terms/');
+            Configuration::updateValue('BYJUNO_TOC_INSTALLMENT_DE', 'https://byjuno.ch/de/1b/terms/');
+            Configuration::updateValue('BYJUNO_TOC_INVOICE_FR', 'https://byjuno.ch/fr/3a/terms/');
+            Configuration::updateValue('BYJUNO_TOC_INSTALLMENT_FR', 'https://byjuno.ch/fr/1b/terms/');
+            Configuration::updateValue('BYJUNO_TOC_INVOICE_IT', 'https://byjuno.ch/it/3a/terms/');
+            Configuration::updateValue('BYJUNO_TOC_INSTALLMENT_IT', 'https://byjuno.ch/it/1b/terms/');
 
         }
         return true;
@@ -498,6 +506,14 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('BYJUNO_B2B', trim(Tools::getValue('BYJUNO_B2B')));
             Configuration::updateValue('BYJUNO_GENDER_BIRTHDAY', trim(Tools::getValue('BYJUNO_GENDER_BIRTHDAY')));
             Configuration::updateValue('BYJUNO_S4_TRIGGER', trim(Tools::getValue('BYJUNO_S4_TRIGGER')));
+            Configuration::updateValue('BYJUNO_TOC_INVOICE_EN', trim(Tools::getValue('BYJUNO_TOC_INVOICE_EN')));
+            Configuration::updateValue('BYJUNO_TOC_INSTALLMENT_EN', trim(Tools::getValue('BYJUNO_TOC_INSTALLMENT_EN')));
+            Configuration::updateValue('BYJUNO_TOC_INVOICE_DE', trim(Tools::getValue('BYJUNO_TOC_INVOICE_DE')));
+            Configuration::updateValue('BYJUNO_TOC_INSTALLMENT_DE', trim(Tools::getValue('BYJUNO_TOC_INSTALLMENT_DE')));
+            Configuration::updateValue('BYJUNO_TOC_INVOICE_FR', trim(Tools::getValue('BYJUNO_TOC_INVOICE_FR')));
+            Configuration::updateValue('BYJUNO_TOC_INSTALLMENT_FR', trim(Tools::getValue('BYJUNO_TOC_INSTALLMENT_FR')));
+            Configuration::updateValue('BYJUNO_TOC_INVOICE_IT', trim(Tools::getValue('BYJUNO_TOC_INVOICE_IT')));
+            Configuration::updateValue('BYJUNO_TOC_INSTALLMENT_IT', trim(Tools::getValue('BYJUNO_TOC_INSTALLMENT_IT')));
         }
         if (Tools::isSubmit('submitLogSearch')) {
             Configuration::updateValue('INTRUM_SHOW_LOG', 'true');
@@ -566,6 +582,14 @@ class Byjuno extends PaymentModule
             'BYJUNO_B2B' => Configuration::get("BYJUNO_B2B"),
             'BYJUNO_GENDER_BIRTHDAY' => Configuration::get("BYJUNO_GENDER_BIRTHDAY"),
             'BYJUNO_S4_TRIGGER' => Configuration::get('BYJUNO_S4_TRIGGER'),
+            'BYJUNO_TOC_INVOICE_EN' => Configuration::get('BYJUNO_TOC_INVOICE_EN'),
+            'BYJUNO_TOC_INSTALLMENT_EN' => Configuration::get('BYJUNO_TOC_INSTALLMENT_EN'),
+            'BYJUNO_TOC_INVOICE_DE' => Configuration::get('BYJUNO_TOC_INVOICE_DE'),
+            'BYJUNO_TOC_INSTALLMENT_DE' => Configuration::get('BYJUNO_TOC_INSTALLMENT_DE'),
+            'BYJUNO_TOC_INVOICE_FR' => Configuration::get('BYJUNO_TOC_INVOICE_FR'),
+            'BYJUNO_TOC_INSTALLMENT_FR' => Configuration::get('BYJUNO_TOC_INSTALLMENT_FR'),
+            'BYJUNO_TOC_INVOICE_IT' => Configuration::get('BYJUNO_TOC_INVOICE_IT'),
+            'BYJUNO_TOC_INSTALLMENT_IT' => Configuration::get('BYJUNO_TOC_INSTALLMENT_IT'),
             'payment_methods' => $methods,
             'intrum_logs' => self::getLogs(),
             'search_in_log' => Tools::getValue('searchInLog'),

@@ -49,6 +49,12 @@ class ByjunoPaymentModuleFrontController extends ModuleFrontController
 			$payment = $pp;
 		}
 		$selected_payments = Array();
+		$tocUrl = Configuration::get('BYJUNO_TOC_INVOICE_EN');
+		$lng = Context::getContext()->language->iso_code;
+		$langtoc = "DE";
+		if ($lng == "en" || $lng == "de" || $lng == "fr" || $lng == "it") {
+			$langtoc = strtoupper($lng);
+		}
 		if ($payment == 'invoice')
 		{
 			$paymentName = 'Byjuno Invoice';
@@ -60,6 +66,7 @@ class ByjunoPaymentModuleFrontController extends ModuleFrontController
 			{
 				$selected_payments[] = Array('name' => 'Byjuno Single Invoice', 'id' => 'single_invoice', "selected" => 0);
 			}
+			$tocUrl = Configuration::get('BYJUNO_TOC_INVOICE_'.$langtoc);
 		}
 		if ($payment == 'installment')
 		{
@@ -84,6 +91,7 @@ class ByjunoPaymentModuleFrontController extends ModuleFrontController
 			{
 				$selected_payments[] = Array('name' => '4 installments in 12 months', 'id' => 'installment_4x12', "selected" => 0);
 			}
+			$tocUrl = Configuration::get('BYJUNO_TOC_INSTALLMENT_'.$langtoc);
 		}
 		$selected_payments[0]["selected"] = 1;
 
@@ -107,7 +115,9 @@ class ByjunoPaymentModuleFrontController extends ModuleFrontController
 			'sl_month' => date("m", $tm),
 			'days' => $days,
 			'sl_day' => date("d", $tm),
-			'sl_gender' => $customer->id_gender
+			'sl_gender' => $customer->id_gender,
+			'toc_url' => $tocUrl,
+			'agree_error' => (!empty(Tools::getValue('agree'))) ? 1 : 0
 		);
 		$this->context->smarty->assign($values);
 		$this->setTemplate('payment_execution.tpl');
