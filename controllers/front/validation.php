@@ -34,6 +34,7 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 	 */
 	public function postProcess()
 	{
+		global $cookie;
 		$repayment = mapRepayment(Tools::getValue('selected_plan'));
 		$toc = Tools::getValue('terms_conditions');
 		if (empty($toc) || !$toc || $toc != "terms_conditions")
@@ -43,9 +44,25 @@ class ByjunoValidationModuleFrontController extends ModuleFrontController
 			} else {
 				$backLink = $this->context->link->getModuleLink('byjuno', 'payment', Array("paymentmethod" => "installment", "agree" => "false"));
 			}
+
+			$cookie->byjuno_invoice_send = Tools::getValue('invoice_send');
+			$cookie->byjuno_selected_plan = Tools::getValue('selected_plan');
+			$cookie->byjuno_selected_gender = Tools::getValue('selected_gender');
+			$cookie->byjuno_years = Tools::getValue('years');
+			$cookie->byjuno_months = Tools::getValue('months');
+			$cookie->byjuno_days = Tools::getValue('days');
+
 			Tools::redirect($backLink);
 			exit();
 		}
+
+		$cookie->byjuno_invoice_send = "";
+		$cookie->byjuno_selected_plan = "";
+		$cookie->byjuno_selected_gender = "";
+		$cookie->byjuno_years = "";
+		$cookie->byjuno_months = "";
+		$cookie->byjuno_days = "";
+
 		$errorlnk = $this->context->link->getModuleLink('byjuno', 'errorpayment');
 		$cart = $this->context->cart;
 		if ($cart->id_customer == 0 || $cart->id_address_delivery == 0 || $cart->id_address_invoice == 0 || !$this->module->active)

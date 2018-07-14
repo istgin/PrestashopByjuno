@@ -27,8 +27,8 @@
 			{if ($byjuno_allowpostal == 1)}
                 <div class="required form-group">
                     <label for="invoice_send">{l s='Select invoice delivery method' mod='byjuno'}<sup>*</sup></label><br />
-                    <input type="radio" name="invoice_send" class="form-control" checked="checked" value="email"> &nbsp;{l s="By email" mod='byjuno'}: {$email}<br />
-                    <input type="radio" name="invoice_send" class="form-control" value="postal"> &nbsp;{l s="By post" mod='byjuno'}: {$address}<br />
+                    <input type="radio" name="invoice_send" class="form-control" {if $invoice_send == "email"} checked="checked"{/if} value="email"> &nbsp;{l s="By email" mod='byjuno'}: {$email}<br />
+                    <input type="radio" name="invoice_send" class="form-control" {if $invoice_send == "postal"} checked="checked"{/if} value="postal"> &nbsp;{l s="By post" mod='byjuno'}: {$address}<br />
                 </div><br />
 			{/if}
 			{if ($byjuno_gender_birthday == 1)}
