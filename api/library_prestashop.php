@@ -234,13 +234,18 @@ function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, Currenc
 function byjunoIsStatusOk($status, $position)
 {
     try {
+        $config = trim(Configuration::get($position));
+        if ($config === "")
+        {
+            return false;
+        }
         $stateArray = explode(",", Configuration::get($position));
         if (in_array($status, $stateArray)) {
             return true;
         }
         return false;
     } catch (Exception $e) {
-        return "INTERNAL ERROR";
+        return false;
     }
 }
 
