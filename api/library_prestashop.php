@@ -134,8 +134,8 @@ function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, Currenc
     }
     $request->setRequestId(uniqid($customer->id."_"));
     $request->setCustomerReference($customer->id);
-    $request->setFirstName($invoice_address->firstname);
-    $request->setLastName($invoice_address->lastname);
+    $request->setFirstName(html_entity_decode($invoice_address->firstname, ENT_COMPAT, 'UTF-8'));
+    $request->setLastName(html_entity_decode($invoice_address->lastname, ENT_COMPAT, 'UTF-8'));
     if ($customer->id_gender != '0') {
         $request->setGender($customer->id_gender);
     }
@@ -147,10 +147,10 @@ function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, Currenc
         }
     }
 
-    $request->setFirstLine(trim($invoice_address->address1.' '.$invoice_address->address2));
+    $request->setFirstLine(html_entity_decode(trim($invoice_address->address1.' '.$invoice_address->address2), ENT_COMPAT, 'UTF-8'));
     $request->setCountryCode(strtoupper($country->iso_code));
     $request->setPostCode($invoice_address->postcode);
-    $request->setTown($invoice_address->city);
+    $request->setTown(html_entity_decode($invoice_address->city, ENT_COMPAT, 'UTF-8'));
     $request->setLanguage(Context::getContext()->language->iso_code);
 
     $request->setTelephonePrivate($invoice_address->phone);
@@ -192,15 +192,15 @@ function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, Currenc
 
     /* shipping information */
     $extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
-    $extraInfo["Value"] = $shipping_address->firstname;
+    $extraInfo["Value"] = html_entity_decode($shipping_address->firstname, ENT_COMPAT, 'UTF-8');
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'DELIVERY_LASTNAME';
-    $extraInfo["Value"] = $shipping_address->lastname;
+    $extraInfo["Value"] = html_entity_decode($shipping_address->lastname, ENT_COMPAT, 'UTF-8');
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'DELIVERY_FIRSTLINE';
-    $extraInfo["Value"] = trim($shipping_address->address1.' '.$shipping_address->address2);
+    $extraInfo["Value"] = html_entity_decode(trim($shipping_address->address1.' '.$shipping_address->address2), ENT_COMPAT, 'UTF-8');
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'DELIVERY_HOUSENUMBER';
@@ -216,7 +216,7 @@ function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, Currenc
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'DELIVERY_TOWN';
-    $extraInfo["Value"] = $shipping_address->city;
+    $extraInfo["Value"] = html_entity_decode($shipping_address->city, ENT_COMPAT, 'UTF-8');
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'MESSAGETYPESPEC';
@@ -264,8 +264,8 @@ function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency
     }
     $request->setRequestId(uniqid($customer->id."_"));
     $request->setCustomerReference($customer->id);
-    $request->setFirstName($invoice_address->firstname);
-    $request->setLastName($invoice_address->lastname);
+    $request->setFirstName(html_entity_decode($invoice_address->firstname, ENT_COMPAT, 'UTF-8'));
+    $request->setLastName(html_entity_decode($invoice_address->lastname, ENT_COMPAT, 'UTF-8'));
     if ($customer->id_gender != '0') {
         $request->setGender($customer->id_gender);
     }
@@ -277,10 +277,10 @@ function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency
         }
     }
 
-    $request->setFirstLine(trim($invoice_address->address1.' '.$invoice_address->address2));
+    $request->setFirstLine(html_entity_decode(trim($invoice_address->address1.' '.$invoice_address->address2), ENT_COMPAT, 'UTF-8'));
     $request->setCountryCode(strtoupper($country->iso_code));
     $request->setPostCode($invoice_address->postcode);
-    $request->setTown($invoice_address->city);
+    $request->setTown(html_entity_decode($invoice_address->city, ENT_COMPAT, 'UTF-8'));
     $request->setLanguage(Context::getContext()->language->iso_code);
 
     $request->setTelephonePrivate($invoice_address->phone);
@@ -322,15 +322,15 @@ function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency
 
     /* shipping information */
     $extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
-    $extraInfo["Value"] = $shipping_address->firstname;
+    $extraInfo["Value"] = html_entity_decode($shipping_address->firstname, ENT_COMPAT, 'UTF-8');
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'DELIVERY_LASTNAME';
-    $extraInfo["Value"] = $shipping_address->lastname;
+    $extraInfo["Value"] = html_entity_decode($shipping_address->lastname, ENT_COMPAT, 'UTF-8');
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'DELIVERY_FIRSTLINE';
-    $extraInfo["Value"] = trim($shipping_address->address1.' '.$shipping_address->address2);
+    $extraInfo["Value"] = html_entity_decode(trim($shipping_address->address1.' '.$shipping_address->address2), ENT_COMPAT, 'UTF-8');
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'DELIVERY_HOUSENUMBER';
@@ -346,7 +346,7 @@ function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'DELIVERY_TOWN';
-    $extraInfo["Value"] = $shipping_address->city;
+    $extraInfo["Value"] = html_entity_decode($shipping_address->city, ENT_COMPAT, 'UTF-8');
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'ORDERID';
