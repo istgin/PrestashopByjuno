@@ -247,7 +247,7 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('INTRUM_TMXORGID', 'lq866c5i');
             Configuration::updateValue('INTRUM_ENABLETMX', 'true');
             Configuration::updateValue('BYJUNO_GENDER_BIRTHDAY', 'true');
-            Configuration::updateValue('BYJUNO_S4_TRIGGER', Configuration::get('PS_OS_PAYMENT'));
+            Configuration::updateValue('BYJUNO_S4_TRIGGER', serialize(Array(0 => Configuration::get('PS_OS_PAYMENT'))));
             Configuration::updateValue('BYJUNO_TOC_INVOICE_EN', 'https://byjuno.ch/en/3a/terms/');
             Configuration::updateValue('BYJUNO_TOC_INSTALLMENT_EN', 'https://byjuno.ch/en/1b/terms/');
             Configuration::updateValue('BYJUNO_TOC_INVOICE_DE', 'https://byjuno.ch/de/3a/terms/');
@@ -335,7 +335,13 @@ class Byjuno extends PaymentModule
         /* @var $orderStatus OrderStateCore */
         $orderStatus = $params["newOrderStatus"];
         if (Configuration::get("BYJUNO_S4_ALLOWED") == 'enable') {
-            if ($orderStatus->id == Configuration::get('BYJUNO_S4_TRIGGER')) {
+            $arrayOfTrigger = false;
+            try {
+                $arrayOfTrigger = unserialize(Configuration::get('BYJUNO_S4_TRIGGER'));
+            } catch(Exception $e) {
+                $arrayOfTrigger = false;
+            }
+            if ($arrayOfTrigger != false && in_array($orderStatus->id, $arrayOfTrigger)) {
                 $orderCore = new OrderCore((int)$params["id_order"]);
                 $order_module = $orderCore->module; // will return the payment module eg. ps_checkpayment , ps_wirepayment
                 if ($order_module == "byjuno") {
@@ -505,7 +511,7 @@ class Byjuno extends PaymentModule
             Configuration::updateValue('BYJUNO_REFUND_S5_ALLOWED', trim(Tools::getValue('BYJUNO_REFUND_S5_ALLOWED')));
             Configuration::updateValue('BYJUNO_B2B', trim(Tools::getValue('BYJUNO_B2B')));
             Configuration::updateValue('BYJUNO_GENDER_BIRTHDAY', trim(Tools::getValue('BYJUNO_GENDER_BIRTHDAY')));
-            Configuration::updateValue('BYJUNO_S4_TRIGGER', trim(Tools::getValue('BYJUNO_S4_TRIGGER')));
+            Configuration::updateValue('BYJUNO_S4_TRIGGER', serialize(Tools::getValue('BYJUNO_S4_TRIGGER')));
             Configuration::updateValue('BYJUNO_TOC_INVOICE_EN', trim(Tools::getValue('BYJUNO_TOC_INVOICE_EN')));
             Configuration::updateValue('BYJUNO_TOC_INSTALLMENT_EN', trim(Tools::getValue('BYJUNO_TOC_INSTALLMENT_EN')));
             Configuration::updateValue('BYJUNO_TOC_INVOICE_DE', trim(Tools::getValue('BYJUNO_TOC_INVOICE_DE')));
@@ -546,7 +552,15 @@ class Byjuno extends PaymentModule
             }
             $methods[$status_val]["false"] = $output;
         }
-
+        $arrayOfTrigger = false;
+        try {
+            $arrayOfTrigger = unserialize(Configuration::get('BYJUNO_S4_TRIGGER'));
+        } catch(Exception $e) {
+            $arrayOfTrigger = Array(0 => Configuration::get('PS_OS_PAYMENT'));
+        }
+        if ($arrayOfTrigger == false) {
+            $arrayOfTrigger = Array(0 => Configuration::get('PS_OS_PAYMENT'));
+        }
         $values = array(
             'bootstrap' => true,
             'this_path' => $this->_path,
@@ -581,7 +595,7 @@ class Byjuno extends PaymentModule
             'BYJUNO_REFUND_S5_ALLOWED' => Configuration::get("BYJUNO_REFUND_S5_ALLOWED"),
             'BYJUNO_B2B' => Configuration::get("BYJUNO_B2B"),
             'BYJUNO_GENDER_BIRTHDAY' => Configuration::get("BYJUNO_GENDER_BIRTHDAY"),
-            'BYJUNO_S4_TRIGGER' => Configuration::get('BYJUNO_S4_TRIGGER'),
+            'BYJUNO_S4_TRIGGER' => $arrayOfTrigger,
             'BYJUNO_TOC_INVOICE_EN' => Configuration::get('BYJUNO_TOC_INVOICE_EN'),
             'BYJUNO_TOC_INSTALLMENT_EN' => Configuration::get('BYJUNO_TOC_INSTALLMENT_EN'),
             'BYJUNO_TOC_INVOICE_DE' => Configuration::get('BYJUNO_TOC_INVOICE_DE'),

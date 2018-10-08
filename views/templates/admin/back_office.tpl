@@ -381,11 +381,12 @@
                         S4 trigger order state:
                     </label>
                     <div class="col-lg-9">
-                        <select name="BYJUNO_S4_TRIGGER" id="BYJUNO_S4_TRIGGER">
+                        <select name="BYJUNO_S4_TRIGGER[]" id="BYJUNO_S4_TRIGGER" multiple="multiple" style="height: 340px">
                             {foreach from=$order_status_list item=ostatus}
-                                <option value="{$ostatus['id_order_state']}"{if ($BYJUNO_S4_TRIGGER == $ostatus['id_order_state'])} selected{/if}>{$ostatus['name']}</option>
+                                <option value="{$ostatus['id_order_state']}"{if (in_array($ostatus['id_order_state'], $BYJUNO_S4_TRIGGER))} selected{/if}>{$ostatus['name']}</option>
                             {/foreach}>
-                        </select>
+                        </select><br />
+                        Ctrl + click select multiple
                     </div>
                 </div>
                 <div class="form-group">
