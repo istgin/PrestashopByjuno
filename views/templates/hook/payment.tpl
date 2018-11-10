@@ -4,8 +4,8 @@
             <p class="payment_module">
                 <a class="byjunoinvoice byjunoinvoice_logo_{$lang}"
                    href="{$link->getModuleLink('byjuno', 'payment', ["paymentmethod" => "invoice"], true)|escape:'html':'UTF-8'}"
-                   title="{l s='Pay by byjuno invoice' mod='byjuno'}">
-                    {l s='Byjuno invoice' mod='byjuno'}
+                   title="{$name_pay_byjuno_invoice}">
+                    {$name_byjuno_invoice}
                 </a>
             </p>
         </div>
@@ -17,8 +17,8 @@
             <p class="payment_module">
                 <a class="byjunoinstallment byjunoinstallment_logo_{$lang}"
                    href="{$link->getModuleLink('byjuno', 'payment', ["paymentmethod" => "installment"], true)|escape:'html':'UTF-8'}"
-                   title="{l s='Pay by byjuno installment' mod='byjuno'}">
-                    {l s='Byjuno installment' mod='byjuno'}
+                   title="{$name_pay_byjuno_installemnt}">
+                    {$name_byjuno_installemnt}
                 </a>
             </p>
         </div>
