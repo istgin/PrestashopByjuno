@@ -439,9 +439,9 @@ class Byjuno extends PaymentModule
 
     public function hookDisplayBeforeShoppingCartBlock($params)
     {
-        if (Configuration::get("INTRUM_ENABLETMX") == 'true' && Configuration::get("INTRUM_TMXORGID") != '') {
-            global $cookie;
-            $cookie->intrumId = Tools::getToken(false);
+        global $cookie;
+        if (Configuration::get("INTRUM_ENABLETMX") == 'true' && Configuration::get("INTRUM_TMXORGID") != '' && (!isset($cookie->intrumId) || $cookie->intrumId == "")) {
+            $cookie->intrumId = Context::getContext()->cookie->checksum;
             echo '
                 <script type="text/javascript" src="https://h.online-metrix.net/fp/tags.js?org_id=' . Configuration::get("INTRUM_TMXORGID") . '&session_id=' . $cookie->intrumId . '&pageid=checkout"></script>
             <noscript>
