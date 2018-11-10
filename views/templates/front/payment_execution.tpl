@@ -1,7 +1,5 @@
 {capture name=path}{l s=$paymentname mod='byjuno'}{/capture}
 
-<h1 class="page-heading">{l s='Select payment' mod='byjuno'}</h1>
-
 {assign var='current_step' value='payment'}
 {include file="$tpl_dir./order-steps.tpl"}
 
@@ -18,12 +16,17 @@
 	<form action="{$link->getModuleLink('byjuno', 'validation', [], true)|escape:'html':'UTF-8'}" method="post">
 		<div class="box cheque-box">
 			<h3 class="page-subheading">{l s=$paymentname mod='byjuno'}</h3>
+			{if (count($selected_payments) > 1)}
             <div class="required form-group">
                 <label for="selected_plan">{l s='Select payment plan' mod='byjuno'}<sup>*</sup></label><br />
 				{foreach from=$selected_payments item=s_payment}
 					<input type="radio" name="selected_plan" class="form-control" value="{$s_payment.id}" {if $s_payment.selected == 1} checked="checked"{/if}> &nbsp;{l s=$s_payment.name mod='byjuno'}<br />
 				{/foreach}
             </div><br />
+			{/if}
+			{if (count($selected_payments) == 1)}
+				<input type="hidden" name="selected_plan" value="{$selected_payments[0].id}">
+			{/if}
 			{if ($byjuno_allowpostal == 1)}
                 <div class="required form-group">
                     <label for="invoice_send">{l s='Select invoice delivery method' mod='byjuno'}<sup>*</sup></label><br />
