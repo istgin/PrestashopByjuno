@@ -154,6 +154,31 @@ class ByjunoPaymentModuleFrontController extends ModuleFrontController
 			'sl_day' => $byjuno_days,
 			'sl_gender' => $selected_gender,
 			'toc_url' => $tocUrl,
+			'l_select_payment_plan' => $this->module->l("Select payment plan"),
+			'l_select_invoice_delivery_method' => $this->module->l("Select invoice delivery method"),
+			'l_gender' => $this->module->l("Gender"),
+			'l_male' => $this->module->l("Male"),
+			'l_female' => $this->module->l("Female"),
+			'l_date_of_birth' => $this->module->l("Date of Birth"),
+			'l_you_must_agree_terms_conditions' => $this->module->l("You must agree terms conditions"),
+			'l_i_agree_with_terms_and_conditions' => $this->module->l("I agree with terms and conditions"),
+			'l_other_payment_methods' => $this->module->l("Other payment methods"),
+			'l_i_confirm_my_order' => $this->module->l("I confirm my order"),
+			'l_your_shopping_cart_is_empty' => $this->module->l("Your shopping cart is empty."),
+			'l_by_email' => $this->module->l("By email"),
+			'l_by_post' => $this->module->l("By post"),
+			//Select invoice delivery method
+			//Gender
+			//Male
+			//Female
+			//Date of Birth
+			//You must agree terms conditions
+			//I agree with terms and conditions
+			//Other payment methods
+			//I confirm my order
+			//Your shopping cart is empty.
+			//By email
+			//By post
 			'agree_error' => (!empty(Tools::getValue('agree'))) ? 1 : 0
 		);
 		$this->context->smarty->assign($values);

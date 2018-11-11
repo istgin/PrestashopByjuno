@@ -30,19 +30,20 @@ $_MODULE['<{byjuno}prestashop>payment_execution_06aac5c4279d0d93b5527804b88827e1
 $_MODULE['<{byjuno}prestashop>payment_execution_b7d009d8f8d9c3d5e07692546dcf3806'] = 'Byjuno Pagamento rateale';
 
 $_MODULE['<{byjuno}prestashop>payment_execution_962c29e9d818d87968b7460bf9a6472b'] = 'Selezionare il metodo di pagamento';
-$_MODULE['<{byjuno}prestashop>payment_execution_879f6b8877752685a966564d072f498f'] = 'Non ci sono articoli nel carrello.';
-$_MODULE['<{byjuno}prestashop>payment_execution_de373d72d209506f178c46735ecbf447'] = 'Selezionare il piano di pagamento';
-$_MODULE['<{byjuno}prestashop>payment_execution_eaf1849876a6548ecc5b804d7da44b27'] = 'Selezionare la consegna della fattura';
-$_MODULE['<{byjuno}prestashop>payment_execution_dfc27ef27b631b0e7114573a439c3180'] = 'Invio fattura tramite e-mail (senza spese aggiuntive) a';
-$_MODULE['<{byjuno}prestashop>payment_execution_3cd02748d4e2c00844a284b71a479ba1'] = 'Invio fattura cartacea tramite posta (spese aggiuntive di CHF 3.50) a';
-$_MODULE['<{byjuno}prestashop>payment_execution_019ec3132cdf8ee0f2e2a75cf5d3e459'] = 'sesso';
-$_MODULE['<{byjuno}prestashop>payment_execution_63889cfb9d3cbe05d1bd2be5cc9953fd'] = 'maschio';
-$_MODULE['<{byjuno}prestashop>payment_execution_b719ce180ec7bd9641fece2f920f4817'] = 'femminile';
-$_MODULE['<{byjuno}prestashop>payment_execution_10803b83a68db8f7e7a33e3b41e184d0'] = 'data di nascita';
-$_MODULE['<{byjuno}prestashop>payment_execution_569fd05bdafa1712c4f6be5b153b8418'] = 'altri metodi di pagamento';
-$_MODULE['<{byjuno}prestashop>payment_execution_46b9e3665f187c739c55983f757ccda0'] = 'confermo il mio ordine';
-$_MODULE['<{byjuno}prestashop>payment_execution_a6d6486d3d26f3ee5d215b120b4d9aa9'] = 'Accetto i termini e le condizioni';
-$_MODULE['<{byjuno}prestashop>payment_execution_ebd29ea4b1bd3dc92af6104cb4efa135'] = 'Vogliate accettare i termini e condizioni';
+
+$_MODULE['<{byjuno}prestashop>byjuno_879f6b8877752685a966564d072f498f'] = 'Non ci sono articoli nel carrello.';
+$_MODULE['<{byjuno}prestashop>byjuno_de373d72d209506f178c46735ecbf447'] = 'Selezionare il piano di pagamento';
+$_MODULE['<{byjuno}prestashop>byjuno_eaf1849876a6548ecc5b804d7da44b27'] = 'Selezionare la consegna della fattura';
+$_MODULE['<{byjuno}prestashop>byjuno_dfc27ef27b631b0e7114573a439c3180'] = 'Invio fattura tramite e-mail (senza spese aggiuntive) a';
+$_MODULE['<{byjuno}prestashop>byjuno_3cd02748d4e2c00844a284b71a479ba1'] = 'Invio fattura cartacea tramite posta (spese aggiuntive di CHF 3.50) a';
+$_MODULE['<{byjuno}prestashop>byjuno_019ec3132cdf8ee0f2e2a75cf5d3e459'] = 'sesso';
+$_MODULE['<{byjuno}prestashop>byjuno_63889cfb9d3cbe05d1bd2be5cc9953fd'] = 'maschio';
+$_MODULE['<{byjuno}prestashop>byjuno_b719ce180ec7bd9641fece2f920f4817'] = 'femminile';
+$_MODULE['<{byjuno}prestashop>byjuno_10803b83a68db8f7e7a33e3b41e184d0'] = 'data di nascita';
+$_MODULE['<{byjuno}prestashop>byjuno_569fd05bdafa1712c4f6be5b153b8418'] = 'altri metodi di pagamento';
+$_MODULE['<{byjuno}prestashop>byjuno_46b9e3665f187c739c55983f757ccda0'] = 'confermo il mio ordine';
+$_MODULE['<{byjuno}prestashop>byjuno_a6d6486d3d26f3ee5d215b120b4d9aa9'] = 'Accetto i termini e le condizioni';
+$_MODULE['<{byjuno}prestashop>byjuno_ebd29ea4b1bd3dc92af6104cb4efa135'] = 'Vogliate accettare i termini e condizioni';
 
 
 

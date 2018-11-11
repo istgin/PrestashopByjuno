@@ -2,9 +2,8 @@
 
 {assign var='current_step' value='payment'}
 {include file="$tpl_dir./order-steps.tpl"}
-
 {if isset($nbProducts) && $nbProducts <= 0}
-	<p class="alert alert-warning">{l s='Your shopping cart is empty.' mod='byjuno'}</p>
+	<p class="alert alert-warning">{$l_your_shopping_cart_is_empty}</p>
 {else}
 	<style>
 		div.byjuno_toc .checker,
@@ -18,7 +17,7 @@
 			<h3 class="page-subheading">{l s=$paymentname mod='byjuno'}</h3>
 			{if (count($selected_payments) > 1)}
             <div class="required form-group">
-                <label for="selected_plan">{l s='Select payment plan' mod='byjuno'}<sup>*</sup></label><br />
+                <label for="selected_plan">{$l_select_payment_plan}<sup>*</sup></label><br />
 				{foreach from=$selected_payments item=s_payment}
 					<input type="radio" name="selected_plan" class="form-control" value="{$s_payment.id}" {if $s_payment.selected == 1} checked="checked"{/if}> &nbsp;{l s=$s_payment.name mod='byjuno'}<br />
 				{/foreach}
@@ -29,21 +28,21 @@
 			{/if}
 			{if ($byjuno_allowpostal == 1)}
                 <div class="required form-group">
-                    <label for="invoice_send">{l s='Select invoice delivery method' mod='byjuno'}<sup>*</sup></label><br />
-                    <input type="radio" name="invoice_send" class="form-control" {if $invoice_send == "email"} checked="checked"{/if} value="email"> &nbsp;{l s="By email" mod='byjuno'}: {$email}<br />
-                    <input type="radio" name="invoice_send" class="form-control" {if $invoice_send == "postal"} checked="checked"{/if} value="postal"> &nbsp;{l s="By post" mod='byjuno'}: {$address}<br />
+                    <label for="invoice_send">{$l_select_invoice_delivery_method}<sup>*</sup></label><br />
+                    <input type="radio" name="invoice_send" class="form-control" {if $invoice_send == "email"} checked="checked"{/if} value="email"> &nbsp;{$l_by_email}: {$email}<br />
+                    <input type="radio" name="invoice_send" class="form-control" {if $invoice_send == "postal"} checked="checked"{/if} value="postal"> &nbsp;{$l_by_post}: {$address}<br />
                 </div><br />
 			{/if}
 			{if ($byjuno_gender_birthday == 1)}
 				<div class="required form-group">
-					<label for="selected_gender">{l s='Gender' mod='byjuno'}<sup>*</sup></label>
+					<label for="selected_gender">{$l_gender}<sup>*</sup></label>
 					<select name="selected_gender" id="selected_gender" class="form-control">
-						<option value="1" {if $sl_gender == 1} selected="selected"{/if}>{l s="Male" mod='byjuno'}</option>
-						<option value="2" {if $sl_gender == 2} selected="selected"{/if}>{l s="Female" mod='byjuno'}</option>
+						<option value="1" {if $sl_gender == 1} selected="selected"{/if}>{$l_male}</option>
+						<option value="2" {if $sl_gender == 2} selected="selected"{/if}>{$l_female}</option>
 					</select>
 				</div><br />
 				<div class="required form-group">
-					<label>{l s='Date of Birth' mod='byjuno'}</label><sup>*</sup>
+					<label>{$l_date_of_birth}</label><sup>*</sup>
 					<div class="row">
 						<div class="col-xs-4" style="max-width: 94px;">
 							<select id="days" name="days" class="form-control" style="max-width: 82px;">
@@ -85,20 +84,20 @@
 			{/if}
 			{if ($agree_error == 1)}
 				<div class="alert alert-danger">
-					{l s='You must agree terms conditions' mod='byjuno'}
+					{$l_you_must_agree_terms_conditions}
 				</div>
 			{/if}
 			<div class="form-group byjuno_toc">
 				<input type="checkbox" value="terms_conditions" name="terms_conditions" id="terms_conditions" style="display: inline-block" />
-				<a href="{$toc_url}" target="_blank" style="font-weight: bold; text-decoration: underline">{l s='I agree with terms and conditions' mod='byjuno'}</a><sup>*</sup>
+				<a href="{$toc_url}" target="_blank" style="font-weight: bold; text-decoration: underline">{$l_i_agree_with_terms_and_conditions}</a><sup>*</sup>
 			</div>
 		</div>
 		<p class="cart_navigation clearfix" id="cart_navigation">
 			<a href="{$link->getPageLink('order', true, NULL, "step=3")|escape:'html':'UTF-8'}" class="button-exclusive btn btn-default">
-				<i class="icon-chevron-left"></i>{l s='Other payment methods' mod='byjuno'}
+				<i class="icon-chevron-left"></i>{$l_other_payment_methods}
 			</a>
 			<button type="submit" class="button btn btn-default button-medium">
-				<span>{l s='I confirm my order' mod='byjuno'}<i class="icon-chevron-right right"></i></span>
+				<span>{$l_i_confirm_my_order}<i class="icon-chevron-right right"></i></span>
 			</button>
 		</p>
 	</form>

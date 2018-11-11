@@ -22,6 +22,19 @@ class Byjuno extends PaymentModule
         $this->displayName = $this->l('Byjuno');
         $this->description = $this->l('Byjuno payment gateway');
         $this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.99.99');
+        $this->l('Select payment plan');
+        $this->l('Select invoice delivery method');
+        $this->l('Gender');
+        $this->l('Male');
+        $this->l('Female');
+        $this->l('Date of Birth');
+        $this->l('You must agree terms conditions');
+        $this->l('I agree with terms and conditions');
+        $this->l('Other payment methods');
+        $this->l('I confirm my order');
+        $this->l('Your shopping cart is empty.');
+        $this->l('By email');
+        $this->l('By post');
     }
 
     public function hookPaymentReturn($params)
