@@ -17,7 +17,7 @@
 			<h3 class="page-subheading">{l s=$paymentname mod='byjuno'}</h3>
 			{if (count($selected_payments) > 1)}
             <div class="required form-group">
-                <label for="selected_plan">{$l_select_payment_plan}<sup>*</sup></label><br />
+                <label for="selected_plan">{$l_select_payment_plan}</label><br />
 				{foreach from=$selected_payments item=s_payment}
 					<input type="radio" name="selected_plan" class="form-control" value="{$s_payment.id}" {if $s_payment.selected == 1} checked="checked"{/if}> &nbsp;{l s=$s_payment.name mod='byjuno'}<br />
 				{/foreach}
@@ -28,21 +28,21 @@
 			{/if}
 			{if ($byjuno_allowpostal == 1)}
                 <div class="required form-group">
-                    <label for="invoice_send">{$l_select_invoice_delivery_method}<sup>*</sup></label><br />
+                    <label for="invoice_send">{$l_select_invoice_delivery_method}</label><br />
                     <input type="radio" name="invoice_send" class="form-control" {if $invoice_send == "email"} checked="checked"{/if} value="email"> &nbsp;{$l_by_email}: {$email}<br />
                     <input type="radio" name="invoice_send" class="form-control" {if $invoice_send == "postal"} checked="checked"{/if} value="postal"> &nbsp;{$l_by_post}: {$address}<br />
                 </div><br />
 			{/if}
 			{if ($byjuno_gender_birthday == 1)}
 				<div class="required form-group">
-					<label for="selected_gender">{$l_gender}<sup>*</sup></label>
+					<label for="selected_gender">{$l_gender}</label>
 					<select name="selected_gender" id="selected_gender" class="form-control">
 						<option value="1" {if $sl_gender == 1} selected="selected"{/if}>{$l_male}</option>
 						<option value="2" {if $sl_gender == 2} selected="selected"{/if}>{$l_female}</option>
 					</select>
 				</div><br />
 				<div class="required form-group">
-					<label>{$l_date_of_birth}</label><sup>*</sup>
+					<label>{$l_date_of_birth}</label>
 					<div class="row">
 						<div class="col-xs-4" style="max-width: 94px;">
 							<select id="days" name="days" class="form-control" style="max-width: 82px;">
@@ -89,7 +89,7 @@
 			{/if}
 			<div class="form-group byjuno_toc">
 				<input type="checkbox" value="terms_conditions" name="terms_conditions" id="terms_conditions" style="display: inline-block" />
-				<a href="{$toc_url}" target="_blank" style="font-weight: bold; text-decoration: underline">{$l_i_agree_with_terms_and_conditions}</a><sup>*</sup>
+				<a href="{$toc_url}" target="_blank" style="font-weight: bold; text-decoration: underline">{$l_i_agree_with_terms_and_conditions}</a>
 			</div>
 		</div>
 		<p class="cart_navigation clearfix" id="cart_navigation">

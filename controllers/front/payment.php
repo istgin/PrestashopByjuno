@@ -145,7 +145,7 @@ class ByjunoPaymentModuleFrontController extends ModuleFrontController
 			'byjuno_allowpostal' => (Configuration::get('BYJUNO_ALLOW_POSTAL') == 'true') ? 1 : 0,
 			'byjuno_gender_birthday' => (Configuration::get('BYJUNO_GENDER_BIRTHDAY') == 'true') ? 1 : 0,
 			'email' => $this->context->customer->email,
-			'address' => trim($invoice_address->address1.' '.$invoice_address->address2).', '.$invoice_address->city.' '.$invoice_address->postcode,
+			'address' => trim($invoice_address->address1.' '.$invoice_address->address2).', '.$invoice_address->postcode.' '.$invoice_address->city,
 			'years' => $years,
 			'sl_year' => $byjuno_years,
 			'months' => $months,
