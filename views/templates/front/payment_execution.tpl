@@ -12,7 +12,33 @@
 			vertical-align: middle;
 		}
 	</style>
-	<form action="{$link->getModuleLink('byjuno', 'validation', [], true)|escape:'html':'UTF-8'}" method="post">
+	<script>
+		var msg_order_byjuno = '{$l_you_must_agree_terms_conditions}';
+		function acceptCGVByjuno()
+		{
+			if (typeof msg_order_byjuno != 'undefined' && $('#terms_conditions').length && !$('input#terms_conditions:checked').length)
+			{
+				if (!!$.prototype.fancybox)
+					$.fancybox.open([
+								{
+									type: 'inline',
+									autoScale: true,
+									minHeight: 30,
+									content: '<p class="fancybox-error">' + msg_order_byjuno + '</p>'
+								}],
+							{
+								padding: 0
+							});
+				else
+					alert(msg_order_byjuno);
+			}
+			else
+				return true;
+			return false;
+		}
+		acceptCGVByjuno();
+	</script>
+	<form action="{$link->getModuleLink('byjuno', 'validation', [], true)|escape:'html':'UTF-8'}" method="post" onsubmit="return acceptCGVByjuno()">
 		<div class="box cheque-box">
 			<h3 class="page-subheading">{l s=$paymentname mod='byjuno'}</h3>
 			{if (count($selected_payments) > 1)}
