@@ -47,6 +47,7 @@ class Byjuno extends PaymentModule
             $this->smarty->assign(array(
                 'total_to_pay' => Tools::displayPrice($params['total_to_pay'], $params['currencyObj'], false),
                 'status' => 'ok',
+                'order_status_text' => $this->l('Your order on %s is complete.'),
                 'id_order' => $params['objOrder']->id
             ));
             if (isset($params['objOrder']->reference) && !empty($params['objOrder']->reference))
