@@ -2,10 +2,10 @@
 global $_MODULE;
 $_MODULE = array();
 
-$_MODULE['<{byjuno}prestashop>payment_1335094cae0deb52ff6efc9b8840e8de'] = 'Payer par facture Byjuno';
-$_MODULE['<{byjuno}prestashop>payment_0388a4ccc8d2065cdc94da8fba58a30a'] = 'Facture Byjuno';
-$_MODULE['<{byjuno}prestashop>payment_4a08d53adc4052023681df0c2a89b073'] = 'Paiement échelonné Byjuno';
-$_MODULE['<{byjuno}prestashop>payment_ee946970cb5f21c257e87b07e2122e06'] = 'Paiement échelonné Byjuno';
+$_MODULE['<{byjuno}prestashop>byjuno_1335094cae0deb52ff6efc9b8840e8de'] = 'Payer par facture Byjuno';
+$_MODULE['<{byjuno}prestashop>byjuno_0388a4ccc8d2065cdc94da8fba58a30a'] = 'Facture Byjuno';
+$_MODULE['<{byjuno}prestashop>byjuno_4a08d53adc4052023681df0c2a89b073'] = 'Paiement échelonné Byjuno';
+$_MODULE['<{byjuno}prestashop>byjuno_ee946970cb5f21c257e87b07e2122e06'] = 'Paiement échelonné Byjuno';
 
 $_MODULE['<{byjuno}prestashop>payment_return_88526efe38fd18179a127024aba8c1d7'] = 'Votre commande chez %s est complète.';
 $_MODULE['<{byjuno}prestashop>payment_return_b2f40690858b404ed10e62bdf422c704'] = 'Montant';

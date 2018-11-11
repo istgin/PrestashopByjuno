@@ -21,10 +21,6 @@ class Byjuno extends PaymentModule
         parent::__construct();
         $this->displayName = $this->l('Byjuno');
         $this->description = $this->l('Byjuno payment gateway');
-        $this->byjuno_invoice = $this->l('Byjuno invoice');
-        $this->pay_byjuno_invoice = $this->l('Pay by byjuno invoice');
-        $this->byjuno_installemnt = $this->l('Byjuno installment');
-        $this->pay_byjuno_installemnt = $this->l('Pay by byjuno installment');
         $this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.99.99');
     }
 
@@ -124,10 +120,10 @@ class Byjuno extends PaymentModule
         $this->smarty->assign(array(
             'byjuno_invoice' => $byjuno_invoice,
             'byjuno_installment' => $byjuno_installment,
-            'name_byjuno_installemnt' => $this->byjuno_installemnt,
-            'name_byjuno_invoice' => $this->byjuno_invoice,
-            'name_pay_byjuno_installemnt' => $this->pay_byjuno_installemnt,
-            'name_pay_byjuno_invoice' => $this->pay_byjuno_invoice,
+            'name_byjuno_installemnt' => $this->l('Byjuno installment', 'byjuno'),
+            'name_byjuno_invoice' => $this->l('Byjuno invoice', 'byjuno'),
+            'name_pay_byjuno_installemnt' => $this->l('Pay by byjuno installment', 'byjuno'),
+            'name_pay_byjuno_invoice' => $this->l('Pay by byjuno invoice', 'byjuno'),
             'lang' => $lang,
             'this_path' => $this->_path,
             'this_path_bw' => $this->_path,
