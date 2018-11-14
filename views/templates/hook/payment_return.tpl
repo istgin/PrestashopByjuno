@@ -1,8 +1,8 @@
 {if $status == 'ok'}
 <p>
 	{sprintf($order_status_text, $shop_name)}
-	<br /><br />{l s='Amount' mod='byjuno'} <span class="price"><strong>{$total_to_pay}</strong></span>
-	<br /><br />{l s='Order reference %s' sprintf=$reference mod='byjuno'}
+	<br /><br />{sprintf($order_status_text2, $total_to_pay)}
+	<br /><br />{sprintf($order_status_text3, $reference)}
 </p>
 {else}
 	<p class="warning">

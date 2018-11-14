@@ -48,6 +48,8 @@ class Byjuno extends PaymentModule
                 'total_to_pay' => Tools::displayPrice($params['total_to_pay'], $params['currencyObj'], false),
                 'status' => 'ok',
                 'order_status_text' => $this->l('Your order on %s is complete.'),
+                'order_status_text2' => $this->l('Amount'),
+                'order_status_text3' => $this->l('Order reference %s'),
                 'id_order' => $params['objOrder']->id
             ));
             if (isset($params['objOrder']->reference) && !empty($params['objOrder']->reference))

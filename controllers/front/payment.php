@@ -44,7 +44,7 @@ class ByjunoPaymentModuleFrontController extends ModuleFrontController
 		/* @var $customer CustomerCore */
 		$customer = $this->context->customer;
 		$payment = 'invoice';
-		$paymentName = 'Byjuno Invoice';
+		$paymentName = $this->module->l('Byjuno invoice');
 		$pp = Tools::getValue('paymentmethod');
 		if ($pp ==  'invoice' || $pp == 'installment') {
 			$payment = $pp;
@@ -58,7 +58,7 @@ class ByjunoPaymentModuleFrontController extends ModuleFrontController
 		}
 		if ($payment == 'invoice')
 		{
-			$paymentName = 'Byjuno Invoice';
+			$paymentName = $this->module->l('Byjuno invoice');
 			if (Configuration::get("byjuno_invoice") == 'enable')
 			{
 				$selected_payments[] = Array('name' => 'Byjuno Invoice (with partial payment option)', 'id' => 'byjuno_invoice', "selected" => 0);
@@ -71,7 +71,7 @@ class ByjunoPaymentModuleFrontController extends ModuleFrontController
 		}
 		if ($payment == 'installment')
 		{
-			$paymentName = 'Byjuno Installment';
+			$paymentName = $this->module->l('Byjuno installment');
 			if (Configuration::get("installment_3") == 'enable')
 			{
 				$selected_payments[] = Array('name' => '3 installments', 'id' => 'installment_3', "selected" => 0);

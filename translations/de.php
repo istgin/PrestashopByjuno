@@ -9,8 +9,9 @@ $_MODULE['<{byjuno}prestashop>byjuno_ee946970cb5f21c257e87b07e2122e06'] = 'Byjun
 
 $_MODULE['<{byjuno}prestashop>byjuno_88526efe38fd18179a127024aba8c1d7'] = 'Deine Bestellung bei %s ist erfolgreich.';
 
-$_MODULE['<{byjuno}prestashop>payment_return_b2f40690858b404ed10e62bdf422c704'] = 'Betrag';
-$_MODULE['<{byjuno}prestashop>payment_return_0f09dc266f1e577e5ac4dc3c5cb84138'] = 'Bestellnummer %s';
+$_MODULE['<{byjuno}prestashop>byjuno_b2f40690858b404ed10e62bdf422c704'] = 'Betrag %s';
+$_MODULE['<{byjuno}prestashop>byjuno_0f09dc266f1e577e5ac4dc3c5cb84138'] = 'Bestellnummer %s';
+
 $_MODULE['<{byjuno}prestashop>payment_return_d15feee53d81ea16269e54d4784fa123'] = 'Es gibt ein Problem mit der Bestellung. Bitte kontaktieren Sie unseren';
 $_MODULE['<{byjuno}prestashop>payment_return_66fcf4c223bbf4c7c886d4784e1f62e4'] = 'Kundendienst';
 
