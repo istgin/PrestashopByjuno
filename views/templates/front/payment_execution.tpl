@@ -77,20 +77,20 @@
 								{/foreach}
 							</select>
 						</div>
-						<div class="col-xs-4" style="max-width: 94px;">
-							<select id="months" name="months" class="form-control" style="max-width: 82px;">
-								<option value="1" {if $sl_month == 1} selected="selected"{/if}>{l s="l_january"}&nbsp;</option>
-								<option value="2" {if $sl_month == 2} selected="selected"{/if}>{l s="l_february"}&nbsp;</option>
-								<option value="3" {if $sl_month == 3} selected="selected"{/if}>{l s="l_march"}&nbsp;</option>
-								<option value="4" {if $sl_month == 4} selected="selected"{/if}>{l s="l_april"}&nbsp;</option>
-								<option value="5" {if $sl_month == 5} selected="selected"{/if}>{l s="l_may"}&nbsp;</option>
-								<option value="6" {if $sl_month == 6} selected="selected"{/if}>{l s="l_june"}&nbsp;</option>
-								<option value="7" {if $sl_month == 7} selected="selected"{/if}>{l s="l_july"}&nbsp;</option>
-								<option value="8" {if $sl_month == 8} selected="selected"{/if}>{l s="l_august"}&nbsp;</option>
-								<option value="9" {if $sl_month == 9} selected="selected"{/if}>{l s="l_september"}&nbsp;</option>
-								<option value="10" {if $sl_month == 10} selected="selected"{/if}>{l s="l_october"}&nbsp;</option>
-								<option value="11" {if $sl_month == 11} selected="selected"{/if}>{l s="l_november"}&nbsp;</option>
-								<option value="12" {if $sl_month == 12} selected="selected"{/if}>{l s="l_december"}&nbsp;</option>
+						<div class="col-xs-4" style="max-width: 124px;">
+							<select id="months" name="months" class="form-control" style="max-width: 112px;">
+								<option value="1" {if $sl_month == 1} selected="selected"{/if}>{l s=$l_january mod='byjuno'}&nbsp;</option>
+								<option value="2" {if $sl_month == 2} selected="selected"{/if}>{l s=$l_february mod='byjuno'}&nbsp;</option>
+								<option value="3" {if $sl_month == 3} selected="selected"{/if}>{l s=$l_march mod='byjuno'}&nbsp;</option>
+								<option value="4" {if $sl_month == 4} selected="selected"{/if}>{l s=$l_april mod='byjuno'}&nbsp;</option>
+								<option value="5" {if $sl_month == 5} selected="selected"{/if}>{l s=$l_may mod='byjuno'}&nbsp;</option>
+								<option value="6" {if $sl_month == 6} selected="selected"{/if}>{l s=$l_june mod='byjuno'}&nbsp;</option>
+								<option value="7" {if $sl_month == 7} selected="selected"{/if}>{l s=$l_july mod='byjuno'}&nbsp;</option>
+								<option value="8" {if $sl_month == 8} selected="selected"{/if}>{l s=$l_august mod='byjuno'}&nbsp;</option>
+								<option value="9" {if $sl_month == 9} selected="selected"{/if}>{l s=$l_september mod='byjuno'}&nbsp;</option>
+								<option value="10" {if $sl_month == 10} selected="selected"{/if}>{l s=$l_october mod='byjuno'}&nbsp;</option>
+								<option value="11" {if $sl_month == 11} selected="selected"{/if}>{l s=$l_november mod='byjuno'}&nbsp;</option>
+								<option value="12" {if $sl_month == 12} selected="selected"{/if}>{l s=$l_december mod='byjuno'}&nbsp;</option>
 							</select>
 						</div>
 						<div class="col-xs-4" style="max-width: 94px;">
