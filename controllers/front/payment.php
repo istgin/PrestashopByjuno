@@ -167,6 +167,19 @@ class ByjunoPaymentModuleFrontController extends ModuleFrontController
 			'l_your_shopping_cart_is_empty' => $this->module->l("Your shopping cart is empty."),
 			'l_by_email' => $this->module->l("By email"),
 			'l_by_post' => $this->module->l("By post"),
+
+			'l_january' => $this->module->l("January"),
+			'l_february' => $this->module->l("February"),
+			'l_march' => $this->module->l("March"),
+			'l_april' => $this->module->l("April"),
+			'l_may' => $this->module->l("May"),
+			'l_june' => $this->module->l("June"),
+			'l_july' => $this->module->l("July"),
+			'l_august' => $this->module->l("August"),
+			'l_september' => $this->module->l("September"),
+			'l_october' => $this->module->l("October"),
+			'l_november' => $this->module->l("November"),
+			'l_december' => $this->module->l("December"),
 			//Select invoice delivery method
 			//Gender
 			//Male

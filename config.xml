@@ -2,7 +2,7 @@
 <module>
 	<name>byjuno</name>
 	<displayName><![CDATA[Byjuno]]></displayName>
-	<version><![CDATA[1.0.3]]></version>
+	<version><![CDATA[1.0.4]]></version>
 	<description><![CDATA[Byjuno payment gateway]]></description>
 	<author><![CDATA[Byjuno (http://www.byjuno.ch/)]]></author>
 	<tab><![CDATA[payments_gateways]]></tab>

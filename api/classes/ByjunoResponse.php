@@ -10,7 +10,6 @@ class ByjunoResponse
 {
 
     private $rawResponse;
-
     /**
      * @param mixed $rawResponse
      */
@@ -18,7 +17,6 @@ class ByjunoResponse
     {
         $this->rawResponse = $rawResponse;
     }
-
     /**
      * @return mixed
      */
@@ -26,7 +24,6 @@ class ByjunoResponse
     {
         return $this->rawResponse;
     }
-
     /**
      * @param mixed $ClientId
      */
@@ -34,7 +31,6 @@ class ByjunoResponse
     {
         $this->ClientId = $ClientId;
     }
-
     /**
      * @return mixed
      */
@@ -42,7 +38,6 @@ class ByjunoResponse
     {
         return $this->ClientId;
     }
-
     /**
      * @param mixed $CustomerLastStatusChange
      */
@@ -50,7 +45,6 @@ class ByjunoResponse
     {
         $this->CustomerLastStatusChange = $CustomerLastStatusChange;
     }
-
     /**
      * @return mixed
      */
@@ -58,7 +52,6 @@ class ByjunoResponse
     {
         return $this->CustomerLastStatusChange;
     }
-
     /**
      * @param mixed $CustomerProcessingInfoClassification
      */
@@ -66,7 +59,6 @@ class ByjunoResponse
     {
         $this->CustomerProcessingInfoClassification = $CustomerProcessingInfoClassification;
     }
-
     /**
      * @return mixed
      */
@@ -74,7 +66,6 @@ class ByjunoResponse
     {
         return $this->CustomerProcessingInfoClassification;
     }
-
     /**
      * @param mixed $CustomerProcessingInfoCode
      */
@@ -82,7 +73,6 @@ class ByjunoResponse
     {
         $this->CustomerProcessingInfoCode = $CustomerProcessingInfoCode;
     }
-
     /**
      * @return mixed
      */
@@ -90,7 +80,6 @@ class ByjunoResponse
     {
         return $this->CustomerProcessingInfoCode;
     }
-
     /**
      * @param mixed $CustomerProcessingInfoDescription
      */
@@ -98,7 +87,6 @@ class ByjunoResponse
     {
         $this->CustomerProcessingInfoDescription = $CustomerProcessingInfoDescription;
     }
-
     /**
      * @return mixed
      */
@@ -106,7 +94,6 @@ class ByjunoResponse
     {
         return $this->CustomerProcessingInfoDescription;
     }
-
     /**
      * @param mixed $CustomerRequestStatus
      */
@@ -114,7 +101,6 @@ class ByjunoResponse
     {
         $this->CustomerRequestStatus = $CustomerRequestStatus;
     }
-
     /**
      * @return mixed
      */
@@ -122,7 +108,6 @@ class ByjunoResponse
     {
         return $this->CustomerRequestStatus;
     }
-
     /**
      * @param mixed $ProcessingInfoClassification
      */
@@ -130,7 +115,6 @@ class ByjunoResponse
     {
         $this->ProcessingInfoClassification = $ProcessingInfoClassification;
     }
-
     /**
      * @return mixed
      */
@@ -138,7 +122,6 @@ class ByjunoResponse
     {
         return $this->ProcessingInfoClassification;
     }
-
     /**
      * @param mixed $ProcessingInfoCode
      */
@@ -146,7 +129,6 @@ class ByjunoResponse
     {
         $this->ProcessingInfoCode = $ProcessingInfoCode;
     }
-
     /**
      * @return mixed
      */
@@ -154,7 +136,6 @@ class ByjunoResponse
     {
         return $this->ProcessingInfoCode;
     }
-
     /**
      * @param mixed $ProcessingInfoDescription
      */
@@ -162,7 +143,6 @@ class ByjunoResponse
     {
         $this->ProcessingInfoDescription = $ProcessingInfoDescription;
     }
-
     /**
      * @return mixed
      */
@@ -170,7 +150,6 @@ class ByjunoResponse
     {
         return $this->ProcessingInfoDescription;
     }
-
     /**
      * @param mixed $ResponseId
      */
@@ -178,7 +157,6 @@ class ByjunoResponse
     {
         $this->ResponseId = $ResponseId;
     }
-
     /**
      * @return mixed
      */
@@ -186,7 +164,6 @@ class ByjunoResponse
     {
         return $this->ResponseId;
     }
-
     /**
      * @param mixed $Version
      */
@@ -194,7 +171,6 @@ class ByjunoResponse
     {
         $this->Version = $Version;
     }
-
     /**
      * @return mixed
      */
@@ -202,28 +178,82 @@ class ByjunoResponse
     {
         return $this->Version;
     }
+    /**
+     * @param mixed $CustomerCreditRating
+     */
+    public function setCustomerCreditRating($CustomerCreditRating)
+    {
+        $this->CustomerCreditRating = $CustomerCreditRating;
+    }
+    /**
+     * @return mixed
+     */
+    public function getCustomerCreditRating()
+    {
+        return $this->CustomerCreditRating;
+    }
+    /**
+     * @param mixed $customerCreditRatingLevel
+     */
+    public function setCustomerCreditRatingLevel($customerCreditRatingLevel)
+    {
+        $this->CustomerCreditRatingLevel = $customerCreditRatingLevel;
+    }
+    /**
+     * @return mixed
+     */
+    public function getCustomerCreditRatingLevel()
+    {
+        return $this->CustomerCreditRatingLevel;
+    }
     private $ResponseId;
     private $Version;
     private $ClientId;
-
     private $ProcessingInfoCode;
     private $ProcessingInfoClassification;
     private $ProcessingInfoDescription;
-
     private $CustomerRequestStatus;
+    private $TransactionNumber;
+    /**
+     * @return mixed
+     */
+    public function getTransactionNumber()
+    {
+        return $this->TransactionNumber;
+    }
+    /**
+     * @param mixed $TransactionNumber
+     */
+    public function setTransactionNumber($TransactionNumber)
+    {
+        $this->TransactionNumber = $TransactionNumber;
+    }
     private $CustomerLastStatusChange;
     private $CustomerProcessingInfoCode;
     private $CustomerProcessingInfoClassification;
     private $CustomerProcessingInfoDescription;
-
+    private $CustomerCreditRating;
+    private $CustomerCreditRatingLevel;
     public function processResponse()
     {
+        libxml_use_internal_errors(true);
         $xml = simplexml_load_string($this->rawResponse);
-
-        $this->ResponseId = (int)$xml["ResponseId"];
-        $this->Version = (double)$xml["Version"];
-        $this->ClientId = (int)$xml["ClientId"];
-
+        $this->CustomerCreditRating = '';
+        $this->CustomerCreditRatingLevel = '';
+        if (!$xml) {
+            $this->ResponseId = '0';
+            $this->Version = '0';
+            $this->ClientId = '0';
+            $this->ProcessingInfoCode = '0';
+            $this->ProcessingInfoClassification = 'ERR';
+            if ($this->ProcessingInfoClassification == 'ERR') {
+                $this->CustomerRequestStatus = 0;
+                return;
+            }
+        }
+        $this->ResponseId = $xml["ResponseId"];
+        $this->Version = $xml["Version"];
+        $this->ClientId = $xml["ClientId"];
         $this->ProcessingInfoCode = trim((string)$xml->ProcessingInfo->Code);
         $this->ProcessingInfoClassification = trim((string)$xml->ProcessingInfo->Classification);
         if ($this->ProcessingInfoClassification == 'ERR') {
@@ -231,13 +261,18 @@ class ByjunoResponse
             return;
         }
         $this->ProcessingInfoDescription = trim((string)$xml->ProcessingInfo->Description);
-
+        if (!empty($xml->Customer->CreditRating)) {
+            $this->CustomerCreditRating = trim((string)$xml->Customer->CreditRating);
+        }
+        if (!empty($xml->Customer->CreditRatingLevel)) {
+            $this->CustomerCreditRatingLevel = trim((string)$xml->Customer->CreditRatingLevel);
+        }
         $this->CustomerRequestStatus = (int)$xml->Customer->RequestStatus;
+        $this->TransactionNumber = trim((string)$xml->Customer->TransactionNumber);
         $this->CustomerLastStatusChange = trim((string)$xml->Customer->RequestStatus);
         $this->CustomerProcessingInfoCode = trim((string)$xml->Customer->ProcessingInfo->Code);
         $this->CustomerProcessingInfoClassification = trim((string)$xml->Customer->ProcessingInfo->Classification);
         $this->CustomerProcessingInfoDescription = trim((string)$xml->Customer->ProcessingInfo->Description);
-
     }
 
 }

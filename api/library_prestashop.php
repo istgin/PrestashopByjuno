@@ -224,7 +224,7 @@ function CreatePrestaShopRequest(CartCore $cart, CustomerCore $customer, Currenc
     $request->setExtraInfo($extraInfo);
 
     $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-    $extraInfo["Value"] = 'Byjuno Prestashop module 1.0.3';
+    $extraInfo["Value"] = 'Byjuno Prestashop module 1.0.4';
     $request->setExtraInfo($extraInfo);	
 
     return $request;
@@ -249,7 +249,7 @@ function byjunoIsStatusOk($status, $position)
     }
 }
 
-function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency $currency, $repayment, $riskOwner, $invoiceDelivery, $selected_gender = "", $selected_birthday = "") {
+function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency $currency, $repayment, $riskOwner, $invoiceDelivery, $selected_gender = "", $selected_birthday = "", $txNum = "") {
 
     global $cookie;
     $customer = new Customer($order->id_customer);
@@ -380,8 +380,14 @@ function CreatePrestaShopRequestAfterPaid(Cart $cart, OrderCore $order, Currency
         $request->setExtraInfo($extraInfo);
     }
 
+    if ($txNum != "") {
+        $extraInfo["Name"] = 'TRANSACTIONNUMBER';
+        $extraInfo["Value"] = $txNum;
+        $request->setExtraInfo($extraInfo);
+    }
+
     $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-    $extraInfo["Value"] = 'Byjuno Prestashop module 1.0.3';
+    $extraInfo["Value"] = 'Byjuno Prestashop module 1.0.4';
     $request->setExtraInfo($extraInfo);	
 
     return $request;

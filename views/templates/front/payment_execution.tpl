@@ -76,26 +76,21 @@
 									<option value="{$day|escape:'html':'UTF-8'}" {if $sl_day == $day} selected="selected"{/if}>{$day|escape:'html':'UTF-8'}&nbsp;&nbsp;</option>
 								{/foreach}
 							</select>
-							{*
-                            {l s='January'}
-                            {l s='February'}
-                            {l s='March'}
-                            {l s='April'}
-                            {l s='May'}
-                            {l s='June'}
-                            {l s='July'}
-                            {l s='August'}
-                            {l s='September'}
-                            {l s='October'}
-                            {l s='November'}
-                            {l s='December'}
-                            *}
 						</div>
 						<div class="col-xs-4" style="max-width: 94px;">
 							<select id="months" name="months" class="form-control" style="max-width: 82px;">
-								{foreach from=$months key=k item=month}
-									<option value="{$k|escape:'html':'UTF-8'}" {if $sl_month == $k} selected="selected"{/if}>{l s=$month}&nbsp;</option>
-								{/foreach}
+								<option value="1" {if $sl_month == 1} selected="selected"{/if}>{l s="l_january"}&nbsp;</option>
+								<option value="2" {if $sl_month == 2} selected="selected"{/if}>{l s="l_february"}&nbsp;</option>
+								<option value="3" {if $sl_month == 3} selected="selected"{/if}>{l s="l_march"}&nbsp;</option>
+								<option value="4" {if $sl_month == 4} selected="selected"{/if}>{l s="l_april"}&nbsp;</option>
+								<option value="5" {if $sl_month == 5} selected="selected"{/if}>{l s="l_may"}&nbsp;</option>
+								<option value="6" {if $sl_month == 6} selected="selected"{/if}>{l s="l_june"}&nbsp;</option>
+								<option value="7" {if $sl_month == 7} selected="selected"{/if}>{l s="l_july"}&nbsp;</option>
+								<option value="8" {if $sl_month == 8} selected="selected"{/if}>{l s="l_august"}&nbsp;</option>
+								<option value="9" {if $sl_month == 9} selected="selected"{/if}>{l s="l_september"}&nbsp;</option>
+								<option value="10" {if $sl_month == 10} selected="selected"{/if}>{l s="l_october"}&nbsp;</option>
+								<option value="11" {if $sl_month == 11} selected="selected"{/if}>{l s="l_november"}&nbsp;</option>
+								<option value="12" {if $sl_month == 12} selected="selected"{/if}>{l s="l_december"}&nbsp;</option>
 							</select>
 						</div>
 						<div class="col-xs-4" style="max-width: 94px;">
